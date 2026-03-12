@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Amica Mutual Insurance | Revenue Insight</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+
+  /* RI Brand Colors */
+  :root {
+    --navy: #0D2137;
+    --teal: #1A5E6A;
+    --green: #7AB648;
+    --body: #2D3E50;
+    --mid: #4A5E70;
+    --light: #F0F4F7;
+    --border: #D8E2EA;
+    --white: #FFFFFF;
+    --red-flag: #C0392B;
+    --amber: #E67E22;
+  }
+
+  /* Portal Shell */
+  .portal-header {
+    background: var(--navy);
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .portal-header .brand {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .portal-header .brand span { color: var(--green); }
+  .portal-header .portal-label {
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+
+  /* Brief Header */
+  .brief-header {
+    background: var(--white);
+    border-radius: 8px;
+    border-left: 5px solid var(--teal);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brief-header .account-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .brief-header .account-sub {
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 4px;
+  }
+  .brief-header .tier-badge {
+    background: var(--navy);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .brief-header .tier-badge .score {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    text-align: center;
+  }
+  .brief-header .tier-badge .label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+  }
+
+  /* What's New Banner */
+  .whats-new {
+    background: #FFF8E6;
+    border: 1px solid #F5C842;
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+  .whats-new .wn-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 8px;
+  }
+  .whats-new ul { list-style: none; padding: 0; }
+  .whats-new ul li {
+    font-size: 13px;
+    color: #5D4200;
+    padding: 3px 0 3px 16px;
+    position: relative;
+  }
+  .whats-new ul li::before {
+    content: "▶";
+    position: absolute;
+    left: 0;
+    font-size: 8px;
+    color: var(--amber);
+    top: 5px;
+  }
+  .whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+
+  /* Section cards */
+  .section {
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--teal);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+  }
+  .section-body { padding: 16px 18px; }
+
+  /* Snapshot grid */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .snap-item .snap-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 3px;
+  }
+  .snap-item .snap-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .snap-item .snap-value.highlight { color: var(--teal); }
+
+  /* ICP Scorecard */
+  .scorecard { display: flex; flex-direction: column; gap: 8px; }
+  .score-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 60px;
+    align-items: center;
+    gap: 10px;
+  }
+  .score-dim {
+    font-size: 12px;
+    color: var(--body);
+  }
+  .score-bar-wrap {
+    height: 10px;
+    background: var(--light);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .score-bar {
+    height: 100%;
+    border-radius: 5px;
+    background: var(--teal);
+  }
+  .score-bar.partial { background: #A8D08D; }
+  .score-bar.low { background: var(--border); }
+  .score-pts {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: right;
+  }
+  .score-max {
+    font-size: 10px;
+    color: var(--mid);
+    font-weight: 400;
+  }
+  .score-gap { display: block; font-size: 10px; color: var(--amber); }
+  .score-total-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 60px;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 2px solid var(--navy);
+  }
+  .score-total-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .score-total-pts {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: right;
+  }
+  .score-note {
+    font-size: 11px;
+    color: var(--mid);
+    font-style: italic;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Fit section */
+  .fit-list { list-style: none; padding: 0; }
+  .fit-list li {
+    padding: 6px 0 6px 18px;
+    position: relative;
+    font-size: 13px;
+    border-bottom: 1px solid var(--light);
+  }
+  .fit-list li:last-child { border-bottom: none; }
+  .fit-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .fit-list li strong { color: var(--navy); }
+
+  /* Sales Plays */
+  .play-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .play-card:last-child { margin-bottom: 0; }
+  .play-card-header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .play-num {
+    background: var(--green);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .play-title { font-size: 13px; font-weight: 700; }
+  .play-body { padding: 12px 14px; }
+  .play-body p { font-size: 13px; line-height: 1.55; color: var(--body); }
+  .play-action {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .play-action span { color: var(--body); font-weight: 400; text-transform: none; }
+
+  /* Decision Makers */
+  .dm-grid { display: flex; flex-direction: column; gap: 12px; }
+  .dm-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .dm-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .dm-title { font-size: 12px; color: var(--mid); margin-top: 1px; }
+  .dm-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .dm-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .tag-buyer { background: #EBF5EB; color: #1A6B1A; }
+  .tag-influencer { background: #EBF1FB; color: #1A3D8B; }
+  .tag-marketing { background: #F3EBFB; color: #5B1A8B; }
+  .tag-data { background: #FBF3EB; color: #8B4A1A; }
+  .dm-note { font-size: 12px; color: var(--mid); margin-top: 6px; font-style: italic; }
+
+  /* Agency Relationship */
+  .agency-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .agency-logo-box {
+    background: var(--navy);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 5px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .agency-logo-box .agency-sub { font-size: 10px; color: var(--green); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: block; margin-top: 2px; }
+  .agency-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .agency-meta-item .alabel { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 2px; }
+  .agency-meta-item .avalue { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .agency-role-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .agency-role-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; background: #EBF1FB; color: #1A3D8B; }
+  .agency-deal-flow {
+    background: var(--light);
+    border-radius: 5px;
+    padding: 12px 14px;
+    margin-top: 10px;
+  }
+  .agency-deal-flow .df-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+  .deal-flow-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .df-step {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: center;
+    min-width: 80px;
+  }
+  .df-step.highlight { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .df-step.agency-step { background: #EBF1FB; color: #1A3D8B; border-color: #B5D4F4; }
+  .df-arrow { font-size: 14px; color: var(--mid); padding: 0 5px; }
+  .agency-contact-row { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 12px; }
+
+  /* Past Opps */
+  .opp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .opp-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--mid);
+    padding: 6px 10px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .opp-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--light);
+    vertical-align: top;
+  }
+  .opp-table tr:last-child td { border-bottom: none; }
+  .opp-status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .status-won { background: #EBF5EB; color: #1A6B1A; }
+  .status-lost { background: #FBEBEB; color: #8B1A1A; }
+  .opp-note {
+    font-size: 11px;
+    color: var(--mid);
+    font-style: italic;
+    margin-top: 3px;
+  }
+
+  /* Talk Track */
+  .talk-track-box {
+    background: var(--light);
+    border-left: 4px solid var(--green);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  /* Open Questions */
+  .oq-list { list-style: none; padding: 0; counter-reset: oq; }
+  .oq-list li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+    font-size: 13px;
+    border-bottom: 1px solid var(--light);
+    counter-increment: oq;
+  }
+  .oq-list li:last-child { border-bottom: none; }
+  .oq-list li::before {
+    content: counter(oq);
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 8px;
+  }
+
+  /* Footer */
+  .brief-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    font-size: 11px;
+    padding: 10px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+
+  /* Internal data flags */
+  .flag-list { list-style: none; padding: 0; }
+  .flag-list li {
+    padding: 5px 0 5px 18px;
+    position: relative;
+    font-size: 13px;
+    border-bottom: 1px solid var(--light);
+  }
+  .flag-list li:last-child { border-bottom: none; }
+  .flag-list li::before {
+    content: "⚑";
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-size: 12px;
+    top: 6px;
+  }
+  .flag-list li.green::before { color: var(--green); content: "⚑"; }
+  .flag-list li.red::before { color: var(--red-flag); content: "⚑"; }
+
+  /* Section Nav */
+  .section-nav {
+    background: var(--navy);
+    border-bottom: 3px solid var(--green);
+    padding: 10px 32px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 7px;
+  }
+  .nav-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .nav-btn {
+    display: inline-block;
+    color: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 5px 13px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover {
+    background: rgba(122,182,72,0.2);
+    border-color: rgba(122,182,72,0.5);
+    color: var(--white);
+  }
+  .nav-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--white);
+  }
+
+  @media print {
+    body { background: white; }
+    .page-wrap { padding: 12px; }
+    .section-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Portal Header -->
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> · Account Intelligence Portal</div>
+  <div class="portal-label">TWC Direct Ad Sales · National Accounts</div>
+</div>
+
+<!-- Section Nav -->
+<nav class="section-nav" id="section-nav">
+  <div class="nav-label">Jump to section</div>
+  <div class="nav-inner">
+    <a class="nav-btn active" href="#signals">⚡ What's New</a>
+    <a class="nav-btn" href="#snapshot">1 · Snapshot</a>
+    <a class="nav-btn" href="#scorecard">2 · ICP Score</a>
+    <a class="nav-btn" href="#fit">3 · Why a Fit</a>
+    <a class="nav-btn" href="#opps">4 · Past Opps</a>
+    <a class="nav-btn" href="#flags">5 · Data Flags</a>
+    <a class="nav-btn" href="#dms">6 · Decision Makers</a>
+    <a class="nav-btn" href="#agency">7 · Agency</a>
+    <a class="nav-btn" href="#plays">8 · Sales Plays</a>
+    <a class="nav-btn" href="#talktrack">9 · Talk Track</a>
+    <a class="nav-btn" href="#questions">10 · Open Questions</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- Brief Header -->
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Amica Mutual Insurance Company</div>
+      <div class="account-sub">Lincoln, RI · Insurance (FinServ) · National Accounts · Owner: Jeffrey Stuart</div>
+      <div style="margin-top:8px; font-size:12px; color: var(--mid);">Brief generated: March 12, 2026 &nbsp;|&nbsp; Last refreshed: March 2026 &nbsp;|&nbsp; Next refresh: April 2026</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="tier-badge">
+        <span class="score">85.5</span>
+        <span class="label">A-Tier &nbsp;/&nbsp; 100 pts</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- What's New -->
+  <div class="whats-new" id="signals">
+    <div class="wn-header">⚡ What's New — Signals Since Last Contact (Oct 2023)</div>
+    <ul>
+      <li><strong>New CEO (Oct 2022) &amp; New COO (Jan 2026):</strong> Ted Shallcross took over as President &amp; CEO in October 2022 — fresh leadership since TWC's last opp. Sam Palmisano stepped into COO role January 1, 2026 replacing 45-year veteran Ted Murphy. New ops leadership = potential shift in vendor and partnership priorities.</li>
+      <li><strong>Merkle Partnership Announced (2024):</strong> Amica signed a multiyear deal with Merkle to modernize data-driven and audience-based marketing at scale. They're explicitly investing in first- and third-party data targeting — TWC's weather audience overlays are a direct fit for this motion.</li>
+      <li><strong>$100M+ Ad Spend Active:</strong> MediaRadar confirms Amica spent over $100M in digital, print, and national TV in the last 12 months, active across 250+ media properties — including programmatic on YouTube and direct buys on Bleacher Report. Budget is real and in-market.</li>
+      <li><strong>Empathy Brand Campaign Running:</strong> Active national brand campaign "Empathy is our best policy" launched/expanded in 2024. Campaign focus on human connection + seasonal life moments — maps well to weather-trigger storytelling.</li>
+      <li><strong>Penn State Athletics Sponsorship (Sep 2025):</strong> Amica signed a multiyear deal as official auto, home, and life insurance partner of Penn State — fanbase of ~15M. Signals growing appetite for large-scale reach and audience partnerships beyond performance channels.</li>
+      <li><strong>16+ Months of Silence from TWC:</strong> No opp activity since October 2023. Both prior pitches closed via automation process — no explicit rejection on record. Account is unworked, not burned.</li>
+    </ul>
+  </div>
+
+  <!-- 1. Account Snapshot -->
+  <div class="section" id="snapshot">
+    <div class="section-header">1 · Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item">
+          <div class="snap-label">Founded</div>
+          <div class="snap-value">1907 (oldest mutual auto insurer in US)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">HQ</div>
+          <div class="snap-value">Lincoln, Rhode Island</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Assets</div>
+          <div class="snap-value highlight">$5.9 Billion</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Employees</div>
+          <div class="snap-value">3,500+</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Products</div>
+          <div class="snap-value">Auto, Home, Life, Umbrella, Marine</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Distribution</div>
+          <div class="snap-value">Direct writer, 44 locations nationwide</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Annual Ad Spend</div>
+          <div class="snap-value highlight">$100M+ (MediaRadar)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Media Buying</div>
+          <div class="snap-value">Programmatic (TTD, YouTube) + Direct</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">TWC CRM Status</div>
+          <div class="snap-value">Prospect — 3 prior opps (1 won, 2 lost)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Vertical</div>
+          <div class="snap-value">FinServ / Insurance</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">TWC Account Owner</div>
+          <div class="snap-value">Jeffrey Stuart · National Accounts</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">ICP Tier</div>
+          <div class="snap-value highlight">A-Tier · 85.5 / 100</div>
+        </div>
+        <div class="snap-item" style="grid-column: span 2;">
+          <div class="snap-label">Agency of Record</div>
+          <div class="snap-value">Mother New York (Creative) · Media by Mother (Media Planning &amp; Buying)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ICP Scorecard -->
+  <div class="section" id="scorecard">
+    <div class="section-header">2 · ICP Fit Scorecard — Why A-Tier</div>
+    <div class="section-body">
+      <div class="scorecard">
+
+        <div class="score-row">
+          <div class="score-dim">Weather Sensitivity<br><span style="font-size:10px;color:var(--mid);">Weight: 30 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:90%"></div></div>
+          <div class="score-pts">27 <span class="score-max">/ 30</span></div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-dim">Media Spend<br><span style="font-size:10px;color:var(--mid);">Weight: 30 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">30 <span class="score-max">/ 30</span></div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-dim">Vertical<br><span style="font-size:10px;color:var(--mid);">Weight: 15 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:70%"></div></div>
+          <div class="score-pts">10.5 <span class="score-max">/ 15</span></div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-dim">Number of Brands<br><span style="font-size:10px;color:var(--mid);">Weight: 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">10 <span class="score-max">/ 10</span></div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-dim"># of Employees<br><span style="font-size:10px;color:var(--mid);">Weight: 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:80%"></div></div>
+          <div class="score-pts">8 <span class="score-max">/ 10</span></div>
+        </div>
+
+        <div class="score-row">
+          <div class="score-dim">Media Buying Preference<br><span style="font-size:10px;color:var(--mid);">Weight: 5 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:5%"></div></div>
+          <div class="score-pts" style="color:var(--amber);">0 <span class="score-max">/ 5</span>
+            <span class="score-gap">Data gap</span>
+          </div>
+        </div>
+
+        <div class="score-total-row">
+          <div class="score-total-label">Total ICP Score</div>
+          <div></div>
+          <div class="score-total-pts">85.5</div>
+        </div>
+
+      </div>
+      <div class="score-note">
+        Media Buying Preference scored 0 due to a data gap in Clay — buying preference (hybrid/in-house/agency) could not be confirmed. Amica is a direct writer; programmatic activity confirmed via TTD and YouTube (MediaRadar), suggesting hybrid buying. Rep should confirm buying structure on first call — upside of +5 points if hybrid is confirmed.
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Why They're a Fit -->
+  <div class="section" id="fit">
+    <div class="section-header">3 · Why Amica Is a Fit for TWC</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>Core product lines are inherently weather-driven.</strong> Auto, home, and umbrella insurance claims are directly triggered by weather events — hail, ice storms, flooding, windstorms, hurricanes. Amica's risk exposure maps directly to TWC's trigger density capabilities.</li>
+        <li><strong>Active programmatic buyer with $100M+ annual spend.</strong> Confirmed buying on The Trade Desk (TTD), YouTube, and direct display across 250+ properties. PMP infrastructure is already in place — TWC has transacted with them on PMP before.</li>
+        <li><strong>New Merkle data partnership signals audience-first approach.</strong> Amica is explicitly investing in first- and third-party data for targeted audience development. TWC's weather audience overlays (by geography, trigger type, and season) are a direct complement to Merkle's identity-based targeting model.</li>
+        <li><strong>Seasonal peaks align perfectly with TWC content moments.</strong> Storm prep (spring/fall), hurricane season, winter weather, and freeze events all generate high-attention TWC inventory precisely when Amica needs to reach homeowners and drivers in high-risk moments.</li>
+        <li><strong>Growing appetite for large-scale reach partnerships.</strong> The Penn State multiyear sponsorship (Sep 2025) shows Amica is willing to commit budget to scaled audience deals beyond pure performance — exactly the framing TWC's on-property inventory supports.</li>
+        <li><strong>Brand campaign messaging aligns with weather moments.</strong> "Empathy is our best policy" — connecting with people in moments of vulnerability — is naturally paired with weather events, which are among the highest emotional attention moments in a consumer's year.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Past Opportunity Notes -->
+  <div class="section" id="opps">
+    <div class="section-header">4 · Past Opportunity Notes (CRM — Free Form)</div>
+    <div class="section-body">
+      <table class="opp-table">
+        <thead>
+          <tr>
+            <th>Opportunity</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Budget</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>amica mutual insurance company PMP</td>
+            <td>Nov 2022</td>
+            <td>PMP</td>
+            <td><span class="opp-status status-won">Won</span></td>
+            <td>$1</td>
+            <td>
+              Contract Complete. NY region. Initial PMP access deal — minimal budget, likely a programmatic test or inventory access setup. Proof of concept that Amica will transact with TWC.
+              <div class="opp-note">Rep: National Accounts team (NY region assignment)</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Amica Mutual Insurance Company–PMP_Q4_2023</td>
+            <td>Oct 19, 2023</td>
+            <td>PMP</td>
+            <td><span class="opp-status status-lost">Lost</span></td>
+            <td>$10,000</td>
+            <td>
+              PMP Q4 pitch. Closed via automation process — no explicit rejection captured in CRM. Opp created and closed same day (Oct 19). Not a negotiated loss; no competitive displacement or "no" decision on record.
+              <div class="opp-note">Owner: Jeffrey Stuart · DSP: TTD · Billing: Invoice (CPM)</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Amica–WinterWeather_WWT_TTD_Q4_23</td>
+            <td>Oct 11, 2023</td>
+            <td>PMP / Weather Trigger</td>
+            <td><span class="opp-status status-lost">Lost</span></td>
+            <td>$10,000</td>
+            <td>
+              Winter Weather trigger deal via TTD — timed to Q4 storm season. Also closed via automation process. No buyer-side rejection documented. Created and auto-closed within same window as the PMP opp above. These were likely concurrent pitches that stalled without engagement.
+              <div class="opp-note">Owner: Jeffrey Stuart · DSP: TTD · Off-property triggers: No</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px; padding:10px 12px; background:var(--light); border-radius:5px; font-size:12px; color:var(--mid); font-style:italic;">
+        ⚑ Rep note: Both Q4 2023 losses reflect stalled outreach, not a buyer decision. No "no" is on record. Re-engagement framing should treat Amica as an unworked warm account — not a win-back from a rejection.
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Internal Data Flags -->
+  <div class="section" id="flags">
+    <div class="section-header">5 · Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="green">Jeffrey Stuart owns all three historical opps — consistent coverage, no ownership gap.</li>
+        <li>Account classified as <strong>Prospect</strong> in SFDC across all opps — never converted to Customer status despite 2022 win. Check whether account record needs updating.</li>
+        <li>Off-Property Triggers: marked <strong>No</strong> on both 2023 opps. Opportunity to introduce off-property as a new conversation layer.</li>
+        <li>Proactive Pitch: marked <strong>No</strong> on all opps — Amica has only been pitched reactively or via automated deal creation. A structured proactive outreach would be a first.</li>
+        <li class="red">Media Buying Preference: <strong>Data gap in Clay</strong> — not confirmed as hybrid, in-house, or agency. Should be resolved before pricing a new deal.</li>
+        <li>Both Q4 2023 opps were created and closed on the same day via automation. No pipeline stage progression documented. No meeting, no call, no proposal sent to buyer on record.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. Key Decision Makers -->
+  <div class="section" id="dms">
+    <div class="section-header">6 · Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+
+        <div class="dm-card">
+          <div class="dm-avatar">TP</div>
+          <div>
+            <div class="dm-name">Tory Pachis</div>
+            <div class="dm-title">EVP &amp; Chief Marketing Officer · Lincoln, RI</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-buyer">Budget Holder</span>
+              <span class="dm-tag tag-marketing">Brand</span>
+            </div>
+            <div class="dm-note">Longtime Amica marketing leader; previously SVP Marketing at Amica and The Hanover Insurance Group. Directly oversaw the Merkle data partnership selection. Quoted in Campaign US on prioritizing "addressable market" and media efficiency — language that aligns with TWC's audience-based pitch. Primary executive target for a senior-level conversation.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">AC</div>
+          <div>
+            <div class="dm-name">Anusheel Choudhary</div>
+            <div class="dm-title">Sr. AVP, Data Science, Marketing &amp; Communications · Hartford, CT</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-data">Data / Targeting</span>
+              <span class="dm-tag tag-influencer">Influencer</span>
+            </div>
+            <div class="dm-note">Led the vendor evaluation process for the Merkle partnership. Quoted publicly on Amica's strategy to "maximize first-party data across channels" paired with third-party data. Key influencer on any programmatic or data-driven media deal — likely a day-to-day contact for a weather audience overlay conversation.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">TS</div>
+          <div>
+            <div class="dm-name">Ted Shallcross</div>
+            <div class="dm-title">President &amp; CEO · Lincoln, RI</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-influencer">Executive Sponsor</span>
+            </div>
+            <div class="dm-note">New CEO since October 2022 — was in seat when the 2022 PMP deal closed but before the 2023 pitches. Not a direct media buyer contact, but relevant context if TWC pursues a strategic partnership frame (e.g., Penn State-style reach deal). Background at Amica Life Insurance division.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">JS</div>
+          <div>
+            <div class="dm-name">Jeffrey Stuart</div>
+            <div class="dm-title">TWC Account Owner · National Accounts</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-buyer">Internal Owner</span>
+            </div>
+            <div class="dm-note">Owns all three historical Amica opps in SFDC. Consistent ownership is a strength — no handoff risk. Rep should confirm whether any direct relationship exists with Pachis or Choudhary from the 2022–2023 activity before cold outreach is planned.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Agency Relationship -->
+  <div class="section" id="agency">
+    <div class="section-header">7 · Agency Relationship — How Deals Actually Get Done</div>
+    <div class="section-body">
+
+      <div class="agency-header">
+        <div class="agency-logo-box">
+          Mother New York<br>
+          <span class="agency-sub">+ Media by Mother</span>
+        </div>
+        <div>
+          <div style="font-size:13px; color:var(--body); line-height:1.6;">
+            Amica's AOR since 2022. Mother New York handles all creative strategy and production. <strong>Media by Mother</strong> — Mother's in-house media planning and buying arm — develops and executes the full media plan, spanning broadcast, linear, programmatic digital, and paid social. In the media world, <strong>Media by Mother is the entity TWC will most likely transact with</strong> — they plan, buy, and manage Amica's inventory relationships, including PMP and programmatic deals via TTD.
+          </div>
+        </div>
+      </div>
+
+      <div class="agency-meta-grid">
+        <div class="agency-meta-item">
+          <div class="alabel">Agency Type</div>
+          <div class="avalue">Independent (non-holdco)</div>
+        </div>
+        <div class="agency-meta-item">
+          <div class="alabel">Creative AOR</div>
+          <div class="avalue">Mother New York</div>
+        </div>
+        <div class="agency-meta-item">
+          <div class="alabel">Media AOR</div>
+          <div class="avalue">Media by Mother</div>
+        </div>
+        <div class="agency-meta-item">
+          <div class="alabel">Relationship Start</div>
+          <div class="avalue">2022 (replaced prior AOR)</div>
+        </div>
+        <div class="agency-meta-item">
+          <div class="alabel">Media Scope</div>
+          <div class="avalue">Broadcast, Linear, Programmatic, Paid Social</div>
+        </div>
+        <div class="agency-meta-item">
+          <div class="alabel">DSP Used</div>
+          <div class="avalue">The Trade Desk (TTD) confirmed</div>
+        </div>
+      </div>
+
+      <div class="agency-role-tags">
+        <span class="agency-role-tag">Media Planning</span>
+        <span class="agency-role-tag">Media Buying</span>
+        <span class="agency-role-tag">Programmatic</span>
+        <span class="agency-role-tag">Paid Social</span>
+        <span class="agency-role-tag">Broadcast / Linear</span>
+        <span class="agency-role-tag">Creative (Mother NY)</span>
+      </div>
+
+      <div class="agency-deal-flow">
+        <div class="df-label">Typical Deal Flow — How a TWC deal likely gets done</div>
+        <div class="deal-flow-steps">
+          <div class="df-step highlight">TWC Rep<br><span style="font-weight:400;font-size:10px;">Jeffrey Stuart</span></div>
+          <div class="df-arrow">→</div>
+          <div class="df-step agency-step">Media by Mother<br><span style="font-weight:400;font-size:10px;">Media buyer / planner</span></div>
+          <div class="df-arrow">→</div>
+          <div class="df-step">Amica Marketing<br><span style="font-weight:400;font-size:10px;">Pachis / Choudhary</span></div>
+          <div class="df-arrow">→</div>
+          <div class="df-step">IO Issued<br><span style="font-weight:400;font-size:10px;">via Agency</span></div>
+          <div class="df-arrow">→</div>
+          <div class="df-step highlight">TWC Paid<br><span style="font-weight:400;font-size:10px;">by Agency</span></div>
+        </div>
+        <div style="margin-top:10px; font-size:11px; color:var(--mid); font-style:italic;">
+          Note: In most cases, the IO will be issued by Media by Mother on behalf of Amica — TWC gets paid by the agency, not the advertiser directly. Rep should confirm billing flow on first engagement. Direct advertiser relationships (Pachis, Choudhary) remain important for strategic buy-in, but the day-to-day deal execution runs through Media by Mother.
+        </div>
+      </div>
+
+      <div class="agency-contact-row">
+        <div class="dm-avatar" style="background:#1A3D8B;">PF</div>
+        <div>
+          <div class="dm-name">Paul Furia</div>
+          <div class="dm-title">Head of Content · Media by Mother</div>
+          <div class="dm-tags">
+            <span class="dm-tag tag-influencer">Agency Contact</span>
+            <span class="dm-tag tag-marketing">Media Planning</span>
+          </div>
+          <div class="dm-note">Publicly cited alongside Amica's Tory Pachis in campaign coverage — an active day-to-day partner on Amica's media strategy. Entry point into Media by Mother for a programmatic or weather-trigger conversation. Confirm whether Jeffrey Stuart has an existing relationship with Paul or other Media by Mother buyers before planning outreach approach.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 8. Sales Plays -->
+  <div class="section" id="plays">
+    <div class="section-header">8 · Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">1</div>
+          <div class="play-title">New Logo Prospecting — Right-to-Win Outbound</div>
+        </div>
+        <div class="play-body">
+          <p>Amica scores 85.5 and has never been worked proactively. All three prior opps were reactive or auto-generated — no structured outreach campaign on record. Assign Amica to a focused outbound sequence targeting Tory Pachis (CMO) and Anusheel Choudhary (Data/Marketing) at Amica, with a parallel track into Media by Mother as the media buyer. Lead with TWC's ability to reach homeowners and drivers in high-attention weather moments — storm prep, freeze events, hurricane season — tied to Amica's core product lines. Position weather-triggered PMP as a complement to the Merkle audience-targeting infrastructure they just built.</p>
+          <div class="play-action">Tableau Filter: <span>Tier = A · SFDC Revenue = None · Vertical = FinServ</span></div>
+          <div class="play-action" style="margin-top:5px;">Agency Path: <span>Primary outreach → Media by Mother (media buyer, issues IO). Senior buy-in → Tory Pachis at Amica. Run both tracks simultaneously — agency executes, client approves.</span></div>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">2</div>
+          <div class="play-title">Win-Back / Re-Engage — Stalled Pitch, Not a Rejection</div>
+        </div>
+        <div class="play-body">
+          <p>Both Q4 2023 pitches closed via automation — no buyer-side "no" is documented. The account has been silent for 16+ months, not lost. Re-engagement angle: "A lot has changed since we last spoke — your marketing stack, your leadership, and our targeting capabilities." Anchor the re-open on three things: (1) Amica's new Merkle data partnership and how TWC's weather audience layers complement Merkury's identity solution, (2) Q4 storm season as an immediate planning hook, and (3) the Penn State-scale reach appetite Amica is showing through their 2025 partnerships. Avoid framing this as a win-back — frame it as a fresh conversation on a new capability. Note: the 2023 pitches went through TTD direct — re-engage Media by Mother as the media buying path for any new deal.</p>
+          <div class="play-action">Tableau Filter: <span>Previous Contact = Yes · SFDC Rev = $0 · Last Opp = 2023 · Tier = A</span></div>
+          <div class="play-action" style="margin-top:5px;">Agency Path: <span>Re-engage via Media by Mother first — they would have received the 2023 TTD deal. Confirm whether Paul Furia or another buyer was the 2023 contact before cold outreach.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 9. Suggested Talk Track Opener -->
+  <div class="section" id="talktrack">
+    <div class="section-header">9 · Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        "Tory — I know we've traded deals before, but I wanted to reach out now specifically because of what you're building with Merkle. You're investing in data-driven, audience-first targeting at scale — and we think there's a natural fit with what TWC can layer on top of that. Our weather audience overlays let you reach homeowners and drivers in the exact moments your core products become most relevant to them: storm prep, freeze events, hurricane season. Happy to show you what that looks like in a 20-minute call. Would that be worth your time before Q3 planning locks?"
+      </div>
+      <div style="font-size:12px; color:var(--mid); font-style:italic; margin-bottom:10px;">
+        Alternate entry point via agency: If leading with Media by Mother instead, route to their programmatic planning team and reference Amica's Merkle data strategy — position TWC weather audiences as a third-party data layer that complements Merkury's identity solution. Ask for a joint call with the Amica marketing team.
+      </div>
+      <div style="font-size:12px; color:var(--mid); font-style:italic;">
+        Alternate advertiser entry point: Anusheel Choudhary (Sr. AVP Data Science) is likely closer to the programmatic and data conversation. Consider a parallel outreach with a more technical framing — TWC weather audiences as third-party data complement to Merkury's first-party identity solution.
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Open Questions / Gaps -->
+  <div class="section" id="questions">
+    <div class="section-header">10 · Open Questions for First Call</div>
+    <div class="section-body">
+      <ol class="oq-list">
+        <li>Does Jeffrey Stuart have an existing contact at Media by Mother — specifically from the 2023 TTD deals? Confirm before planning outreach to avoid a cold approach to an account with prior deal history.</li>
+        <li>What was the Q4 2023 pitch context — did any buyer at Media by Mother or Amica actually engage with the proposal, or were those opps created and abandoned with no buyer awareness?</li>
+        <li>How is the Merkle partnership scoped — is Merkury being used for prospecting, retention, or both? Helps position TWC audiences as additive vs. duplicative.</li>
+        <li>What is Amica's Q3/Q4 planning calendar — specifically, when does storm season and hurricane prep inventory need to be booked?</li>
+        <li>Is the $10K budget from 2023 opps the actual discretionary test budget, or a placeholder? Understanding deal size floor is important before pitching package options.</li>
+        <li>Does Media by Mother manage all programmatic and TTD buying for Amica, or does Amica run any TTD seats in-house? Confirms billing and IO flow before deal is structured.</li>
+      </ol>
+    </div>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<!-- Footer -->
+<div class="brief-footer">
+  <div><span class="ri-tag">Revenue Insight</span> · Confidential — for internal TWC use only</div>
+  <div>Data sources: TWC SFDC · MediaRadar · Amica.com · Campaign US · Insurance Journal · ZoomInfo</div>
+</div>
+
+<script>
+  // Smooth scroll with offset for sticky nav
+  document.querySelectorAll('.nav-btn[href^="#"]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+      var navH = document.getElementById('section-nav').offsetHeight;
+      var y = target.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+
+  // Scroll spy — highlight active nav button
+  var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','agency','plays','talktrack','questions'];
+  var navBtns = document.querySelectorAll('.nav-btn');
+  var navH = document.getElementById('section-nav').offsetHeight;
+
+  function onScroll() {
+    var scrollY = window.pageYOffset + navH + 24;
+    var current = sections[0];
+    sections.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) current = id;
+    });
+    navBtns.forEach(function(btn) {
+      var href = btn.getAttribute('href');
+      btn.classList.toggle('active', href === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+</body>
+</html>
