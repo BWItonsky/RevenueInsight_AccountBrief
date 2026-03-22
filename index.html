@@ -554,6 +554,124 @@
     color: var(--white);
   }
 
+  /* Media Spend Breakdown */
+  .spend-section-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 16px 0 10px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--teal);
+  }
+  .spend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .spend-card {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 9px 12px;
+    position: relative;
+  }
+  .spend-card.twc-relevant {
+    border-left: 3px solid var(--green);
+    background: #F0F8E8;
+  }
+  .spend-card.neutral {
+    border-left: 3px solid var(--teal);
+  }
+  .spend-card.low {
+    border-left: 3px solid var(--border);
+  }
+  .spend-channel {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 3px;
+  }
+  .spend-amount {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .spend-amount.green { color: var(--green); }
+  .spend-amount.teal { color: var(--teal); }
+  .spend-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-top: 4px;
+  }
+  .spend-tag.twc { background: #D5EFC0; color: #2A6018; }
+  .spend-tag.agency { background: var(--light); color: var(--mid); border: 1px solid var(--border); }
+  .spend-digital-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .spend-digital-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+  .spend-digital-label {
+    font-size: 9px;
+    color: var(--mid);
+    margin-bottom: 3px;
+  }
+  .spend-digital-amt {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .spend-total-bar {
+    background: var(--navy);
+    border-radius: 5px;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .spend-total-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .spend-total-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .spend-twc-callout {
+    background: #F0F8E8;
+    border: 1px solid var(--green);
+    border-left: 4px solid var(--green);
+    border-radius: 5px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--body);
+    margin-top: 10px;
+  }
+  .spend-twc-callout strong { color: var(--navy); }
+
   @media print {
     body { background: white; }
     .page-wrap { padding: 12px; }
@@ -610,7 +728,7 @@
     <ul>
       <li><strong>New CEO (Oct 2022) &amp; New COO (Jan 2026):</strong> Ted Shallcross took over as President &amp; CEO in October 2022 — fresh leadership since TWC's last opp. Sam Palmisano stepped into COO role January 1, 2026 replacing 45-year veteran Ted Murphy. New ops leadership = potential shift in vendor and partnership priorities.</li>
       <li><strong>Merkle Partnership Announced (2024):</strong> Amica signed a multiyear deal with Merkle to modernize data-driven and audience-based marketing at scale. They're explicitly investing in first- and third-party data targeting — TWC's weather audience overlays are a direct fit for this motion.</li>
-      <li><strong>$100M+ Ad Spend Active:</strong> MediaRadar confirms Amica spent over $100M in digital, print, and national TV in the last 12 months, active across 250+ media properties — including programmatic on YouTube and direct buys on Bleacher Report. Budget is real and in-market.</li>
+      <li><strong>$116.7M Annual Ad Spend — Winmo Confirmed:</strong> Channel breakdown: Digital $50.9M (44%), Broadcast $31.8M (27%), Search $21.5M (18%), CTV $12.1M (10%). TWC-relevant channels — CTV + Digital excl. Search — total $41.5M. Paid Social alone is $34.4M (FB + IG). See Section 7 for full channel breakdown and TWC opportunity callout.</li>
       <li><strong>Empathy Brand Campaign Running:</strong> Active national brand campaign "Empathy is our best policy" launched/expanded in 2024. Campaign focus on human connection + seasonal life moments — maps well to weather-trigger storytelling.</li>
       <li><strong>Penn State Athletics Sponsorship (Sep 2025):</strong> Amica signed a multiyear deal as official auto, home, and life insurance partner of Penn State — fanbase of ~15M. Signals growing appetite for large-scale reach and audience partnerships beyond performance channels.</li>
       <li><strong>16+ Months of Silence from TWC:</strong> No opp activity since October 2023. Both prior pitches closed via automation process — no explicit rejection on record. Account is unworked, not burned.</li>
@@ -648,7 +766,7 @@
         </div>
         <div class="snap-item">
           <div class="snap-label">Annual Ad Spend</div>
-          <div class="snap-value highlight">$100M+ (MediaRadar)</div>
+          <div class="snap-value highlight">$116.7M (Winmo)</div>
         </div>
         <div class="snap-item">
           <div class="snap-label">Media Buying</div>
@@ -741,7 +859,7 @@
     <div class="section-body">
       <ul class="fit-list">
         <li><strong>Core product lines are inherently weather-driven.</strong> Auto, home, and umbrella insurance claims are directly triggered by weather events — hail, ice storms, flooding, windstorms, hurricanes. Amica's risk exposure maps directly to TWC's trigger density capabilities.</li>
-        <li><strong>Active programmatic buyer with $100M+ annual spend.</strong> Confirmed buying on The Trade Desk (TTD), YouTube, and direct display across 250+ properties. PMP infrastructure is already in place — TWC has transacted with them on PMP before.</li>
+        <li><strong>Active programmatic buyer with $116.7M annual spend (Winmo). Digital $50.9M, Broadcast $31.8M, CTV $12.1M.</strong> Confirmed buying on The Trade Desk (TTD), YouTube, and direct display across 250+ properties. PMP infrastructure is already in place — TWC has transacted with them on PMP before.</li>
         <li><strong>New Merkle data partnership signals audience-first approach.</strong> Amica is explicitly investing in first- and third-party data for targeted audience development. TWC's weather audience overlays (by geography, trigger type, and season) are a direct complement to Merkle's identity-based targeting model.</li>
         <li><strong>Seasonal peaks align perfectly with TWC content moments.</strong> Storm prep (spring/fall), hurricane season, winter weather, and freeze events all generate high-attention TWC inventory precisely when Amica needs to reach homeowners and drivers in high-risk moments.</li>
         <li><strong>Growing appetite for large-scale reach partnerships.</strong> The Penn State multiyear sponsorship (Sep 2025) shows Amica is willing to commit budget to scaled audience deals beyond pure performance — exactly the framing TWC's on-property inventory supports.</li>
@@ -926,8 +1044,76 @@
         </div>
       </div>
 
+      <!-- Media Spend Breakdown (Winmo) -->
+      <div class="spend-section-header">📊 Media Spend by Channel — Winmo Data</div>
+
+      <div class="spend-total-bar">
+        <div class="spend-total-label">Total Tracked Annual Spend</div>
+        <div class="spend-total-amount">$116,719,998</div>
+      </div>
+
+      <div class="spend-grid">
+        <div class="spend-card twc-relevant">
+          <div class="spend-channel">Digital</div>
+          <div class="spend-amount green">$50,923,898</div>
+          <span class="spend-tag twc">TWC Relevant</span>
+        </div>
+        <div class="spend-card neutral">
+          <div class="spend-channel">Broadcast (TV)</div>
+          <div class="spend-amount teal">$31,765,452</div>
+          <span class="spend-tag agency">Media by Mother</span>
+        </div>
+        <div class="spend-card neutral">
+          <div class="spend-channel">Search</div>
+          <div class="spend-amount teal">$21,522,807</div>
+          <span class="spend-tag agency">Performance</span>
+        </div>
+        <div class="spend-card twc-relevant">
+          <div class="spend-channel">CTV / Streaming</div>
+          <div class="spend-amount green">$12,101,424</div>
+          <span class="spend-tag twc">TWC Relevant</span>
+        </div>
+        <div class="spend-card low">
+          <div class="spend-channel">Radio</div>
+          <div class="spend-amount" style="color:var(--mid);">$256,516</div>
+          <span class="spend-tag agency">Minor</span>
+        </div>
+        <div class="spend-card low">
+          <div class="spend-channel">Out of Home</div>
+          <div class="spend-amount" style="color:var(--mid);">$149,901</div>
+          <span class="spend-tag agency">Minor</span>
+        </div>
+      </div>
+
+      <div class="spend-section-header" style="font-size:10px; margin-top:4px; border-bottom:1px solid var(--border);">Digital Spend Breakdown</div>
+      <div class="spend-digital-grid">
+        <div class="spend-digital-item">
+          <div class="spend-digital-label">Paid Social</div>
+          <div class="spend-digital-amt">$34,435,091</div>
+        </div>
+        <div class="spend-digital-item">
+          <div class="spend-digital-label">Mobile Web Video</div>
+          <div class="spend-digital-amt">$8,259,549</div>
+        </div>
+        <div class="spend-digital-item">
+          <div class="spend-digital-label">Mobile App</div>
+          <div class="spend-digital-amt">$4,513,773</div>
+        </div>
+        <div class="spend-digital-item">
+          <div class="spend-digital-label">Display</div>
+          <div class="spend-digital-amt">$1,540,280</div>
+        </div>
+        <div class="spend-digital-item">
+          <div class="spend-digital-label">Online Video</div>
+          <div class="spend-digital-amt">$1,714,550</div>
+        </div>
+      </div>
+
+      <div class="spend-twc-callout">
+        <strong>TWC Opportunity — $41.5M in directly addressable channels:</strong> CTV ($12.1M) and Digital excl. Search ($29.4M) represent Amica's spend in channels where TWC can compete directly. Paid Social dominates digital at $34.4M (FB $17.0M + IG $15.6M) — TWC's weather-targeted programmatic and video inventory complements rather than replaces these buys. Mobile Web Video ($8.3M) maps directly to TWC's mobile app and weather-moment inventory. <strong>Lead with the weather-trigger moment their current social and programmatic buys cannot replicate.</strong>
+      </div>
+
       <div class="agency-role-tags">
-        <span class="agency-role-tag">Media Planning</span>
         <span class="agency-role-tag">Media Buying</span>
         <span class="agency-role-tag">Programmatic</span>
         <span class="agency-role-tag">Paid Social</span>
@@ -1037,7 +1223,7 @@
 <!-- Footer -->
 <div class="brief-footer">
   <div><span class="ri-tag">Revenue Insight</span> · Confidential — for internal TWC use only</div>
-  <div>Data sources: TWC SFDC · MediaRadar · Amica.com · Campaign US · Insurance Journal · ZoomInfo</div>
+  <div>Data sources: TWC SFDC · Winmo · Amica.com · Campaign US · Insurance Journal · ZoomInfo</div>
 </div>
 
 <script>
