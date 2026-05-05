@@ -41,18 +41,19 @@ export default async function handler(req) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 2048,
-        system: system,
-        messages: messages,
+        stream: true,
+        system,
+        messages,
       }),
     });
 
-    const data = await response.json();
-
-    return new Response(JSON.stringify(data), {
+    return new Response(response.body, {
       status: response.status,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/event-stream',
         'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache',
+        'X-Accel-Buffering': 'no',
       },
     });
   } catch (err) {
