@@ -3,5 +3,8 @@
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/3m-demo", "destination": "/3m-demo.html" }
-  ]
+  ],
+  "functions": {
+    "api/chat.js": { "maxDuration": 60 }
+  }
 }
