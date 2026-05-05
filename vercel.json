@@ -1,9 +1,5 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "outputDirectory": ".",
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/3m-demo", "dest": "/3m-demo.html" }
-  ]
+  "outputDirectory": "."
 }
