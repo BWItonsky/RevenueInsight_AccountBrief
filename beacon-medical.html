@@ -750,42 +750,77 @@ async function raSend() {
 }
 
 async function raCall(userMsg) {
-  raSetLoading(true);
-  raHistory.push({ role: 'user', content: userMsg });
-
-  try {
-    var resp = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
-    });
-
-    var data = await resp.json();
-
-    if (data.error) {
+    raSetLoading(true);
+    raHistory.push({ role: 'user', content: userMsg });
+    try {
+      var resp = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
+      });
+      if (!resp.ok || !resp.body) {
+        var errData = await resp.json().catch(function() { return {}; });
+        var d = document.createElement('div');
+        d.className = 'ra-msg error-note';
+        d.textContent = 'Error: ' + (errData.error && errData.error.message ? errData.error.message : resp.statusText);
+        document.getElementById('ra-messages').appendChild(d);
+        document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+        raHistory.pop();
+        raSetLoading(false);
+        return;
+      }
+      var m = document.getElementById('ra-messages');
+      var streamDiv = document.createElement('div');
+      streamDiv.className = 'ra-msg assistant';
+      m.appendChild(streamDiv);
+      var fullText = '';
+      var reader = resp.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line.startsWith('data: ')) continue;
+          var jsonStr = line.slice(6);
+          if (jsonStr === '[DONE]') continue;
+          try {
+            var event = JSON.parse(jsonStr);
+            if (event.type === 'content_block_delta' && event.delta && event.delta.type === 'text_delta') {
+              fullText += event.delta.text;
+              streamDiv.textContent = fullText;
+              m.scrollTop = m.scrollHeight;
+            }
+          } catch (e) { /* skip malformed lines */ }
+        }
+      }
+      var isArtifact = fullText.includes('Email 1') || fullText.includes('Subject:') || fullText.includes('AGENDA') || fullText.includes('## ') || fullText.length > 700;
+      if (isArtifact) {
+        var label = 'Generated Artifact';
+        if (fullText.includes('Subject:') || fullText.includes('Email 1')) label = 'Email Sequence';
+        else if (fullText.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+        else if (fullText.toLowerCase().includes('agenda') || fullText.toLowerCase().includes('call guide')) label = 'Call Agenda';
+        streamDiv.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+        streamDiv.querySelector('.ra-artifact-body').textContent = fullText;
+      } else {
+        streamDiv.innerHTML = fullText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+      }
+      raHistory.push({ role: 'assistant', content: fullText });
+      m.scrollTop = m.scrollHeight;
+    } catch (err) {
       var d = document.createElement('div');
       d.className = 'ra-msg error-note';
-      d.textContent = 'Error: ' + (data.error.message || JSON.stringify(data.error));
+      d.textContent = 'Network error — check your connection and try again.';
       document.getElementById('ra-messages').appendChild(d);
       document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
       raHistory.pop();
-    } else {
-      var reply = data.content && data.content[0] ? data.content[0].text : '';
-      raHistory.push({ role: 'assistant', content: reply });
-      raAppend('assistant', reply);
     }
-  } catch (err) {
-    var d = document.createElement('div');
-    d.className = 'ra-msg error-note';
-    d.textContent = 'Network error — check your connection and try again.';
-    document.getElementById('ra-messages').appendChild(d);
-    document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
-    raHistory.pop();
-  }
-
-  raSetLoading(false);
-}
-</script>
+    raSetLoading(false);
+  }</script>
 
 </body>
 </html>
