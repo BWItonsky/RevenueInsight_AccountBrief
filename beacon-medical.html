@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Beacon Medical | AdvancedMD × Revenue Insight</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+
+  :root {
+    --navy: #0D2137;
+    --teal: #1A5E6A;
+    --green: #7AB648;
+    --body: #2D3E50;
+    --mid: #4A5E70;
+    --light: #F0F4F7;
+    --border: #D8E2EA;
+    --white: #FFFFFF;
+    --red-flag: #C0392B;
+    --amber: #E67E22;
+  }
+
+  /* ── Portal Shell ── */
+  .portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .portal-header .brand span { color: var(--green); }
+  .portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── Nav ── */
+  .section-nav { background: var(--navy); border-bottom: 3px solid var(--green); padding: 10px 32px 12px; position: sticky; top: 0; z-index: 100; }
+  .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+  .nav-inner { display: flex; flex-wrap: wrap; gap: 6px; }
+  .nav-btn { display: inline-block; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-decoration: none; padding: 5px 13px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .nav-btn:hover { background: rgba(122,182,72,0.2); border-color: rgba(122,182,72,0.5); color: var(--white); }
+  .nav-btn.active { background: var(--green); border-color: var(--green); color: var(--white); }
+
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+
+  /* ── Brief Header ── */
+  .brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+  .brief-header .tier-badge { background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 4px; white-space: nowrap; text-align: center; }
+  .brief-header .tier-badge .score { display: block; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; text-align: center; }
+  .brief-header .tier-badge .label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; text-align: center; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+  /* ── What's New ── */
+  .whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+  .whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .whats-new ul { list-style: none; padding: 0; }
+  .whats-new ul li { font-size: 13px; color: #5D4200; padding: 3px 0 3px 16px; position: relative; }
+  .whats-new ul li::before { content: "\25B6"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 5px; }
+  .whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+
+  /* ── Section cards ── */
+  .section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+  .section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+  .section-body { padding: 16px 18px; }
+
+  /* ── Snapshot ── */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+  .snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .snap-item .snap-value.highlight { color: var(--teal); }
+
+  /* ── Scorecard ── */
+  .scorecard { display: flex; flex-direction: column; gap: 8px; }
+  .score-row { display: grid; grid-template-columns: 180px 1fr 70px; align-items: center; gap: 10px; }
+  .score-dim { font-size: 12px; color: var(--body); }
+  .score-bar-wrap { height: 10px; background: var(--light); border-radius: 5px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 5px; background: var(--teal); }
+  .score-bar.partial { background: #A8D08D; }
+  .score-bar.low { background: var(--border); }
+  .score-pts { font-size: 13px; font-weight: 700; color: var(--navy); text-align: right; }
+  .score-max { font-size: 11px; font-weight: 400; color: var(--mid); }
+  .score-total-row { display: grid; grid-template-columns: 180px 1fr 70px; align-items: center; gap: 10px; border-top: 2px solid var(--teal); padding-top: 10px; margin-top: 4px; }
+  .score-total-label { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; }
+  .score-total-pts { font-size: 20px; font-weight: 700; color: var(--teal); text-align: right; }
+  .score-note { font-size: 11px; color: var(--mid); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-style: italic; }
+
+  /* ── Fit List ── */
+  .fit-list { list-style: none; padding: 0; }
+  .fit-list li { padding: 7px 0 7px 20px; position: relative; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--body); }
+  .fit-list li:last-child { border-bottom: none; }
+  .fit-list li::before { content: "\2713"; position: absolute; left: 0; color: var(--green); font-weight: 700; font-size: 13px; }
+  .fit-list li strong { color: var(--navy); }
+
+  /* ── Net-new box ── */
+  .net-new-box { background: var(--light); border: 1px solid var(--border); border-left: 4px solid var(--teal); border-radius: 5px; padding: 12px 16px; font-size: 13px; color: var(--mid); }
+  .net-new-box strong { color: var(--navy); }
+
+  /* ── Flags ── */
+  .flag-list { list-style: none; padding: 0; }
+  .flag-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .flag-row:last-child { border-bottom: none; }
+  .flag-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-top: 1px; }
+  .flag-icon.green { background: #E8F5D8; color: var(--green); }
+  .flag-icon.amber { background: #FFF3DC; color: var(--amber); }
+  .flag-icon.red { background: #FDECEA; color: var(--red-flag); }
+  .flag-text { color: var(--body); }
+  .flag-text strong { color: var(--navy); }
+
+  /* ── Decision Makers ── */
+  .dm-grid { display: flex; flex-direction: column; gap: 10px; }
+  .dm-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
+  .dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .dm-title { font-size: 12px; color: var(--mid); margin-top: 2px; }
+  .dm-note { font-size: 12px; color: var(--body); margin-top: 6px; grid-column: 1 / -1; }
+  .dm-role-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+  .dm-role-badge.primary { background: var(--navy); color: var(--white); }
+  .dm-role-badge.influencer { background: var(--teal); color: var(--white); }
+  .dm-role-badge.internal { background: var(--light); color: var(--mid); border: 1px solid var(--border); }
+
+  /* ── Growth Signals (Section 7) ── */
+  .growth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .growth-card { background: var(--light); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .growth-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+  .growth-card-value { font-size: 13px; color: var(--body); }
+  .growth-card-value strong { color: var(--navy); }
+  .growth-card.signal { border-left: 3px solid var(--green); }
+  .growth-card.watch { border-left: 3px solid var(--amber); }
+
+  /* ── Sales Plays ── */
+  .play-card { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+  .play-card:last-child { margin-bottom: 0; }
+  .play-card-header { background: var(--navy); color: var(--white); padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .play-name { font-size: 13px; font-weight: 700; }
+  .play-tag { font-size: 10px; letter-spacing: 0.5px; background: rgba(122,182,72,0.3); color: var(--green); padding: 2px 8px; border-radius: 3px; text-transform: uppercase; }
+  .play-body { padding: 12px 14px; }
+  .play-steps { list-style: none; padding: 0; }
+  .play-steps li { font-size: 13px; color: var(--body); padding: 5px 0 5px 22px; position: relative; border-bottom: 1px solid var(--light); }
+  .play-steps li:last-child { border-bottom: none; }
+  .play-steps li::before { content: attr(data-step); position: absolute; left: 0; top: 5px; background: var(--teal); color: var(--white); font-size: 9px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 16px; text-align: center; }
+  .play-steps li strong { color: var(--navy); }
+
+  /* ── Talk Track ── */
+  .talk-track-box { background: var(--light); border: 1px solid var(--border); border-left: 4px solid var(--green); border-radius: 5px; padding: 14px 16px; font-size: 13px; color: var(--body); line-height: 1.7; }
+  .talk-track-box p { margin-bottom: 10px; }
+  .talk-track-box p:last-child { margin-bottom: 0; }
+
+  /* ── Open Questions ── */
+  .q-list { list-style: none; padding: 0; counter-reset: q-counter; }
+  .q-list li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--body); counter-increment: q-counter; }
+  .q-list li:last-child { border-bottom: none; }
+  .q-list li::before { content: counter(q-counter); position: absolute; left: 0; top: 8px; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 18px; text-align: center; }
+  .q-list li strong { color: var(--navy); }
+
+  /* ── Utility ── */
+  .small-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 8px; }
+
+  /* ── Footer ── */
+  .brief-footer { background: var(--navy); color: rgba(255,255,255,0.5); font-size: 11px; padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+
+  /* ══════════════════════════════════════════════
+     REP ASSISTANT
+  ══════════════════════════════════════════════ */
+  #rep-assistant-btn {
+    position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+    background: var(--navy); color: var(--white); border: none;
+    border-radius: 28px; padding: 11px 20px 11px 15px;
+    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.32);
+    transition: background 0.15s, transform 0.12s;
+  }
+  #rep-assistant-btn:hover { background: #162e4d; transform: translateY(-2px); }
+  #rep-assistant-btn .btn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(122,182,72,0.5);} 50%{box-shadow:0 0 0 5px rgba(122,182,72,0);} }
+
+  #ra-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.22); z-index: 9001; }
+
+  #rep-assistant-panel {
+    position: fixed; top: 0; right: -460px; width: 440px; height: 100vh;
+    background: var(--white); z-index: 9002; display: flex; flex-direction: column;
+    transition: right 0.28s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -6px 0 40px rgba(0,0,0,0.16);
+  }
+  #rep-assistant-panel.open { right: 0; }
+
+  .ra-header { background: var(--navy); padding: 14px 16px 12px; flex-shrink: 0; }
+  .ra-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .ra-title { font-size: 13px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
+  .ra-title .ra-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .ra-close { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.75); font-size: 17px; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .ra-close:hover { background: rgba(255,255,255,0.2); }
+  .ra-context-pill { display: inline-flex; align-items: center; gap: 5px; background: rgba(122,182,72,0.15); border: 1px solid rgba(122,182,72,0.3); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.3px; }
+
+  .ra-quick-actions { background: var(--light); border-bottom: 1px solid var(--border); padding: 10px 14px; flex-shrink: 0; }
+  .ra-quick-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 7px; }
+  .ra-quick-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ra-quick-btn { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 20px; border: 1px solid var(--teal); color: var(--teal); background: var(--white); cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .ra-quick-btn:hover:not(:disabled) { background: var(--teal); color: var(--white); }
+  .ra-quick-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .ra-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+
+  .ra-msg { max-width: 94%; font-size: 13px; line-height: 1.55; border-radius: 6px; padding: 9px 12px; word-break: break-word; }
+  .ra-msg.user { align-self: flex-end; background: var(--navy); color: var(--white); border-radius: 6px 6px 2px 6px; }
+  .ra-msg.assistant { align-self: flex-start; background: var(--light); color: var(--body); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; }
+  .ra-msg.assistant strong { color: var(--navy); }
+  .ra-msg.system-note { align-self: center; background: #FFF8E6; border: 1px solid #F5C842; color: #5D4200; font-size: 11px; font-style: italic; text-align: center; max-width: 100%; }
+  .ra-msg.error-note { align-self: center; background: #FBEBEB; border: 1px solid #E8AAAA; color: #7A1A1A; font-size: 11px; text-align: center; max-width: 100%; }
+
+  .ra-artifact { background: var(--white); border: 1px solid var(--border); border-radius: 6px; margin-top: 8px; overflow: hidden; }
+  .ra-artifact-header { background: var(--navy); padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .ra-artifact-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--green); }
+  .ra-artifact-copy { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.65); background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; padding: 2px 8px; cursor: pointer; transition: background 0.15s; }
+  .ra-artifact-copy:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+  .ra-artifact-body { padding: 10px 12px; font-size: 12px; line-height: 1.65; color: var(--body); white-space: pre-wrap; }
+
+  .ra-typing { display: none; align-self: flex-start; padding: 8px 12px; background: var(--light); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; font-size: 12px; color: var(--mid); font-style: italic; }
+  .ra-typing.visible { display: block; }
+  .ra-typing span { display: inline-block; animation: blink 1.2s infinite; }
+  .ra-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .ra-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.15;} 40%{opacity:1;} }
+
+  .ra-input-area { border-top: 1px solid var(--border); padding: 10px 12px; background: var(--white); flex-shrink: 0; }
+  .ra-input-row { display: flex; gap: 8px; align-items: flex-end; }
+  #ra-input { flex: 1; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 13px; color: var(--body); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; resize: none; min-height: 38px; max-height: 100px; line-height: 1.4; outline: none; transition: border-color 0.15s; }
+  #ra-input:focus { border-color: var(--teal); }
+  #ra-send { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: 700; background: var(--teal); color: var(--white); border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
+  #ra-send:hover:not(:disabled) { background: #124850; }
+  #ra-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ra-footer-note { font-size: 10px; color: var(--mid); text-align: center; margin-top: 6px; }
+
+  @media print {
+    .section-nav, #rep-assistant-btn, #rep-assistant-panel, #ra-overlay { display: none !important; }
+  }
+  @media (max-width: 500px) {
+    #rep-assistant-panel { width: 100%; right: -100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Portal Header -->
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> &middot; AMD Account Intelligence Portal</div>
+  <div class="portal-label">A-Tier Prospect Brief &middot; Practice Direct Channel</div>
+</div>
+
+<!-- Section Nav -->
+<nav class="section-nav" id="section-nav">
+  <div class="nav-label">Jump to section</div>
+  <div class="nav-inner">
+    <a class="nav-btn active" href="#signals">&#9889; What's New</a>
+    <a class="nav-btn" href="#snapshot">1 &middot; Snapshot</a>
+    <a class="nav-btn" href="#scorecard">2 &middot; ICP Score</a>
+    <a class="nav-btn" href="#fit">3 &middot; Why a Fit</a>
+    <a class="nav-btn" href="#opps">4 &middot; Past Opps</a>
+    <a class="nav-btn" href="#flags">5 &middot; Data Flags</a>
+    <a class="nav-btn" href="#dms">6 &middot; Decision Makers</a>
+    <a class="nav-btn" href="#growth">7 &middot; Growth Signals</a>
+    <a class="nav-btn" href="#plays">8 &middot; Sales Plays</a>
+    <a class="nav-btn" href="#talktrack">9 &middot; Talk Track</a>
+    <a class="nav-btn" href="#questions">10 &middot; Open Questions</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- Brief Header -->
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Beacon Medical LLC</div>
+      <div class="account-sub">45 Industrial Blvd, Suite C &middot; Pensacola, FL 32503 &middot; beaconmednp.com</div>
+      <div class="account-sub" style="margin-top:6px;">Internal Medicine &amp; Palliative Care &middot; 4 locations &middot; 14 providers &middot; Founded 2018</div>
+      <div style="margin-top:8px; font-size:12px; color:var(--mid);">Brief generated: May 6, 2026 &nbsp;|&nbsp; AMD Practice Direct Pipeline</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="tier-badge">
+        <span class="score">A</span>
+        <span class="label">ICP Tier</span>
+        <span class="score" style="font-size:16px; margin-top:4px;">1.0</span>
+        <span class="label">Score / 1.0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- What's New -->
+  <div class="whats-new" id="signals">
+    <div class="wn-header">&#9889; What's New &middot; Signals &amp; Recent Activity</div>
+    <ul>
+      <li><strong>Multi-location ambulatory group expanding in NW Florida Panhandle</strong> &mdash; 3 practice addresses registered in Pensacola across Davis Hwy and Industrial Blvd corridors, plus active presence in Destin. Geographic footprint growth signals scaling complexity that entry-level systems can't support.</li>
+      <li><strong>Provider headcount at 14 NPs/PAs/MDs</strong> &mdash; Multi-provider mid-market practice with Dr. John Boden (Internal Medicine/Palliative) as supervising physician. Practice size and mix is directly in AMD's highest-ARR sweet spot (8&ndash;30 providers = 100% ICP score).</li>
+      <li><strong>No EHR/PM competitor lock-in detected</strong> &mdash; Website technology scan returned no identifiable EHR vendor. No Athena, Epic, eCW, or Simple Practice signals. This is a greenfield displacement opportunity with no incumbent defense to overcome.</li>
+      <li><strong>Specialties span Internal Medicine, Palliative Care, Pain Management, and Mental Health</strong> &mdash; Multi-specialty billing complexity is a core AMD fit signal. Cross-specialty billing workflows and multi-location reporting are AMD differentiators vs. entry-level systems.</li>
+      <li><strong>Telehealth + in-person home visit model confirmed</strong> &mdash; Practice offers both in-office and home-based visits for debilitated/chronically ill patients. Dual-channel billing and patient portal presence are both scored ICP positives and direct AMD product fit signals.</li>
+    </ul>
+  </div>
+
+  <!-- 1. Account Snapshot -->
+  <div class="section" id="snapshot">
+    <div class="section-header">1 &middot; Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item"><div class="snap-label">Organization</div><div class="snap-value">Beacon Medical LLC</div></div>
+        <div class="snap-item"><div class="snap-label">HQ Location</div><div class="snap-value">Pensacola, FL</div></div>
+        <div class="snap-item"><div class="snap-label">Founded</div><div class="snap-value">2018 (NPI: Feb 21, 2018)</div></div>
+        <div class="snap-item"><div class="snap-label">Primary Specialty</div><div class="snap-value highlight">Internal Medicine &middot; Palliative Care</div></div>
+        <div class="snap-item"><div class="snap-label">Additional Specialties</div><div class="snap-value">Pain Management &middot; Mental Health</div></div>
+        <div class="snap-item"><div class="snap-label">AMD Specialty Group</div><div class="snap-value highlight">ICP (Core Outpatient)</div></div>
+        <div class="snap-item"><div class="snap-label">Provider Count</div><div class="snap-value">14&ndash;15 (NPs, PAs, MD)</div></div>
+        <div class="snap-item"><div class="snap-label">Practice Locations</div><div class="snap-value">4 (Pensacola &times; 3, Destin &times; 1)</div></div>
+        <div class="snap-item"><div class="snap-label">Classification</div><div class="snap-value">Clinic/Center &middot; Ambulatory</div></div>
+        <div class="snap-item"><div class="snap-label">Telehealth Status</div><div class="snap-value highlight">Both (in-person + home visits)</div></div>
+        <div class="snap-item"><div class="snap-label">Patient Portal</div><div class="snap-value highlight">Yes (confirmed)</div></div>
+        <div class="snap-item"><div class="snap-label">Est. ARR Potential</div><div class="snap-value highlight">$109,620</div></div>
+        <div class="snap-item"><div class="snap-label">NPI Number</div><div class="snap-value">1518468966</div></div>
+        <div class="snap-item"><div class="snap-label">Current AMD ARR</div><div class="snap-value">$0 (Prospect)</div></div>
+        <div class="snap-item"><div class="snap-label">ICP Segment</div><div class="snap-value">Mid-Market</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ICP Fit Scorecard -->
+  <div class="section" id="scorecard">
+    <div class="section-header">2 &middot; ICP Fit Scorecard &mdash; Why A-Tier</div>
+    <div class="section-body">
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">Specialty (ICP Match)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">0.45 <span class="score-max">/ 0.45</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Provider Count (14&ndash;15)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">0.25 <span class="score-max">/ 0.25</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Specialty Count (4 specialties)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">0.15 <span class="score-max">/ 0.15</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Patient Portal Presence</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">0.05 <span class="score-max">/ 0.05</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Telehealth Status (Both)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">0.05 <span class="score-max">/ 0.05</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Location Count (4 locations)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">0.05 <span class="score-max">/ 0.05</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">Total ICP Score</div>
+          <div></div>
+          <div class="score-total-pts">1.0</div>
+        </div>
+      </div>
+      <div class="score-note">Score threshold: A-Tier &ge; 0.75 &middot; B-Tier &ge; 0.50 &middot; C-Tier &ge; 0.25 &middot; D-Tier &lt; 0.25. Beacon Medical scores the maximum across all six dimensions &mdash; the highest possible ICP score in the AMD model. ICP specialty group: Core Outpatient (Internal Medicine + Palliative + Mental Health = highest-ARR cohort).</div>
+    </div>
+  </div>
+
+  <!-- 3. Why a Fit -->
+  <div class="section" id="fit">
+    <div class="section-header">3 &middot; Why Beacon Medical Is a Fit for AMD</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>Internal Medicine + Mental Health + Palliative = AMD's highest-ARR specialty mix.</strong> Mental Health represents 27% of AMD's total ARR and is the #1 specialty by revenue. Internal Medicine is 11%. Multi-specialty practices in these verticals convert at higher ARR and retain longer. Beacon touches all three.</li>
+        <li><strong>14&ndash;15 providers is the ICP sweet spot (8&ndash;30 providers = 100% score).</strong> AMD's scoring model identifies this size range as optimal &mdash; complex enough to need a robust EHR/PM, but not so large as to require enterprise-level customization. Beacon is exactly in range.</li>
+        <li><strong>4 locations = multi-site billing and reporting complexity.</strong> Multi-location practices outgrow entry-level systems at this size. Cross-location reporting, provider-level revenue tracking, and coordinated scheduling are AMD differentiators that become pain points at 3&ndash;5 locations.</li>
+        <li><strong>Both in-person and telehealth = dual-channel billing workflow.</strong> Home-based + clinic-based care requires flexible telehealth billing configuration. AMD's telehealth and patient portal integration is a direct fit for Beacon's care delivery model.</li>
+        <li><strong>Ambulatory outpatient model is AMD's core ICP.</strong> The AMD ICP definition explicitly covers U.S.-based ambulatory practices billing insurance in-house. Beacon's clinic/center classification and outpatient care model align exactly.</li>
+        <li><strong>No EHR competitor detected.</strong> No technology signals identified for any incumbent EHR or PM vendor. This is a greenfield approach with no defensive incumbent to displace &mdash; lower friction than a rip-and-replace scenario.</li>
+        <li><strong>NP/PA-led practice is a growth model AMD handles well.</strong> Beacon's provider roster is predominantly nurse practitioners and physician assistants under a supervising MD. This model is common in AMD's Mental Health and Palliative specialty client base.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Past Opportunity Notes -->
+  <div class="section" id="opps">
+    <div class="section-header">4 &middot; Past Opportunity Notes (CRM)</div>
+    <div class="section-body">
+      <div class="net-new-box">
+        <strong>Net New &mdash; No Prior AMD Contact on Record.</strong><br><br>
+        Beacon Medical has no history in the AMD CRM. This is a first-touch prospect. There is no prior opportunity, no lost deal to overcome, and no relationship history to reference. The account was surfaced through ICP scoring of the Practice Direct lead database and assigned to the A-Tier based on perfect dimensional fit.<br><br>
+        <span style="color: var(--teal); font-weight:700;">Rep note:</span> First outreach should be framed as a discovery conversation, not a re-engagement. No prior touch means no relationship bias &mdash; positive or negative &mdash; to navigate.
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Internal Data Flags -->
+  <div class="section" id="flags">
+    <div class="section-header">5 &middot; Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="flag-row">
+          <div class="flag-icon green">&#10003;</div>
+          <div class="flag-text"><strong>Perfect ICP Score (1.0/1.0)</strong> &mdash; Beacon Medical scores the maximum on every dimension. This is a top-priority prospect in the Practice Direct pipeline. Treat as highest-urgency outreach.</div>
+        </li>
+        <li class="flag-row">
+          <div class="flag-icon green">&#10003;</div>
+          <div class="flag-text"><strong>Sent to Clay: Yes</strong> &mdash; Account has been enriched via Clay. Specialty, provider count, location count, telehealth status, and patient portal presence are all confirmed enriched data, not estimates.</div>
+        </li>
+        <li class="flag-row">
+          <div class="flag-icon green">&#10003;</div>
+          <div class="flag-text"><strong>Est. ARR Potential: $109,620</strong> &mdash; Highest estimated ARR potential in this pilot batch. Calculated at AMD blended rate of $7,308/provider &times; 15 providers. Actual potential may be higher with Mental Health/Palliative specialty pricing ($299/provider/mo).</div>
+        </li>
+        <li class="flag-row">
+          <div class="flag-icon amber">!</div>
+          <div class="flag-text"><strong>No current EHR/PM identified</strong> &mdash; Could indicate (a) on a basic or free system with high displacement probability, (b) using paper/manual workflows, or (c) technology not publicly visible. First call should surface current system and billing workflow pain.</div>
+        </li>
+        <li class="flag-row">
+          <div class="flag-icon amber">!</div>
+          <div class="flag-text"><strong>NP-led practice model &mdash; confirm billing structure</strong> &mdash; Practices led primarily by nurse practitioners can have variable billing arrangements (incident-to billing under supervising MD, independent NP billing, or hybrid). AMD handles both; confirm which model Beacon uses to ensure correct product configuration in the pitch.</div>
+        </li>
+        <li class="flag-row">
+          <div class="flag-icon amber">!</div>
+          <div class="flag-text"><strong>Home-based care delivery model</strong> &mdash; Beacon's core service includes home visits for debilitated/chronically ill patients. Confirm how AMD's patient portal and scheduling modules fit a house-call workflow vs. a traditional clinic check-in flow.</div>
+        </li>
+        <li class="flag-row">
+          <div class="flag-icon amber">!</div>
+          <div class="flag-text"><strong>ARR = $0, no prior AMD engagement</strong> &mdash; Prospect ID in CRM is prospect_5547. No prior sale, no prior contact, no relationship equity to leverage. Account manager and RCM manager fields are blank &mdash; assign before first outreach.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. Decision Makers -->
+  <div class="section" id="dms">
+    <div class="section-header">6 &middot; Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Dr. John M. Boden, MD</div>
+            <div class="dm-title">Internal Medicine &middot; Hospice &amp; Palliative Medicine &middot; Pensacola, FL</div>
+            <div class="dm-note">Supervising physician and likely clinical/administrative decision-maker for the practice. As the only MD on the provider roster, Boden is the physician of record under whom NPs operate. EHR/PM decisions at NP-led practices typically require MD sign-off. Primary target for clinical credibility and product fit conversations.</div>
+          </div>
+          <div class="dm-role-badge primary">Primary</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Karen L. Jackson, NP</div>
+            <div class="dm-title">Nurse Practitioner &middot; Acute Care / Adult Health &middot; Pensacola, FL</div>
+            <div class="dm-note">Senior NP with dual acute care and adult health certifications. Likely practice operations lead or senior clinical coordinator. NPs at this seniority level in multi-location practices often drive day-to-day system decisions and vendor evaluations. Strong influencer on workflow and scheduling tool choices.</div>
+          </div>
+          <div class="dm-role-badge influencer">Influencer</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Gretchen Grencer Liegel, NP</div>
+            <div class="dm-title">Nurse Practitioner &middot; Family Practice &middot; Pensacola, FL</div>
+            <div class="dm-note">Family NP with multiple NPI registrations suggesting cross-location or cross-specialty coverage. May serve in a lead NP or practice coordinator role given the duplicate taxonomy entries. Secondary contact if primary outreach to Boden or Jackson doesn't land.</div>
+          </div>
+          <div class="dm-role-badge influencer">Influencer</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Billing / RCM Lead (Unidentified)</div>
+            <div class="dm-title">Revenue Cycle Management &middot; Pensacola, FL</div>
+            <div class="dm-note">No billing or RCM contact identified in available data. For a 14-provider, 4-location multi-specialty practice, a dedicated billing manager or RCM lead almost certainly exists. AMD's Gong call analysis shows ~90 explicit mentions of hiring billing managers as a buying trigger signal. Surface this contact in the discovery call &mdash; they are a critical stakeholder in any EHR/PM evaluation.</div>
+          </div>
+          <div class="dm-role-badge internal">Find This Person</div>
+        </div>
+      </div>
+      <p class="small-note">Contact information not included in this brief. Verify current roles and contact details in CRM or via Clay enrichment before outreach.</p>
+    </div>
+  </div>
+
+  <!-- 7. Growth Signals -->
+  <div class="section" id="growth">
+    <div class="section-header">7 &middot; Growth Signals &mdash; Practice Expansion &amp; Complexity Indicators</div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--body); margin-bottom:14px;">Growth signals are ICP scoring factors sourced from the AMD Gong call analysis. Practices showing expansion indicators &mdash; new providers, new locations, new specialties &mdash; are the highest-priority conversion targets. Beacon Medical shows multiple active signals.</p>
+      <div class="growth-grid">
+        <div class="growth-card signal">
+          <div class="growth-card-label">Provider Growth</div>
+          <div class="growth-card-value"><strong>14&ndash;15 providers</strong> across 4 locations. NPI registry shows multiple recent additions to the provider roster. Practice established 2018; provider count at this level suggests significant growth from founding. Growth trajectory is a core AMD buying trigger.</div>
+        </div>
+        <div class="growth-card signal">
+          <div class="growth-card-label">Multi-Location Expansion</div>
+          <div class="growth-card-value"><strong>4 practice addresses</strong> across Pensacola (3 sites) and Destin. NW Florida Panhandle geographic coverage suggests deliberate regional expansion, not organic single-site growth. Multi-site billing complexity is AMD's core differentiator over entry-level systems.</div>
+        </div>
+        <div class="growth-card signal">
+          <div class="growth-card-label">Specialty Diversification</div>
+          <div class="growth-card-value"><strong>4 specialty categories</strong> active: Internal Medicine, Pain Management, Mental Health, and Palliative Medicine. The AMD ICP scoring model confirms multi-specialty practices in these verticals require more sophisticated EHR/PM configuration than single-specialty peers.</div>
+        </div>
+        <div class="growth-card signal">
+          <div class="growth-card-label">Dual Care Model Complexity</div>
+          <div class="growth-card-value"><strong>Both in-clinic and home-based visits</strong> &mdash; Beacon's home visit model for debilitated/chronically ill patients adds care coordination, mobile documentation, and palliative billing complexity on top of standard clinic workflows. A meaningful systems gap at current scale.</div>
+        </div>
+        <div class="growth-card watch">
+          <div class="growth-card-label">Telehealth Expansion Signal</div>
+          <div class="growth-card-value"><strong>Telehealth confirmed active.</strong> Telehealth-only or hybrid practices were called out 430+ times in AMD's Gong analysis as a technology trigger. Beacon's hybrid model means both telehealth and in-person billing must be supported. Watch for platform consolidation intent.</div>
+        </div>
+        <div class="growth-card watch">
+          <div class="growth-card-label">New Specialty Watch</div>
+          <div class="growth-card-value"><strong>Mental Health + Addiction listed in specialty data.</strong> AMD's ICP analysis flagged "recently added new specialty" as a buying trigger (140+ Gong hits). Beacon's inclusion of behavioral health alongside Internal Medicine may indicate recent specialty expansion. Confirm in discovery.</div>
+        </div>
+      </div>
+      <p class="small-note" style="margin-top:12px;">Growth signals sourced from NPI registry, Clay enrichment, and website analysis. Verify current expansion status in first call &mdash; practices at this stage often have active systems evaluations already underway.</p>
+    </div>
+  </div>
+
+  <!-- 8. Sales Plays -->
+  <div class="section" id="plays">
+    <div class="section-header">8 &middot; Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-name">Play 1 &middot; Multi-Specialty Growth Practice &mdash; First Touch</div>
+          <div class="play-tag">New Logo</div>
+        </div>
+        <div class="play-body">
+          <p style="font-size:12px; color:var(--mid); margin-bottom:10px;">Best for: Net-new A-Tier prospects with multi-specialty complexity, 4+ locations, and no incumbent EHR relationship. Beacon Medical is an ideal candidate.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Lead with practice complexity, not product features.</strong> Open with: "We work with a lot of multi-location Internal Medicine and palliative practices in Florida &mdash; the billing complexity when you're managing 4 sites plus home visits on one system is usually where we can make the biggest immediate impact." Let them confirm the pain before you present AMD.</li>
+            <li data-step="2"><strong>Surface the current system and RCM workflow.</strong> The most important first-call discovery question: what system are they on today, and who manages billing? No EHR signal detected externally &mdash; could be a basic system, a manual workflow, or an undetected incumbent. The answer determines the pitch angle (displacement vs. upgrade vs. greenfield).</li>
+            <li data-step="3"><strong>Introduce AMD as the multi-specialty ambulatory platform.</strong> Position AMD as the system built specifically for practices like Beacon: ambulatory, multi-provider, multi-location, with telehealth and patient portal native &mdash; not bolted on. Contrast against generic EHRs that require customization for their care model.</li>
+            <li data-step="4"><strong>Quantify the ARR potential framing for internal buy-in.</strong> $109,620 estimated ARR means this is a Mid-Market deal worth winning. Frame the value to Beacon: reduced billing denials, faster AR cycles, unified reporting across 4 locations. AMD's pitch should make the ROI concrete for the MD owner.</li>
+            <li data-step="5"><strong>Move to demo quickly &mdash; this is not a long education sale.</strong> A-Tier practices at this size are typically in active evaluation mode or have a near-term trigger. Ask: "Are you currently evaluating any systems, or is there a timeline that would make sense to take a look at what we've built for practices like yours?"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-name">Play 2 &middot; Billing Pain &amp; RCM Consolidation Play</div>
+          <div class="play-tag">Expansion Trigger</div>
+        </div>
+        <div class="play-body">
+          <p style="font-size:12px; color:var(--mid); margin-bottom:10px;">Best for: Practices where billing pain, denial management, or multi-payer complexity is the surface signal. NP-led practices with both telehealth and home visit billing are high-probability candidates for this play.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Target the billing/RCM lead directly if identified.</strong> AMD's Gong analysis confirms billing managers are the most active evaluation triggers (90+ explicit hiring mentions). If Beacon has a billing lead, route outreach through them with a subject line focused on denial rates and multi-payer complexity &mdash; not the EHR platform.</li>
+            <li data-step="2"><strong>Lead with the telehealth + home visit billing problem.</strong> Practices that do both clinic and home-based visits face dual billing rule sets, different documentation requirements, and split payer mix. Ask: "How are you currently handling billing for your home visit patients vs. clinic visits &mdash; same system or split workflow?"</li>
+            <li data-step="3"><strong>Introduce NP/PA incident-to billing configuration.</strong> NP-led practices have specific incident-to billing requirements under a supervising MD. AMD handles this natively. If Beacon is billing on paper or through a generic system, this is a differentiated AMD capability most competitors don't surface in the first conversation.</li>
+            <li data-step="4"><strong>Use Mental Health and Palliative specialty case studies.</strong> AMD has deep client concentration in both Mental Health (27% of ARR) and Palliative/Internal Medicine. Bring a same-specialty reference story. Practices convert faster when they see AMD used by a practice that looks like theirs.</li>
+            <li data-step="5"><strong>Propose a billing workflow audit as the next step.</strong> Rather than a generic demo, offer a 30-minute billing workflow review: "We do a quick audit of your current billing setup &mdash; it's free, takes 30 minutes, and we'll show you exactly where AMD would make an immediate impact." Lower commitment threshold than a full demo, higher close rate for this practice type.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 9. Talk Track -->
+  <div class="section" id="talktrack">
+    <div class="section-header">9 &middot; Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        <p>"Hi [Name], I'm [Rep Name] from AdvancedMD. We work specifically with ambulatory practices &mdash; internal medicine, palliative care, mental health &mdash; and a lot of our clients are multi-location groups in Florida that have outgrown whatever they started on when they first opened."</p>
+        <p>"I was looking at Beacon Medical and I noticed you're running four locations across Pensacola and Destin, with a pretty unique model &mdash; home-based palliative visits plus clinic care. That kind of dual workflow is exactly where we see practices run into trouble with billing and documentation, especially when you're coordinating across 14 or 15 providers on different care settings."</p>
+        <p>"I'm not calling to pitch you a system today &mdash; I'd actually just like to understand how you're handling billing right now, and whether any of those coordination challenges are something you're actively trying to solve. Would you have 15 minutes this week for a quick conversation?"</p>
+      </div>
+      <p class="small-note" style="margin-top:10px;">Adjust opener based on who picks up &mdash; Dr. Boden (clinical/MD framing), Karen Jackson (operational/workflow framing), or billing lead (RCM/denial framing). The core hook stays the same: 4 locations + dual care model = billing complexity AMD solves.</p>
+    </div>
+  </div>
+
+  <!-- 10. Open Questions -->
+  <div class="section" id="questions">
+    <div class="section-header">10 &middot; Open Questions for First Call</div>
+    <div class="section-body">
+      <ul class="q-list">
+        <li><strong>What EHR/PM system are they currently on?</strong> No incumbent identified externally. This is the most critical discovery question &mdash; determines displacement vs. greenfield pitch angle and confirms whether a contract expiration timeline exists.</li>
+        <li><strong>Who owns billing and RCM?</strong> No billing manager or RCM lead identified in available data. For a 14-provider, 4-location practice, this person exists. Find them. They are the real buyer for an EHR/PM evaluation.</li>
+        <li><strong>How are they handling home visit vs. clinic billing?</strong> Beacon's dual care model (home-based palliative + clinic visits) creates billing complexity that is a core AMD fit signal. Surface whether they have a unified workflow or a split/manual process.</li>
+        <li><strong>Is there a growth or expansion event on the horizon?</strong> AMD's ICP analysis shows practice growth &mdash; new providers, new locations, new specialties &mdash; as the top buying trigger. Ask: "Are you adding any new providers or locations in the next 6&ndash;12 months?"</li>
+        <li><strong>How are they handling incident-to billing for NP/PA providers?</strong> NP-led practices under a supervising MD have specific billing requirements. Confirm their current approach &mdash; this surfaces AMD's native NP/PA billing capability as a concrete differentiator.</li>
+        <li><strong>Are there active systems evaluations underway?</strong> Net-new A-Tier prospect with no prior AMD contact. Don't assume they're not already looking. Ask early: "Have you recently looked at any EHR or practice management solutions?"</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<div class="brief-footer">
+  <div><span class="ri-tag">Revenue Insight</span> &middot; Confidential &mdash; for internal AMD use only</div>
+  <div>Data sources: NPI Registry &middot; Clay Enrichment &middot; AMD ICP Model &middot; Generated 2026-05-06</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     REP ASSISTANT — Floating button + panel
+══════════════════════════════════════════════ -->
+
+<button id="rep-assistant-btn" onclick="raOpen()">
+  <div class="btn-dot"></div>
+  💬 Rep Assistant
+</button>
+
+<div id="ra-overlay" onclick="raClose()"></div>
+
+<div id="rep-assistant-panel">
+  <div class="ra-header">
+    <div class="ra-header-top">
+      <div class="ra-title"><div class="ra-dot"></div>Rep Assistant &middot; Beacon Medical</div>
+      <button class="ra-close" onclick="raClose()">&#x2715;</button>
+    </div>
+    <div class="ra-context-pill">&#9679;&nbsp; A-Tier 1.0/1.0 &middot; 14&ndash;15 providers &middot; 4 locations &middot; Greenfield &middot; $109,620 est. ARR</div>
+  </div>
+
+  <div class="ra-quick-actions">
+    <div class="ra-quick-label">Quick actions &mdash; tap to generate</div>
+    <div class="ra-quick-grid">
+      <button class="ra-quick-btn" onclick="raQuick('email-sequence')">✉ 3-Email Sequence</button>
+      <button class="ra-quick-btn" onclick="raQuick('linkedin')">LinkedIn DM</button>
+      <button class="ra-quick-btn" onclick="raQuick('agenda')">Call Agenda</button>
+      <button class="ra-quick-btn" onclick="raQuick('find-billing')">Find Billing Lead</button>
+      <button class="ra-quick-btn" onclick="raQuick('followup')">Post-Call Follow-Up</button>
+    </div>
+  </div>
+
+  <div class="ra-messages" id="ra-messages">
+    <div class="ra-msg system-note">Full Beacon Medical brief loaded &mdash; ICP score, growth signals, practice complexity data, sales plays, talk track, and open questions. Ask me anything or tap a quick action above.</div>
+  </div>
+
+  <div class="ra-typing" id="ra-typing">Thinking<span>.</span><span>.</span><span>.</span></div>
+
+  <div class="ra-input-area">
+    <div class="ra-input-row">
+      <textarea id="ra-input" placeholder="Ask anything about this account…" rows="1" onkeydown="raKey(event)" oninput="raResize(this)"></textarea>
+      <button id="ra-send" onclick="raSend()">Send</button>
+    </div>
+    <div class="ra-footer-note">Powered by Claude &middot; AdvancedMD Internal Use Only &middot; Context: Beacon Medical AIB</div>
+  </div>
+</div>
+
+<script>
+// ── Nav scroll-spy ─────────────────────────────────────────────
+document.querySelectorAll('.nav-btn[href^="#"]').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
+    var navH = document.getElementById('section-nav').offsetHeight;
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - navH - 12, behavior: 'smooth' });
+  });
+});
+var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','growth','plays','talktrack','questions'];
+function onScroll() {
+  var navH = document.getElementById('section-nav').offsetHeight;
+  var scrollY = window.pageYOffset + navH + 24;
+  var current = sections[0];
+  sections.forEach(function(id) { var el = document.getElementById(id); if (el && el.offsetTop <= scrollY) current = id; });
+  document.querySelectorAll('.nav-btn').forEach(function(btn) { btn.classList.toggle('active', btn.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// ── Rep Assistant ─────────────────────────────────────────────
+var raHistory = [];
+var raLoading = false;
+
+var RA_SYSTEM = "You are a Rep Assistant embedded inside a Revenue Insight Account Intelligence Brief for AdvancedMD's Practice Direct sales team. You have full context of the Beacon Medical LLC brief and help reps prepare for calls and generate outreach artifacts.\n\nACCOUNT CONTEXT — Beacon Medical LLC\n- ICP Tier: A-Tier, 1.0/1.0 (Specialty ICP Match: 0.45/0.45, Provider Count 14-15: 0.25/0.25, Specialty Count 4: 0.15/0.15, Patient Portal: 0.05/0.05, Telehealth Both: 0.05/0.05, Location Count 4: 0.05/0.05)\n- Vertical: Healthcare SaaS — Ambulatory Outpatient (Core Outpatient ICP group)\n- Practice Details: 14-15 providers (NPs, PAs, 1 supervising MD), 4 locations (Pensacola x3, Destin x1), specialties: Internal Medicine, Palliative Care, Pain Management, Mental Health\n- Account Owner: Not yet assigned\n- CRM Status: Net New Prospect — $0 ARR, no prior AMD contact, CRM ID prospect_5547\n\nACCOUNT SIZE & COMPLEXITY:\n- 14-15 providers across 4 ambulatory locations\n- Est. ARR potential: $109,620 (blended $7,308/provider x 15)\n- Care model: dual-channel — in-clinic visits AND home-based visits for debilitated/chronically ill patients\n- No EHR/PM incumbent identified — greenfield or basic system\n- NPI Number: 1518468966 | Founded 2018\n\nKEY SIGNALS:\n- Multi-location ambulatory group expanding in NW Florida Panhandle: 3 Pensacola addresses + Destin presence signals deliberate regional growth, not organic single-site expansion\n- No EHR/PM competitor lock-in detected: website tech scan shows no Athena, Epic, eCW, or Simple Practice signals — greenfield displacement opportunity with no incumbent defense\n- Provider headcount at 14-15 NPs/PAs/MDs: practice is squarely in AMD's highest-ARR sweet spot (8-30 providers = 100% ICP score)\n- Specialties span Internal Medicine, Palliative Care, Pain Management, and Mental Health: multi-specialty billing complexity is a core AMD differentiator vs. entry-level systems\n- Telehealth confirmed active + home-based visits: dual-channel billing across clinic and house-call settings is an acute pain point at this scale\n\nSALES PLAYS:\n- Play 1 (New Logo): Multi-Specialty Growth Practice First Touch — lead with 4-location + home visit billing complexity as the pain hook, surface current EHR/system in discovery, move quickly to a demo once system gap is confirmed\n- Play 2 (Expansion Trigger): Billing Pain & RCM Consolidation — target billing/RCM lead (currently unidentified) with denial management and multi-payer complexity as the entry angle, use incident-to NP/PA billing as a specific AMD differentiator\n\nDEAL FLOW: Net-new prospect, no prior relationship. First touch → discovery call → billing workflow audit (preferred next step over cold demo) → demo → proposal. Rep routes to Dr. John Boden (supervising MD, primary decision-maker) or Karen Jackson NP (operations influencer). Billing/RCM lead is unidentified but critical — surface in discovery.\n\nDECISION MAKERS:\n- Dr. John M. Boden, MD — Internal Medicine/Palliative, supervising physician. Primary DM for EHR/PM decisions. Route clinical credibility and product fit conversations here.\n- Karen L. Jackson, NP — Acute Care/Adult Health NP. Senior operations influencer. Strong driver of workflow and scheduling tool choices.\n- Gretchen Grencer Liegel, NP — Family NP, multi-location coverage. Secondary contact.\n- Billing/RCM Lead — Not yet identified. Critical stakeholder. Must be surfaced in discovery.\n\nTALK TRACK HOOK: Lead with 4-location + dual care model complexity (home visits + clinic). Beacon runs palliative and internal medicine across 4 sites with 14-15 providers — that billing coordination challenge is AMD's exact sweet spot. Don't pitch the product; surface the pain first.\n\nOPEN QUESTIONS: (1) What EHR/PM system are they currently on — displacement vs. greenfield? (2) Who owns billing and RCM — this person is the real buyer? (3) How are they handling home visit vs. clinic billing — unified or split workflow? (4) Is there a growth or expansion event on the horizon — new providers, new locations? (5) How are they handling incident-to billing for NP/PA providers? (6) Are there active systems evaluations underway?\n\nYOUR ROLE:\n- Answer research questions about Beacon Medical, the ambulatory EHR/PM market, NP-led practices, or palliative/internal medicine billing with specificity\n- Generate outreach artifacts that are account-specific — always reference Beacon Medical, the 4-location Florida panhandle footprint, the home visit + clinic dual model, the NP/PA-led structure under Dr. Boden, or the greenfield EHR opportunity\n- Never be generic — every artifact must pass the test: could this appear word-for-word in a different account's brief? If yes, rewrite it.\n- For email sequences: write 3 distinct emails — Email 1 (warm intro leading with 4-location + home visit billing complexity), Email 2 (value/insight angle 5-7 days later, e.g. AMD's NP/PA incident-to billing capability or Mental Health specialty ARR data), Email 3 (final ask with a specific next step like the billing workflow audit). Include Subject lines.\n- Format artifacts clearly with headers so the rep can copy them directly\n- Keep tone professional but conversational — rep-facing, not corporate";
+
+var RA_QUICK_PROMPTS = {
+  'email-sequence': "Write a 3-email outreach sequence targeting Dr. John Boden, the supervising MD at Beacon Medical. Email 1 leads with Beacon's 4-location + home visit billing complexity as the warm entry point — acknowledge the unique palliative/internal medicine model across Pensacola and Destin and position AMD as built for exactly that scale. Email 2 follows up 5-7 days later with a specific insight about how AMD handles NP/PA incident-to billing natively, and how multi-specialty practices (internal medicine + mental health + palliative) typically see faster AR cycles on AMD vs. entry-level systems. Email 3 is a final ask proposing a 30-minute billing workflow audit — not a demo, a free audit — as the lowest-friction next step. Include subject lines. Make each email specific to Beacon Medical, not generic.",
+
+  'linkedin': "Write a LinkedIn connection message to Dr. John Boden, MD, supervising physician at Beacon Medical in Pensacola, FL. Reference the multi-location palliative + internal medicine practice model as the entry point — specifically that AMD works with a lot of NP-led practices at this scale in Florida. Keep it under 300 characters. Conversational, not salesy.",
+
+  'agenda': "Build a 30-minute discovery call agenda for my first call with the decision-maker at Beacon Medical — likely Dr. John Boden or Karen Jackson NP. Use all 6 open questions from the brief as the backbone: (1) current EHR/PM system, (2) who owns billing/RCM, (3) home visit vs. clinic billing workflow, (4) upcoming growth or expansion events, (5) incident-to billing for NP/PA providers, (6) active systems evaluations. Add a 2-minute intro referencing Beacon's 4-location model, a 3-minute AMD context section, 15 minutes for the discovery questions, and a 5-minute wrap-up proposing the billing workflow audit as next step. Format clearly so I can use it as a live call guide.",
+
+  'find-billing': "Help me figure out who manages billing and RCM at Beacon Medical LLC in Pensacola, FL. The practice has 14-15 providers across 4 locations with dual billing workflows (clinic visits + home-based palliative visits). The NPI-registered entity is 1518468966. What job titles should I search for on LinkedIn? What signals would tell me if they have an in-house billing team vs. outsourced RCM? What questions should I ask Dr. Boden or Karen Jackson NP to surface the billing lead without it feeling like I'm going around them? And what does the billing structure typically look like for an NP-led practice this size?",
+
+  'followup': "I just got off a discovery call with Karen Jackson, NP at Beacon Medical. She confirmed they are currently on a basic EHR system that doesn't handle their home visit billing well — they're processing home visit claims manually in a separate workflow. She seemed genuinely interested but said Dr. Boden would need to be in any demo conversation. Write a follow-up email that: (1) thanks Karen and acknowledges the home visit billing gap she described, (2) pivots to AMD's Play 2 — specifically the billing workflow audit offer as a low-commitment next step that Dr. Boden can join, (3) proposes a specific 30-minute audit call with both Karen and Dr. Boden to show exactly where AMD would fix the home visit billing workflow. Make it specific to Beacon Medical and their dual care model — not a generic follow-up."
+};
+
+function raOpen() {
+  document.getElementById('rep-assistant-panel').classList.add('open');
+  document.getElementById('ra-overlay').style.display = 'block';
+  document.getElementById('rep-assistant-btn').style.display = 'none';
+  setTimeout(function() { document.getElementById('ra-input').focus(); }, 300);
+}
+
+function raClose() {
+  document.getElementById('rep-assistant-panel').classList.remove('open');
+  document.getElementById('ra-overlay').style.display = 'none';
+  document.getElementById('rep-assistant-btn').style.display = 'flex';
+}
+
+function raResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function raKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); raSend(); }
+}
+
+function raSetLoading(on) {
+  raLoading = on;
+  document.getElementById('ra-send').disabled = on;
+  document.getElementById('ra-input').disabled = on;
+  document.querySelectorAll('.ra-quick-btn').forEach(function(b) { b.disabled = on; });
+  var t = document.getElementById('ra-typing');
+  t.className = 'ra-typing' + (on ? ' visible' : '');
+  if (on) { var m = document.getElementById('ra-messages'); m.scrollTop = m.scrollHeight; }
+}
+
+function raAppend(role, text) {
+  var m = document.getElementById('ra-messages');
+  var d = document.createElement('div');
+
+  var isArtifact = role === 'assistant' && (
+    text.includes('Email 1') || text.includes('Subject:') ||
+    text.includes('AGENDA') || text.includes('## ') || text.length > 700
+  );
+
+  if (isArtifact) {
+    var label = 'Generated Artifact';
+    if (text.includes('Subject:') || text.includes('Email 1')) label = 'Email Sequence';
+    else if (text.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+    else if (text.toLowerCase().includes('agenda') || text.toLowerCase().includes('call guide')) label = 'Call Agenda';
+    d.className = 'ra-msg assistant';
+    d.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+    d.querySelector('.ra-artifact-body').textContent = text;
+  } else {
+    d.className = 'ra-msg ' + role;
+    d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  }
+
+  m.appendChild(d);
+  m.scrollTop = m.scrollHeight;
+}
+
+function raCopy(btn) {
+  var text = btn.closest('.ra-artifact').querySelector('.ra-artifact-body').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy all'; }, 2000);
+  });
+}
+
+async function raQuick(key) {
+  var prompt = RA_QUICK_PROMPTS[key];
+  raAppend('user', prompt.substring(0, 80) + '\u2026');
+  await raCall(prompt);
+}
+
+async function raSend() {
+  var inp = document.getElementById('ra-input');
+  var text = inp.value.trim();
+  if (!text || raLoading) return;
+  inp.value = ''; inp.style.height = 'auto';
+  raAppend('user', text);
+  await raCall(text);
+}
+
+async function raCall(userMsg) {
+  raSetLoading(true);
+  raHistory.push({ role: 'user', content: userMsg });
+
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
+    });
+
+    var data = await resp.json();
+
+    if (data.error) {
+      var d = document.createElement('div');
+      d.className = 'ra-msg error-note';
+      d.textContent = 'Error: ' + (data.error.message || JSON.stringify(data.error));
+      document.getElementById('ra-messages').appendChild(d);
+      document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+      raHistory.pop();
+    } else {
+      var reply = data.content && data.content[0] ? data.content[0].text : '';
+      raHistory.push({ role: 'assistant', content: reply });
+      raAppend('assistant', reply);
+    }
+  } catch (err) {
+    var d = document.createElement('div');
+    d.className = 'ra-msg error-note';
+    d.textContent = 'Network error — check your connection and try again.';
+    document.getElementById('ra-messages').appendChild(d);
+    document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+    raHistory.pop();
+  }
+
+  raSetLoading(false);
+}
+</script>
+
+</body>
+</html>
