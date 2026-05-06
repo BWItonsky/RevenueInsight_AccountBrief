@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Account Intelligence Brief &mdash; Harrison Fields LLP | Thomson Reuters &times; Revenue Insight</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Montserrat', sans-serif; background: #F7F9FA; color: #2D3E50; font-size: 13px; line-height: 1.5; }
+.header { background: #0D2137; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+.header-left { display: flex; align-items: center; gap: 14px; }
+.header-logo { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.header-logo span { color: #7AB648; }
+.header-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.2); }
+.header-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.urgency-badge { background: #C0392B; color: #fff; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 4px; }
+.date-label { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 500; }
+.account-hero { background: #fff; border-bottom: 1px solid #DDE3E8; padding: 24px 32px 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.account-name { font-size: 26px; font-weight: 800; color: #0D2137; letter-spacing: -0.03em; line-height: 1.1; }
+.account-meta { display: flex; gap: 20px; margin-top: 8px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #6B7A8D; font-weight: 500; }
+.meta-dot { width: 4px; height: 4px; border-radius: 50%; background: #DDE3E8; }
+.score-cluster { display: flex; gap: 10px; align-items: flex-start; }
+.score-card { background: #F7F9FA; border: 1px solid #DDE3E8; border-radius: 8px; padding: 12px 16px; text-align: center; min-width: 90px; }
+.score-card.hot { background: #FEF0EE; border-color: #C0392B; }
+.score-card.warm { background: #FDF6EC; border-color: #E67E22; }
+.score-number { font-size: 28px; font-weight: 800; color: #0D2137; line-height: 1; }
+.score-card.hot .score-number { color: #C0392B; }
+.score-card.warm .score-number { color: #E67E22; }
+.score-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #6B7A8D; margin-top: 3px; }
+.action-bar { background: #1A5E6A; padding: 10px 32px; display: flex; align-items: center; gap: 8px; }
+.action-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-right: 4px; }
+.action-pill { background: rgba(255,255,255,0.15); color: #fff; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 5px; }
+.action-pill.primary { background: #7AB648; }
+.action-pill .num { background: rgba(0,0,0,0.2); width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; }
+.main { padding: 20px 32px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card { background: #fff; border: 1px solid #DDE3E8; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(13,33,55,0.06); }
+.card.full-width { grid-column: 1 / -1; }
+.card.accent { border-color: #1A5E6A; box-shadow: 0 0 0 2px rgba(26,94,106,0.12); }
+.card-header { padding: 12px 16px 10px; border-bottom: 1px solid #F0F3F6; display: flex; align-items: center; gap: 8px; }
+.card-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.card-title { font-size: 12px; font-weight: 700; color: #0D2137; text-transform: uppercase; letter-spacing: 0.06em; }
+.card-body { padding: 14px 16px; }
+.signal-list { display: flex; flex-direction: column; gap: 10px; }
+.signal-item { display: flex; gap: 10px; align-items: flex-start; }
+.signal-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.signal-dot.red { background: #C0392B; } .signal-dot.amber { background: #E67E22; } .signal-dot.green { background: #7AB648; } .signal-dot.teal { background: #1A5E6A; }
+.signal-text { font-size: 12px; color: #2D3E50; line-height: 1.45; }
+.signal-text strong { color: #0D2137; font-weight: 700; }
+.signal-date { font-size: 10px; color: #6B7A8D; font-weight: 500; display: block; margin-top: 1px; }
+.usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.usage-item { background: #F7F9FA; border-radius: 8px; padding: 10px 12px; }
+.usage-metric { font-size: 22px; font-weight: 800; color: #0D2137; line-height: 1; }
+.usage-metric.red { color: #C0392B; } .usage-metric.amber { color: #E67E22; } .usage-metric.green { color: #7AB648; }
+.usage-sublabel { font-size: 10px; color: #6B7A8D; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
+.usage-trend { font-size: 10px; margin-top: 5px; font-weight: 600; }
+.usage-trend.down { color: #C0392B; } .usage-trend.up { color: #7AB648; }
+.progress-bar-wrap { margin-top: 6px; background: #DDE3E8; border-radius: 4px; height: 4px; overflow: hidden; }
+.progress-bar { height: 4px; border-radius: 4px; }
+.action-list { display: flex; flex-direction: column; gap: 10px; }
+.action-item { border: 1px solid #DDE3E8; border-radius: 8px; padding: 11px 13px; display: flex; gap: 11px; align-items: flex-start; }
+.action-item.urgent { border-color: #C0392B; background: #FEF8F8; }
+.action-item.high { border-color: #E67E22; background: #FDFAF5; }
+.action-item.medium { border-color: #1A5E6A; background: #F5FAFB; }
+.action-rank { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; color: #fff; }
+.action-rank.urgent { background: #C0392B; } .action-rank.high { background: #E67E22; } .action-rank.medium { background: #1A5E6A; }
+.action-content { flex: 1; }
+.action-title { font-size: 12px; font-weight: 700; color: #0D2137; }
+.action-desc { font-size: 11px; color: #6B7A8D; margin-top: 2px; line-height: 1.4; }
+.action-tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 2px 6px; border-radius: 3px; margin-top: 5px; }
+.action-tag.trigger { background: #FEF0EE; color: #C0392B; }
+.action-tag.expansion { background: #EDF7E4; color: #5a8e2f; }
+.action-tag.renewal { background: #E8F4F6; color: #1A5E6A; }
+.intel-list { display: flex; flex-direction: column; gap: 8px; }
+.intel-row { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; background: #F7F9FA; border-radius: 6px; border-left: 3px solid transparent; }
+.intel-row.risk { border-left-color: #C0392B; } .intel-row.opp { border-left-color: #7AB648; } .intel-row.neutral { border-left-color: #DDE3E8; }
+.intel-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.intel-text { font-size: 11px; color: #2D3E50; line-height: 1.45; }
+.intel-text strong { color: #0D2137; font-weight: 700; }
+.footer { background: #0D2137; padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+.footer-brand { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; }
+.footer-brand span { color: #7AB648; }
+.footer-note { font-size: 10px; color: rgba(255,255,255,0.3); }
+.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
+.chip.red { background: #FEF0EE; color: #C0392B; } .chip.green { background: #EDF7E4; color: #5a8e2f; } .chip.amber { background: #FDF6EC; color: #c06010; } .chip.teal { background: #E8F4F6; color: #1A5E6A; }
+@media (max-width:680px) { .header { padding:12px 16px; flex-wrap:wrap; gap:8px; } .header-divider,.header-label,.date-label{display:none;} .account-hero{flex-direction:column;padding:16px;gap:14px;} .account-name{font-size:22px;} .score-cluster{width:100%;} .action-bar{flex-direction:column;align-items:flex-start;padding:12px 16px;gap:6px;} .action-pill{width:100%;} .main{grid-template-columns:1fr;padding:12px 16px 24px;gap:12px;} .card.full-width{grid-column:1;} .footer{flex-direction:column;gap:4px;padding:12px 16px;text-align:center;} }
+
+  /* ══ REP ASSISTANT ══ */
+  #rep-assistant-btn { position:fixed; bottom:28px; right:28px; z-index:9000; background:#0D2137; color:#fff; border:none; border-radius:28px; padding:11px 20px 11px 15px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 4px 24px rgba(0,0,0,0.32); transition:background 0.15s,transform 0.12s; }
+  #rep-assistant-btn:hover { background:#1a3a5c; transform:translateY(-2px); }
+  #rep-assistant-btn .btn-dot { width:8px; height:8px; border-radius:50%; background:#7AB648; flex-shrink:0; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(122,182,72,0.5);}50%{box-shadow:0 0 0 5px rgba(122,182,72,0);} }
+  #ra-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.22); z-index:9001; }
+  #rep-assistant-panel { position:fixed; top:0; right:-460px; width:440px; height:100vh; background:#fff; z-index:9002; display:flex; flex-direction:column; transition:right 0.28s cubic-bezier(0.4,0,0.2,1); box-shadow:-6px 0 40px rgba(0,0,0,0.16); }
+  #rep-assistant-panel.open { right:0; }
+  .ra-header { background:#0D2137; padding:14px 16px 12px; flex-shrink:0; }
+  .ra-header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .ra-title { font-size:13px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px; }
+  .ra-title .ra-dot { width:7px; height:7px; border-radius:50%; background:#7AB648; }
+  .ra-close { background:rgba(255,255,255,0.1); border:none; color:rgba(255,255,255,0.75); font-size:17px; cursor:pointer; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+  .ra-close:hover { background:rgba(255,255,255,0.2); }
+  .ra-context-pill { display:inline-flex; align-items:center; gap:5px; background:rgba(122,182,72,0.15); border:1px solid rgba(122,182,72,0.3); border-radius:20px; padding:3px 10px; font-size:10px; font-weight:700; color:#7AB648; letter-spacing:0.3px; }
+  .ra-quick-actions { background:#F7F9FA; border-bottom:1px solid #DDE3E8; padding:10px 14px; flex-shrink:0; }
+  .ra-quick-label { font-size:9px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#6B7A8D; margin-bottom:7px; }
+  .ra-quick-grid { display:flex; flex-wrap:wrap; gap:5px; }
+  .ra-quick-btn { font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; padding:5px 11px; border-radius:20px; border:1px solid #1A5E6A; color:#1A5E6A; background:#fff; cursor:pointer; transition:background 0.15s,color 0.15s; white-space:nowrap; }
+  .ra-quick-btn:hover:not(:disabled) { background:#1A5E6A; color:#fff; }
+  .ra-quick-btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .ra-messages { flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; }
+  .ra-msg { max-width:94%; font-size:13px; line-height:1.55; border-radius:6px; padding:9px 12px; word-break:break-word; }
+  .ra-msg.user { align-self:flex-end; background:#0D2137; color:#fff; border-radius:6px 6px 2px 6px; }
+  .ra-msg.assistant { align-self:flex-start; background:#F7F9FA; color:#2D3E50; border-left:3px solid #7AB648; border-radius:0 6px 6px 0; }
+  .ra-msg.assistant strong { color:#0D2137; }
+  .ra-msg.system-note { align-self:center; background:#FFF8E6; border:1px solid #F5C842; color:#5D4200; font-size:11px; font-style:italic; text-align:center; max-width:100%; }
+  .ra-msg.error-note { align-self:center; background:#FBEBEB; border:1px solid #E8AAAA; color:#7A1A1A; font-size:11px; text-align:center; max-width:100%; }
+  .ra-artifact { background:#fff; border:1px solid #DDE3E8; border-radius:6px; margin-top:8px; overflow:hidden; }
+  .ra-artifact-header { background:#0D2137; padding:7px 10px; display:flex; align-items:center; justify-content:space-between; }
+  .ra-artifact-label { font-size:10px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#7AB648; }
+  .ra-artifact-copy { font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; color:rgba(255,255,255,0.65); background:transparent; border:1px solid rgba(255,255,255,0.2); border-radius:3px; padding:2px 8px; cursor:pointer; transition:background 0.15s; }
+  .ra-artifact-copy:hover { background:rgba(255,255,255,0.12); color:#fff; }
+  .ra-artifact-body { padding:10px 12px; font-size:12px; line-height:1.65; color:#2D3E50; white-space:pre-wrap; }
+  .ra-typing { display:none; align-self:flex-start; padding:8px 12px; background:#F7F9FA; border-left:3px solid #7AB648; border-radius:0 6px 6px 0; font-size:12px; color:#6B7A8D; font-style:italic; }
+  .ra-typing.visible { display:block; }
+  .ra-typing span { display:inline-block; animation:blink 1.2s infinite; }
+  .ra-typing span:nth-child(2) { animation-delay:0.2s; }
+  .ra-typing span:nth-child(3) { animation-delay:0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.15;}40%{opacity:1;} }
+  .ra-input-area { border-top:1px solid #DDE3E8; padding:10px 12px; background:#fff; flex-shrink:0; }
+  .ra-input-row { display:flex; gap:8px; align-items:flex-end; }
+  #ra-input { flex:1; font-family:'Montserrat',sans-serif; font-size:13px; color:#2D3E50; border:1px solid #DDE3E8; border-radius:6px; padding:8px 10px; resize:none; min-height:38px; max-height:100px; line-height:1.4; outline:none; transition:border-color 0.15s; }
+  #ra-input:focus { border-color:#1A5E6A; }
+  #ra-send { font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; background:#1A5E6A; color:#fff; border:none; border-radius:6px; padding:8px 16px; cursor:pointer; white-space:nowrap; transition:background 0.15s; flex-shrink:0; }
+  #ra-send:hover:not(:disabled) { background:#124850; }
+  #ra-send:disabled { opacity:0.4; cursor:not-allowed; }
+  .ra-footer-note { font-size:10px; color:#6B7A8D; text-align:center; margin-top:6px; }
+  @media print { #rep-assistant-btn,#rep-assistant-panel,#ra-overlay{display:none!important;} }
+  @media (max-width:500px) { #rep-assistant-panel{width:100%;right:-100%;} }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">Revenue <span>Insight</span></div>
+    <div class="header-divider"></div>
+    <div class="header-label">Account Intelligence Brief &middot; Thomson Reuters</div>
+  </div>
+  <div class="header-right">
+    <div class="urgency-badge">&#128308; Act This Week</div>
+    <div class="date-label">Generated: April 21, 2026</div>
+  </div>
+</div>
+<div class="account-hero">
+  <div>
+    <div class="account-name">Harrison Fields LLP</div>
+    <div class="account-meta">
+      <div class="meta-item">&#9878;&#65039; Regional Law Firm</div><div class="meta-dot"></div>
+      <div class="meta-item">&#128205; Chicago, IL</div><div class="meta-dot"></div>
+      <div class="meta-item">&#128101; 87 Attorneys</div><div class="meta-dot"></div>
+      <div class="meta-item">&#128197; Renewal: Aug 14, 2026 <span style="color:#C0392B;font-weight:700;"> &mdash; 116 days</span></div><div class="meta-dot"></div>
+      <div class="meta-item">&#128176; ARR: $142,000 &nbsp;<span class="chip teal">Westlaw + Practical Law</span></div>
+    </div>
+  </div>
+  <div class="score-cluster">
+    <div class="score-card hot"><div class="score-number">31</div><div class="score-label">Risk Score</div></div>
+    <div class="score-card warm"><div class="score-number">68</div><div class="score-label">Opp Score</div></div>
+  </div>
+</div>
+<div class="action-bar">
+  <div class="action-label">Top Actions</div>
+  <div class="action-pill primary"><span class="num">1</span> Call re: usage drop before renewal window opens</div>
+  <div class="action-pill"><span class="num">2</span> Pitch litigation analytics expansion</div>
+  <div class="action-pill"><span class="num">3</span> Reference M&amp;A practice buildout</div>
+</div>
+<div class="main">
+  <div class="card">
+    <div class="card-header"><div class="card-icon" style="background:#FEF0EE;">&#128225;</div><div class="card-title">External Signals</div><div style="margin-left:auto;"><span class="chip red">3 new this week</span></div></div>
+    <div class="card-body"><div class="signal-list">
+      <div class="signal-item"><div class="signal-dot red"></div><div class="signal-text"><strong>Lateral hire: 4 new litigation partners from DLA Piper.</strong> Practice area expanding rapidly &mdash; likely to stress current research seat allocation.<span class="signal-date">Apr 18, 2026 &middot; LinkedIn + Law360</span></div></div>
+      <div class="signal-item"><div class="signal-dot amber"></div><div class="signal-text"><strong>New M&amp;A practice group announced.</strong> Harrison Fields hired a 6-attorney M&amp;A team; no current Practical Law M&amp;A modules in their subscription.<span class="signal-date">Apr 11, 2026 &middot; Press Release</span></div></div>
+      <div class="signal-item"><div class="signal-dot red"></div><div class="signal-text"><strong>IL Supreme Court amended civil procedure rules</strong> effective June 1 &mdash; directly impacts litigation practice.<span class="signal-date">Apr 9, 2026 &middot; IL Courts</span></div></div>
+      <div class="signal-item"><div class="signal-dot teal"></div><div class="signal-text"><strong>Firm ranked #4 in Midwest litigation</strong> by American Lawyer 2026 &mdash; signals growth trajectory and budget expansion.<span class="signal-date">Apr 2, 2026 &middot; Am Law</span></div></div>
+      <div class="signal-item"><div class="signal-dot amber"></div><div class="signal-text"><strong>Managing partner quoted in Crain&rsquo;s</strong> on AI adoption: &ldquo;We&rsquo;re evaluating how AI tools integrate with our existing platforms.&rdquo;<span class="signal-date">Mar 28, 2026 &middot; Crain&rsquo;s Chicago</span></div></div>
+    </div></div>
+  </div>
+  <div class="card accent">
+    <div class="card-header"><div class="card-icon" style="background:#E8F4F6;">&#128202;</div><div class="card-title">Westlaw Usage Health</div><div style="margin-left:auto;"><span class="chip amber">Needs Attention</span></div></div>
+    <div class="card-body">
+      <div class="usage-grid">
+        <div class="usage-item"><div class="usage-metric amber">58%</div><div class="usage-sublabel">Seats Active (30d)</div><div class="usage-trend down">&#8595; was 74% last quarter</div><div class="progress-bar-wrap"><div class="progress-bar" style="width:58%;background:#E67E22;"></div></div></div>
+        <div class="usage-item"><div class="usage-metric red">22d</div><div class="usage-sublabel">Avg Days Since Login</div><div class="usage-trend down">&#8593; was 11d last quarter</div><div class="progress-bar-wrap"><div class="progress-bar" style="width:72%;background:#C0392B;"></div></div></div>
+        <div class="usage-item"><div class="usage-metric red">3</div><div class="usage-sublabel">Power Users (of 40 seats)</div><div class="usage-trend down">&#8595; was 9 last quarter</div><div class="progress-bar-wrap"><div class="progress-bar" style="width:8%;background:#C0392B;"></div></div></div>
+        <div class="usage-item"><div class="usage-metric green">91%</div><div class="usage-sublabel">Practical Law Adoption</div><div class="usage-trend up">&#8593; strong &mdash; up from 78%</div><div class="progress-bar-wrap"><div class="progress-bar" style="width:91%;background:#7AB648;"></div></div></div>
+      </div>
+      <div style="margin-top:12px;background:#FDF6EC;border-left:3px solid #E67E22;border-radius:4px;padding:9px 11px;">
+        <div style="font-size:10px;font-weight:700;color:#c06010;text-transform:uppercase;letter-spacing:0.07em;">&#9888; Churn Signal</div>
+        <div style="font-size:11px;color:#2D3E50;margin-top:3px;line-height:1.4;">Westlaw seat usage has dropped 16 pts in 90 days. Pattern matches pre-churn accounts. Investigate before renewal window opens.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card full-width accent">
+    <div class="card-header"><div class="card-icon" style="background:#EDF7E4;">&#9889;</div><div class="card-title">Recommended Actions &mdash; Prioritized</div><div style="margin-left:auto;font-size:11px;color:#6B7A8D;font-weight:600;">Rep: Sarah Chen &middot; Owner since Jan 2025</div></div>
+    <div class="card-body"><div class="action-list">
+      <div class="action-item urgent"><div class="action-rank urgent">1</div><div class="action-content"><div class="action-title">Call Managing Partner re: Westlaw usage drop &mdash; before renewal window opens</div><div class="action-desc">58% seat activation + 22-day avg login gap = classic pre-churn signal. 4 new litigation hires are not yet set up. Frame as a &ldquo;make sure your new team is fully activated&rdquo; call &mdash; not a renewal call.</div><span class="action-tag trigger">&#128308; Churn Risk</span></div></div>
+      <div class="action-item high"><div class="action-rank high">2</div><div class="action-content"><div class="action-title">Pitch Practical Law M&amp;A module &mdash; new practice group is unserved</div><div class="action-desc">Harrison Fields just built a 6-attorney M&amp;A team with zero Practical Law M&amp;A coverage. They&rsquo;re already strong adopters of PL (91%). Natural extension conversation &mdash; they know the product.</div><span class="action-tag expansion">&#129001; Expansion</span></div></div>
+      <div class="action-item medium"><div class="action-rank medium">3</div><div class="action-content"><div class="action-title">Reference IL Supreme Court rule change in outreach</div><div class="action-desc">New civil procedure rules take effect June 1. Easy touchpoint that demonstrates why research monitoring matters and re-activates dormant users.</div><span class="action-tag trigger">&#128203; Trigger Event</span></div></div>
+      <div class="action-item" style="border-color:#7AB648;background:#F8FDF3;"><div class="action-rank" style="background:#7AB648;">4</div><div class="action-content"><div class="action-title">Leverage Am Law ranking in renewal conversation</div><div class="action-desc">#4 Midwest litigation ranking signals growth and budget flexibility. Start renewal with &ldquo;firms at this level are expanding research infrastructure, not trimming it.&rdquo;</div><span class="action-tag renewal">&#128309; Renewal</span></div></div>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-icon" style="background:#F0F3F6;">&#127963;&#65039;</div><div class="card-title">Firm Context</div></div>
+    <div class="card-body"><div class="intel-list">
+      <div class="intel-row opp"><div class="intel-icon">&#128200;</div><div class="intel-text"><strong>Revenue trajectory: strong.</strong> Firm grew headcount 14% YoY. Litigation + M&amp;A expanding. Budget posture likely favorable at renewal.</div></div>
+      <div class="intel-row risk"><div class="intel-icon">&#9888;&#65039;</div><div class="intel-text"><strong>IT consolidation underway.</strong> &ldquo;Platform rationalization&rdquo; initiative noted in Crain&rsquo;s. Competitor tools may be under evaluation. Timing matters.</div></div>
+      <div class="intel-row neutral"><div class="intel-icon">&#128100;</div><div class="intel-text"><strong>Champion: David Nguyen (Dir. of Research Services)</strong> &mdash; strong PL advocate internally. Key internal contact for expansion conversations.</div></div>
+      <div class="intel-row opp"><div class="intel-icon">&#129309;</div><div class="intel-text"><strong>Peer firm Kovacs &amp; Reilly</strong> (same segment, Chicago) expanded their TR contract by 40% after a practice group addition. Shareable reference.</div></div>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-icon" style="background:#FEF0EE;">&#127919;</div><div class="card-title">Competitive Radar</div><div style="margin-left:auto;"><span class="chip red">Active Risk</span></div></div>
+    <div class="card-body"><div class="intel-list">
+      <div class="intel-row risk"><div class="intel-icon">&#9889;</div><div class="intel-text"><strong>Lexis+ AI pilot detected.</strong> 2 attorneys followed Lexis+ on LinkedIn in the past 30 days. Usage drop may be partially exploratory.</div></div>
+      <div class="intel-row risk"><div class="intel-icon">&#128269;</div><div class="intel-text"><strong>vLex showing up in M&amp;A conversations</strong> at regional firms. New M&amp;A team may be evaluating before getting locked into TR stack.</div></div>
+      <div class="intel-row neutral"><div class="intel-icon">&#9989;</div><div class="intel-text"><strong>Casetext CoCounsel (now part of TR) not yet surfaced.</strong> If competitor AI is on their radar, CoCounsel is a strong counter &mdash; they may not know they already have access.</div></div>
+    </div></div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-brand">Revenue <span>Insight</span> &middot; Account Intelligence Brief &middot; Thomson Reuters</div>
+  <div class="footer-note">Confidential &mdash; for internal TR sales use only &middot; Generated 2026-04-21</div>
+</div>
+
+<!-- REP ASSISTANT -->
+<button id="rep-assistant-btn" onclick="raOpen()">
+  <div class="btn-dot"></div>
+  💬 Rep Assistant
+</button>
+<div id="ra-overlay" onclick="raClose()"></div>
+<div id="rep-assistant-panel">
+  <div class="ra-header">
+    <div class="ra-header-top">
+      <div class="ra-title"><div class="ra-dot"></div>Rep Assistant &middot; Harrison Fields LLP</div>
+      <button class="ra-close" onclick="raClose()">&#x2715;</button>
+    </div>
+    <div class="ra-context-pill">&#9679;&nbsp; Risk 31 &middot; Opp 68 &middot; $142K ARR &middot; Renewal Aug 14 &middot; Sarah Chen</div>
+  </div>
+  <div class="ra-quick-actions">
+    <div class="ra-quick-label">Quick actions &mdash; tap to generate</div>
+    <div class="ra-quick-grid">
+      <button class="ra-quick-btn" onclick="raQuick('email-sequence')">&#9993; 3-Email Sequence</button>
+      <button class="ra-quick-btn" onclick="raQuick('linkedin')">LinkedIn DM</button>
+      <button class="ra-quick-btn" onclick="raQuick('agenda')">Call Agenda</button>
+      <button class="ra-quick-btn" onclick="raQuick('risk-brief')">Risk Brief</button>
+      <button class="ra-quick-btn" onclick="raQuick('followup')">Post-Call Follow-Up</button>
+    </div>
+  </div>
+  <div class="ra-messages" id="ra-messages">
+    <div class="ra-msg system-note">Full Harrison Fields brief loaded &mdash; risk signals, usage data, competitive intel, renewal timeline, and recommended actions. Ask me anything or tap a quick action above.</div>
+  </div>
+  <div class="ra-typing" id="ra-typing">Thinking<span>.</span><span>.</span><span>.</span></div>
+  <div class="ra-input-area">
+    <div class="ra-input-row">
+      <textarea id="ra-input" placeholder="Ask anything about this account&hellip;" rows="1" onkeydown="raKey(event)" oninput="raResize(this)"></textarea>
+      <button id="ra-send" onclick="raSend()">Send</button>
+    </div>
+    <div class="ra-footer-note">Powered by Claude &middot; Thomson Reuters Internal Use Only &middot; Context: Harrison Fields AIB</div>
+  </div>
+</div>
+
+<script>
+  var raHistory = [];
+  var raLoading = false;
+  var RA_SYSTEM = "You are a Rep Assistant embedded inside a Revenue Insight Account Intelligence Brief for a Thomson Reuters direct sales rep. You have full context of the Harrison Fields LLP brief and help reps prepare for calls and generate outreach artifacts.\n\nACCOUNT CONTEXT — Harrison Fields LLP\n- Account Type: Active Customer — Renewal due Aug 14, 2026 (116 days out)\n- Account Owner/Rep: Sarah Chen (owner since Jan 2025)\n- Location: Chicago, IL\n- Firm Size: 87 attorneys\n- Firm Type: Regional Law Firm — #4 Midwest Litigation ranking (Am Law 2026)\n- Current Products: Westlaw + Practical Law (combined)\n- Current ARR: $142,000\n- Risk Score: 31 (HIGH — churn signal active)\n- Opportunity Score: 68 (expansion potential strong)\n\nUSAGE HEALTH:\n- Westlaw seat activation: 58% (down from 74% last quarter) — CHURN SIGNAL\n- Avg days since last login: 22 days (up from 11d last quarter) — CHURN SIGNAL\n- Power users: 3 of 40 seats (down from 9 last quarter) — CHURN SIGNAL\n- Practical Law adoption: 91% (up from 78%) — STRONG, GREEN\n\nKEY SIGNALS (this week):\n- 4 new litigation partners hired from DLA Piper (Apr 18) — not yet set up on Westlaw, stressing seat allocation\n- New M&A practice group announced — 6 attorneys, ZERO current PL M&A module coverage (Apr 11)\n- IL Supreme Court amended civil procedure rules effective June 1 — high litigation relevance (Apr 9)\n- Firm ranked #4 Midwest litigation by Am Law 2026 — growth signal\n- Managing partner quoted in Crain's on AI tool evaluation: \"We're evaluating how AI tools integrate with our existing platforms\" (Mar 28)\n\nCOMPETITIVE RISK:\n- Lexis+ AI pilot detected — 2 attorneys followed Lexis+ on LinkedIn in last 30 days\n- vLex showing up in M&A conversations at regional firms — new M&A team may be evaluating\n- Casetext CoCounsel (TR product) not yet surfaced to the firm — they may not know they have access\n\nFIRM INTEL:\n- Revenue trajectory: strong (14% headcount growth YoY)\n- IT consolidation underway — \"platform rationalization\" initiative noted in Crain's (competitor risk)\n- Champion: David Nguyen, Dir. of Research Services — strong PL advocate internally\n- Peer reference available: Kovacs & Reilly (same segment, Chicago) expanded TR contract 40% after practice group addition\n\nRECOMMENDED ACTIONS (prioritized):\n1. URGENT — Call re Westlaw usage drop before renewal window: frame as \"activation call\" for new litigation hires, not a renewal call\n2. HIGH — Pitch PL M&A module: new 6-attorney M&A team has zero PL M&A coverage, strong PL adopters generally\n3. MEDIUM — Reference IL Supreme Court rule change in outreach: proves real-time monitoring value, reactivates dormant users\n4. RENEWAL LEVER — Use Am Law #4 ranking in renewal: sets growth/confidence anchor vs. standard renewal pitch\n\nYOUR ROLE:\n- Answer research questions about Harrison Fields, the legal research market, TR products, or competitors with specificity\n- Generate outreach artifacts that are account-specific — always reference Harrison Fields, Westlaw usage drop, new litigation hires, M&A expansion, or the renewal timeline\n- Never be generic — every artifact must pass the test: could this appear word-for-word in a different account's brief? If yes, rewrite it.\n- For email sequences: 3 distinct emails — Email 1 (warm reactivation using new DLA Piper hire signal), Email 2 (M&A module pitch 5-7 days later), Email 3 (final renewal anchor with Am Law ranking). Include subject lines.\n- Format artifacts clearly with headers so the rep can copy directly\n- Keep tone professional but conversational — rep-facing, not corporate";
+  var RA_QUICK_PROMPTS = {"email-sequence":"Write a 3-email outreach sequence for Sarah Chen to send to Harrison Fields LLP. Email 1: use the 4 new litigation partner hires from DLA Piper as the warm entry — frame as making sure they're set up on Westlaw, not a renewal call. Email 2 (5-7 days later): pitch the Practical Law M&A module — they just built a 6-attorney M&A team with zero PL M&A coverage, and they're already strong PL adopters at 91%. Email 3 (5-7 days later): use the Am Law #4 Midwest litigation ranking as the renewal anchor — firms growing this fast expand research infrastructure, not trim it. Include subject lines. Make each email specific to Harrison Fields, not generic.","linkedin":"Write a LinkedIn connection message from Sarah Chen to David Nguyen, Dir. of Research Services at Harrison Fields LLP in Chicago. He's the internal PL champion. Reference the firm's M&A expansion as the entry point — they're at 91% PL adoption and just added a 6-attorney M&A team with no PL M&A module. Keep it under 300 characters. Conversational, not salesy.","agenda":"Build a 30-minute call agenda for Sarah Chen's call with Harrison Fields. The call goal is to (1) diagnose the Westlaw usage drop before renewal, and (2) open the M&A expansion conversation. Include: 2-min warm open referencing the new DLA Piper hires, 5-min usage check-in (why have seats gone dormant?), 10-min M&A module pitch (new practice group, no coverage), 5-min IL Supreme Court rule change touchpoint, 5-min renewal preview and next steps. Format as a usable call guide.","risk-brief":"Give Sarah Chen a 200-word churn risk brief she can use to brief her manager before the Harrison Fields renewal conversation. Cover: current risk signals (usage drop, competitive threats), what's working (PL adoption, firm growth), the renewal timeline (Aug 14, 2026), and the recommended first move. Be direct and specific — this is an internal briefing, not a client-facing document.","followup":"Sarah Chen just got off a discovery call with David Nguyen at Harrison Fields. He confirmed the usage drop is partly because the 4 new DLA Piper partners haven't been onboarded yet — they're still using their old Lexis credentials from DLA. He seemed interested in the M&A module but said he'd need to loop in the new M&A practice lead before committing. Write a follow-up email that: (1) thanks David and confirms the onboarding plan for the new litigation partners, (2) proposes a 30-minute call with David + the M&A practice lead to walk through the PL M&A module, (3) includes a one-line reference to Kovacs & Reilly as a peer firm that expanded after a similar practice group addition. Make it specific to Harrison Fields."};
+
+  function raOpen() {
+    document.getElementById('rep-assistant-panel').classList.add('open');
+    document.getElementById('ra-overlay').style.display = 'block';
+    document.getElementById('rep-assistant-btn').style.display = 'none';
+    setTimeout(function() { document.getElementById('ra-input').focus(); }, 300);
+  }
+  function raClose() {
+    document.getElementById('rep-assistant-panel').classList.remove('open');
+    document.getElementById('ra-overlay').style.display = 'none';
+    document.getElementById('rep-assistant-btn').style.display = 'flex';
+  }
+  function raResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100) + 'px'; }
+  function raKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); raSend(); } }
+  function raSetLoading(on) {
+    raLoading = on;
+    document.getElementById('ra-send').disabled = on;
+    document.getElementById('ra-input').disabled = on;
+    document.querySelectorAll('.ra-quick-btn').forEach(function(b) { b.disabled = on; });
+    var t = document.getElementById('ra-typing');
+    t.className = 'ra-typing' + (on ? ' visible' : '');
+    if (on) { var m = document.getElementById('ra-messages'); m.scrollTop = m.scrollHeight; }
+  }
+  function raCopy(btn) {
+    var text = btn.closest('.ra-artifact').querySelector('.ra-artifact-body').textContent;
+    navigator.clipboard.writeText(text).then(function() { btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = 'Copy all'; }, 2000); });
+  }
+  function raAppend(role, text) {
+    var m = document.getElementById('ra-messages');
+    var d = document.createElement('div');
+    var isArtifact = role === 'assistant' && (text.includes('Email 1') || text.includes('Subject:') || text.includes('AGENDA') || text.includes('## ') || text.length > 700);
+    if (isArtifact) {
+      var label = 'Generated Artifact';
+      if (text.includes('Subject:') || text.includes('Email 1')) label = 'Email Sequence';
+      else if (text.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+      else if (text.toLowerCase().includes('agenda') || text.toLowerCase().includes('call guide')) label = 'Call Agenda';
+      else if (text.toLowerCase().includes('churn') || text.toLowerCase().includes('risk brief')) label = 'Risk Brief';
+      d.className = 'ra-msg assistant';
+      d.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+      d.querySelector('.ra-artifact-body').textContent = text;
+    } else {
+      d.className = 'ra-msg ' + role;
+      d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    }
+    m.appendChild(d);
+    m.scrollTop = m.scrollHeight;
+  }
+  async function raQuick(key) {
+    var prompt = RA_QUICK_PROMPTS[key];
+    raAppend('user', prompt.substring(0, 80) + '\u2026');
+    await raCall(prompt);
+  }
+  async function raSend() {
+    var inp = document.getElementById('ra-input');
+    var text = inp.value.trim();
+    if (!text || raLoading) return;
+    inp.value = ''; inp.style.height = 'auto';
+    raAppend('user', text);
+    await raCall(text);
+  }
+  async function raCall(userMsg) {
+    raSetLoading(true);
+    raHistory.push({ role: 'user', content: userMsg });
+    try {
+      var resp = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
+      });
+      if (!resp.ok || !resp.body) {
+        var errData = await resp.json().catch(function() { return {}; });
+        var d = document.createElement('div');
+        d.className = 'ra-msg error-note';
+        d.textContent = 'Error: ' + (errData.error && errData.error.message ? errData.error.message : resp.statusText);
+        document.getElementById('ra-messages').appendChild(d);
+        document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+        raHistory.pop(); raSetLoading(false); return;
+      }
+      var m = document.getElementById('ra-messages');
+      var streamDiv = document.createElement('div');
+      streamDiv.className = 'ra-msg assistant';
+      m.appendChild(streamDiv);
+      var fullText = '';
+      var reader = resp.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line.startsWith('data: ')) continue;
+          var jsonStr = line.slice(6);
+          if (jsonStr === '[DONE]') continue;
+          try {
+            var event = JSON.parse(jsonStr);
+            if (event.type === 'content_block_delta' && event.delta && event.delta.type === 'text_delta') {
+              fullText += event.delta.text;
+              streamDiv.textContent = fullText;
+              m.scrollTop = m.scrollHeight;
+            }
+          } catch (e) { /* skip */ }
+        }
+      }
+      var isArtifact = fullText.includes('Email 1') || fullText.includes('Subject:') || fullText.includes('AGENDA') || fullText.includes('## ') || fullText.length > 700;
+      if (isArtifact) {
+        var label = 'Generated Artifact';
+        if (fullText.includes('Subject:') || fullText.includes('Email 1')) label = 'Email Sequence';
+        else if (fullText.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+        else if (fullText.toLowerCase().includes('agenda') || fullText.toLowerCase().includes('call guide')) label = 'Call Agenda';
+        else if (fullText.toLowerCase().includes('churn') || fullText.toLowerCase().includes('risk brief')) label = 'Risk Brief';
+        streamDiv.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+        streamDiv.querySelector('.ra-artifact-body').textContent = fullText;
+      } else {
+        streamDiv.innerHTML = fullText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+      }
+      raHistory.push({ role: 'assistant', content: fullText });
+      m.scrollTop = m.scrollHeight;
+    } catch (err) {
+      var d = document.createElement('div');
+      d.className = 'ra-msg error-note';
+      d.textContent = 'Network error — check your connection and try again.';
+      document.getElementById('ra-messages').appendChild(d);
+      document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+      raHistory.pop();
+    }
+    raSetLoading(false);
+  }
+</script>
+</body>
+</html>
