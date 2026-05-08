@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Seneca Foods Corporation | RMH Systems × Revenue Insight</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+  :root {
+    --navy: #0D2137; --teal: #1A5E6A; --green: #7AB648;
+    --body: #2D3E50; --mid: #4A5E70; --light: #F0F4F7;
+    --border: #D8E2EA; --white: #FFFFFF; --red-flag: #C0392B; --amber: #E67E22;
+  }
+
+  /* ── Portal Shell ── */
+  .portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .portal-header .brand span { color: var(--green); }
+  .portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+
+  /* ── Brief Header ── */
+  .brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+  .brief-header .tier-badge { background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 4px; white-space: nowrap; text-align: center; min-width: 90px; }
+  .brief-header .tier-badge .score { display: block; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; text-align: center; }
+  .brief-header .tier-badge .label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; text-align: center; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+  /* ── What's New ── */
+  .whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+  .whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .whats-new ul { list-style: none; padding: 0; }
+  .whats-new ul li { font-size: 13px; color: #5D4200; padding: 4px 0 4px 18px; position: relative; }
+  .whats-new ul li::before { content: "\25B6"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 7px; }
+  .whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+
+  /* ── Sections ── */
+  .section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+  .section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+  .section-body { padding: 16px 18px; }
+
+  /* ── Sticky Nav ── */
+  .section-nav { position: sticky; top: 0; z-index: 100; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .nav-btn { font-family: Calibri,'Segoe UI',Arial,sans-serif; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--light); color: var(--mid); cursor: pointer; text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s; white-space: nowrap; }
+  .nav-btn:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .nav-btn.active { background: var(--green); color: var(--white); border-color: var(--green); }
+
+  /* ── Snapshot Grid ── */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+  .snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .snap-item .snap-value.highlight { color: var(--teal); }
+
+  /* ── Scorecard ── */
+  .scorecard { width: 100%; }
+  .score-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .score-row:last-child { border-bottom: none; }
+  .score-label { font-size: 12px; color: var(--body); min-width: 200px; flex-shrink: 0; }
+  .score-bar-wrap { flex: 1; background: #EEF2F5; border-radius: 4px; height: 10px; position: relative; }
+  .score-bar { height: 10px; border-radius: 4px; background: var(--teal); transition: width 0.3s; }
+  .score-bar.partial { background: #A8D08D; }
+  .score-bar.low { background: #D0D8E0; }
+  .score-pts { font-size: 13px; font-weight: 700; color: var(--navy); min-width: 80px; text-align: right; }
+  .score-max { font-size: 11px; font-weight: 400; color: var(--mid); }
+  .score-total-row { display: flex; align-items: center; gap: 12px; padding: 10px 0 4px; background: var(--light); border-radius: 4px; margin-top: 6px; padding: 10px 12px; }
+  .score-total-label { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; }
+  .score-total-pts { font-size: 20px; font-weight: 700; color: var(--teal); }
+  .score-note { font-size: 11px; color: var(--mid); margin-top: 8px; font-style: italic; }
+
+  /* ── Fit List ── */
+  .fit-list { list-style: none; padding: 0; }
+  .fit-list li { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .fit-list li:last-child { border-bottom: none; }
+  .fit-icon { color: var(--green); font-size: 14px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Opportunity table / net-new ── */
+  .net-new-box { background: var(--light); border: 1px solid var(--border); border-left: 4px solid var(--teal); border-radius: 6px; padding: 14px 16px; font-size: 13px; line-height: 1.6; }
+
+  /* ── Flags ── */
+  .flag-list { list-style: none; padding: 0; }
+  .flag-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .flag-row:last-child { border-bottom: none; }
+  .flag-icon { width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .flag-icon.green { background: #D6EFC0; color: #3A7A10; }
+  .flag-icon.amber { background: #FDE8C8; color: #A05000; }
+  .flag-icon.red { background: #FAD4D4; color: var(--red-flag); }
+  .flag-text { font-size: 13px; color: var(--body); line-height: 1.5; }
+
+  /* ── DM Cards ── */
+  .dm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dm-card { background: var(--light); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: flex; justify-content: space-between; gap: 10px; }
+  .dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .dm-title { font-size: 11px; color: var(--mid); margin-top: 2px; margin-bottom: 6px; }
+  .dm-note { font-size: 12px; color: var(--body); line-height: 1.5; }
+  .dm-role-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; white-space: nowrap; align-self: flex-start; flex-shrink: 0; }
+  .dm-role-badge.primary { background: var(--navy); color: var(--white); }
+  .dm-role-badge.influencer { background: var(--teal); color: var(--white); }
+  .dm-role-badge.find-this-person { background: var(--light); color: var(--mid); border: 1px solid var(--border); }
+
+  /* ── Plant Footprint (Section 7) ── */
+  .plant-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  .plant-table th { background: var(--navy); color: var(--white); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 8px 10px; text-align: left; }
+  .plant-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--body); }
+  .plant-table tr:last-child td { border-bottom: none; }
+  .plant-table tr:nth-child(even) td { background: var(--light); }
+  .plant-served { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+  .plant-served.yes { background: #D6EFC0; color: #3A7A10; }
+  .plant-served.no { background: #FDE8C8; color: #A05000; }
+  .state-chip { display: inline-block; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; }
+  .plant-summary-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 14px; }
+  .plant-stat { background: var(--light); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; text-align: center; }
+  .plant-stat .ps-num { font-size: 22px; font-weight: 700; color: var(--teal); }
+  .plant-stat .ps-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--mid); margin-top: 3px; }
+
+  /* ── Sales Plays ── */
+  .play-card { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+  .play-card:last-child { margin-bottom: 0; }
+  .play-card-header { background: var(--navy); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .play-name { font-size: 13px; font-weight: 700; color: var(--white); }
+  .play-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: var(--green); color: var(--white); padding: 3px 10px; border-radius: 3px; }
+  .play-body { padding: 14px 16px; }
+  .play-context { font-size: 12px; color: var(--mid); font-style: italic; margin-bottom: 10px; }
+  .play-steps { list-style: none; padding: 0; }
+  .play-steps li { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .play-steps li:last-child { border-bottom: none; }
+  .play-steps li::before { content: attr(data-step); background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Talk Track ── */
+  .talk-track-box { background: var(--light); border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 16px 18px; font-size: 13px; line-height: 1.65; color: var(--body); }
+  .talk-track-box p { margin-bottom: 10px; }
+  .talk-track-box p:last-child { margin-bottom: 0; }
+
+  /* ── Open Questions ── */
+  .q-list { list-style: none; padding: 0; counter-reset: q-counter; }
+  .q-list li { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; counter-increment: q-counter; }
+  .q-list li:last-child { border-bottom: none; }
+  .q-list li::before { content: counter(q-counter); background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Potential Table ── */
+  .potential-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-top: 10px; }
+  .pot-item { background: var(--light); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; text-align: center; }
+  .pot-item .pot-num { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .pot-item .pot-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--mid); margin-top: 3px; }
+  .pot-item.highlight-pot { border-color: var(--teal); }
+  .pot-item.highlight-pot .pot-num { color: var(--teal); }
+
+  /* ── Misc ── */
+  .small-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; }
+  .opp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .opp-table th { background: var(--navy); color: var(--white); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 8px 10px; text-align: left; }
+  .opp-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  .opp-status { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; }
+  .status-active { background: #D6EFC0; color: #3A7A10; }
+  .status-lost { background: #FAD4D4; color: var(--red-flag); }
+
+  /* ══════════════════════════════════════════════
+     REP ASSISTANT
+  ══════════════════════════════════════════════ */
+  #rep-assistant-btn {
+    position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+    background: var(--navy); color: var(--white); border: none;
+    border-radius: 28px; padding: 11px 20px 11px 15px;
+    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.32);
+    transition: background 0.15s, transform 0.12s;
+  }
+  #rep-assistant-btn:hover { background: #162e4d; transform: translateY(-2px); }
+  #rep-assistant-btn .btn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(122,182,72,0.5);} 50%{box-shadow:0 0 0 5px rgba(122,182,72,0);} }
+  #ra-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.22); z-index: 9001; }
+  #rep-assistant-panel {
+    position: fixed; top: 0; right: -460px; width: 440px; height: 100vh;
+    background: var(--white); z-index: 9002; display: flex; flex-direction: column;
+    transition: right 0.28s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -6px 0 40px rgba(0,0,0,0.16);
+  }
+  #rep-assistant-panel.open { right: 0; }
+  .ra-header { background: var(--navy); padding: 14px 16px 12px; flex-shrink: 0; }
+  .ra-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .ra-title { font-size: 13px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
+  .ra-title .ra-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .ra-close { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.75); font-size: 17px; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .ra-close:hover { background: rgba(255,255,255,0.2); }
+  .ra-context-pill { display: inline-flex; align-items: center; gap: 5px; background: rgba(122,182,72,0.15); border: 1px solid rgba(122,182,72,0.3); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.3px; }
+  .ra-quick-actions { background: var(--light); border-bottom: 1px solid var(--border); padding: 10px 14px; flex-shrink: 0; }
+  .ra-quick-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 7px; }
+  .ra-quick-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ra-quick-btn { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 20px; border: 1px solid var(--teal); color: var(--teal); background: var(--white); cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .ra-quick-btn:hover:not(:disabled) { background: var(--teal); color: var(--white); }
+  .ra-quick-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ra-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .ra-msg { max-width: 94%; font-size: 13px; line-height: 1.55; border-radius: 6px; padding: 9px 12px; word-break: break-word; }
+  .ra-msg.user { align-self: flex-end; background: var(--navy); color: var(--white); border-radius: 6px 6px 2px 6px; }
+  .ra-msg.assistant { align-self: flex-start; background: var(--light); color: var(--body); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; }
+  .ra-msg.assistant strong { color: var(--navy); }
+  .ra-msg.system-note { align-self: center; background: #FFF8E6; border: 1px solid #F5C842; color: #5D4200; font-size: 11px; font-style: italic; text-align: center; max-width: 100%; }
+  .ra-msg.error-note { align-self: center; background: #FBEBEB; border: 1px solid #E8AAAA; color: #7A1A1A; font-size: 11px; text-align: center; max-width: 100%; }
+  .ra-artifact { background: var(--white); border: 1px solid var(--border); border-radius: 6px; margin-top: 8px; overflow: hidden; }
+  .ra-artifact-header { background: var(--navy); padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .ra-artifact-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--green); }
+  .ra-artifact-copy { font-family: Calibri,'Segoe UI',Arial,sans-serif; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.65); background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; padding: 2px 8px; cursor: pointer; transition: background 0.15s; }
+  .ra-artifact-copy:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+  .ra-artifact-body { padding: 10px 12px; font-size: 12px; line-height: 1.65; color: var(--body); white-space: pre-wrap; }
+  .ra-typing { display: none; align-self: flex-start; padding: 8px 12px; background: var(--light); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; font-size: 12px; color: var(--mid); font-style: italic; }
+  .ra-typing.visible { display: block; }
+  .ra-typing span { display: inline-block; animation: blink 1.2s infinite; }
+  .ra-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .ra-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.15;} 40%{opacity:1;} }
+  .ra-input-area { border-top: 1px solid var(--border); padding: 10px 12px; background: var(--white); flex-shrink: 0; }
+  .ra-input-row { display: flex; gap: 8px; align-items: flex-end; }
+  #ra-input { flex: 1; font-family: Calibri,'Segoe UI',Arial,sans-serif; font-size: 13px; color: var(--body); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; resize: none; min-height: 38px; max-height: 100px; line-height: 1.4; outline: none; transition: border-color 0.15s; }
+  #ra-input:focus { border-color: var(--teal); }
+  #ra-send { font-family: Calibri,'Segoe UI',Arial,sans-serif; font-size: 13px; font-weight: 700; background: var(--teal); color: var(--white); border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
+  #ra-send:hover:not(:disabled) { background: #124850; }
+  #ra-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ra-footer-note { font-size: 10px; color: var(--mid); text-align: center; margin-top: 6px; }
+
+  @media print {
+    .section-nav, #rep-assistant-btn, #rep-assistant-panel, #ra-overlay { display: none !important; }
+  }
+  @media (max-width: 500px) {
+    #rep-assistant-panel { width: 100%; right: -100%; }
+    .snapshot-grid { grid-template-columns: 1fr 1fr; }
+    .dm-grid { grid-template-columns: 1fr; }
+    .plant-summary-grid { grid-template-columns: 1fr 1fr; }
+    .potential-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Portal Header -->
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> · RMH Systems Account Intelligence Portal</div>
+  <div class="portal-label">Confidential · Internal Use Only</div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- Brief Header -->
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Seneca Foods Corporation</div>
+      <div class="account-sub">Food Manufacturing · Food &amp; Bev · 24 Plants Nationwide · 17 in RMH Target States · Cumberland, WI (RMH Charge) / Fairport, NY (HQ)</div>
+    </div>
+    <div class="tier-badge">
+      <span class="score">72</span>
+      <span class="label">Tier A · pts</span>
+    </div>
+  </div>
+
+  <!-- Sticky Nav -->
+  <nav class="section-nav" id="section-nav">
+    <a class="nav-btn" href="#signals">What's New</a>
+    <a class="nav-btn" href="#snapshot">Snapshot</a>
+    <a class="nav-btn" href="#scorecard">ICP Score</a>
+    <a class="nav-btn" href="#fit">Why a Fit</a>
+    <a class="nav-btn" href="#opps">Opp History</a>
+    <a class="nav-btn" href="#flags">Flags</a>
+    <a class="nav-btn" href="#dms">Decision Makers</a>
+    <a class="nav-btn" href="#plants">Plant Footprint</a>
+    <a class="nav-btn" href="#plays">Sales Plays</a>
+    <a class="nav-btn" href="#talktrack">Talk Track</a>
+    <a class="nav-btn" href="#questions">Open Questions</a>
+  </nav>
+
+  <!-- What's New -->
+  <div class="whats-new" id="signals">
+    <div class="wn-header">⚡ What's New — Signals for Outreach</div>
+    <ul>
+      <li><strong>Active hiring across multiple MN and WI plants (2025).</strong> Seneca Foods currently lists open roles for Plant Maintenance Technician, Production Supervisor, and Equipment Operators at its Blue Earth, MN and Berlin, WI facilities — strong indicators of active line investment and capital spend decisions at the plant level.</li>
+      <li><strong>Expanded alliance with B&amp;G Foods for vegetable distribution.</strong> Seneca announced and maintains an ongoing product alliance providing vegetable products under B&amp;G brand relationships — expanding SKU volume through its manufacturing facilities creates new throughput and automation demand across packaging lines.</li>
+      <li><strong>Recent PKG purchase at Cumberland, WI location ($158K, early 2025).</strong> RMH already has an active relationship at the Cumberland plant. The account has recent PKG history but no Crane, MHE, Robotics, or Scales revenue — creating a clear cross-sell window across 17 target-state locations.</li>
+      <li><strong>Seneca's private label market position drives volume pressure on packaging lines.</strong> As North America's largest private label canned vegetable supplier, Seneca operates high-volume seasonal production cycles (peak harvest months). Any capacity constraints or downtime at a filling/packaging line has direct revenue impact — making reliability and speed of service a strong RMH hook.</li>
+      <li><strong>24 total plant locations nationally; 17 in RMH's core MN/WI/IL territory.</strong> The majority of Seneca's US footprint sits squarely in RMH's core states. RMH currently serves just one of those 17 sites (Cumberland, WI). This is the single largest plant penetration opportunity in RMH's A-tier pipeline.</li>
+    </ul>
+  </div>
+
+  <!-- Section 1: Snapshot -->
+  <div class="section" id="snapshot">
+    <div class="section-header">Section 1 · Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item"><div class="snap-label">Organization</div><div class="snap-value">Seneca Foods Corporation</div></div>
+        <div class="snap-item"><div class="snap-label">RMH Charge HQ</div><div class="snap-value">Cumberland, WI</div></div>
+        <div class="snap-item"><div class="snap-label">Corporate HQ</div><div class="snap-value">Fairport, New York</div></div>
+        <div class="snap-item"><div class="snap-label">Primary Vertical</div><div class="snap-value highlight">Food Manufacturing (NAICS 311)</div></div>
+        <div class="snap-item"><div class="snap-label">What They Produce</div><div class="snap-value highlight">Food &amp; Bev — Canned / Frozen Vegetables, Canned Fruit</div></div>
+        <div class="snap-item"><div class="snap-label">Brands</div><div class="snap-value">Libby's, Aunt Nellie's, Green Giant, READ, Seneca Farms, Green Valley</div></div>
+        <div class="snap-item"><div class="snap-label">Annual Revenue</div><div class="snap-value highlight">~$1.58B (Over $1B band)</div></div>
+        <div class="snap-item"><div class="snap-label">Employees</div><div class="snap-value">1,001–5,000</div></div>
+        <div class="snap-item"><div class="snap-label">Ownership</div><div class="snap-value">Privately Owned</div></div>
+        <div class="snap-item"><div class="snap-label">Total Plant Locations</div><div class="snap-value highlight">24 nationally · 17 in RMH target states</div></div>
+        <div class="snap-item"><div class="snap-label">Sales Channel</div><div class="snap-value highlight">Direct to Consumer &amp; Retail (100% ICP score)</div></div>
+        <div class="snap-item"><div class="snap-label">RFM Segment</div><div class="snap-value" style="color:var(--amber);">Can't Lose Them</div></div>
+        <div class="snap-item"><div class="snap-label">Account Type</div><div class="snap-value">Customer (Charge #2164164)</div></div>
+        <div class="snap-item"><div class="snap-label">RMH Revenue (on record)</div><div class="snap-value">$158,278 (PKG only · Cumberland plant)</div></div>
+        <div class="snap-item"><div class="snap-label">Total Revenue Potential</div><div class="snap-value highlight">$163,575 incremental</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: ICP Scorecard -->
+  <div class="section" id="scorecard">
+    <div class="section-header">Section 2 · ICP Fit Scorecard</div>
+    <div class="section-body">
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-label">NAICS Industry (Food Manufacturing — 311)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">25 <span class="score-max">/ 25</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">What They Produce (Food &amp; Bev)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">15 <span class="score-max">/ 15</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">Sales Channel (Direct to Consumer &amp; Retail)</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">15 <span class="score-max">/ 15</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">HQ Revenue Band (Over $1B → 70% of 15pts)</div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:70%;"></div></div>
+          <div class="score-pts">7.5 <span class="score-max">/ 15</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">Growth Classification (10% or less → 70% of 10pts)</div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:70%;"></div></div>
+          <div class="score-pts">7 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">Number of Plants (24 → 6–10 band scores 100%; 10+ = 80%)</div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:75%;"></div></div>
+          <div class="score-pts">7.5 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">HQ State Name (New York — not in core states)</div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:0%;"></div></div>
+          <div class="score-pts" style="color:var(--amber);">0 <span class="score-max">/ 25</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label">Ownership Class (Privately owned — not PE-backed)</div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:0%;"></div></div>
+          <div class="score-pts" style="color:var(--amber);">0 <span class="score-max">/ —</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">Total ICP Score</div>
+          <div class="score-total-pts">72 / 100 pts · <strong style="font-size:14px;color:var(--green);">Tier A</strong></div>
+        </div>
+      </div>
+      <p class="score-note">Tier A threshold = 70 pts. Seneca hits A by 2 points — primarily on the strength of perfect NAICS (Food Mfg), perfect product match (Food &amp; Bev), and perfect channel (D2C + Retail). The 25-pt HQ State penalty (NY-based corporate HQ) is why this is a narrow A, not a dominant one. However, with 17 plants physically located in MN, WI, and IL, the operational footprint is deeply in-territory regardless of corporate HQ. This is a strong field account, not just a scoring artifact.</p>
+    </div>
+  </div>
+
+  <!-- Section 3: Why a Fit -->
+  <div class="section" id="fit">
+    <div class="section-header">Section 3 · Why Seneca Foods Is a Fit for RMH</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><span class="fit-icon">✓</span><div><strong>24 plant locations = the highest multi-site expansion opportunity in RMH's A-tier pipeline.</strong> Seneca's manufacturing footprint is one of the densest in RMH's target universe. With 17 plants in MN, WI, and IL and RMH currently serving only 1 (Cumberland, WI), there are 16 active unserved sites — each a potential Cranes, MHE, PKG, Robotics, or Scales transaction.</div></li>
+        <li><span class="fit-icon">✓</span><div><strong>Food &amp; Bev manufacturing is RMH's single highest-revenue NAICS — 100% industry score.</strong> Seneca's canning and freezing operations match the exact production environment where RMH Cranes, conveyors, and packaging systems have the deepest installed base and the strongest reference case density.</div></li>
+        <li><span class="fit-icon">✓</span><div><strong>D2C + Retail channel means high-volume, high-consequence packaging lines.</strong> Seneca ships to retail and directly to consumers — packaging line downtime is immediately visible to end customers. This creates urgency and a strong business case for RMH service contracts, spare parts programs, and systems redundancy that typical B2B manufacturers don't have.</div></li>
+        <li><span class="fit-icon">✓</span><div><strong>Existing PKG spend ($158K at Cumberland) confirms RMH is already qualified and approved as a vendor.</strong> The most common barrier to multi-site expansion — vendor approval — is already cleared. The rep doesn't need to re-establish RMH's credibility; they just need to map Cumberland's success to the next plant in the conversation.</div></li>
+        <li><span class="fit-icon">✓</span><div><strong>Privately owned, $1.58B revenue, low growth (&lt;10%) = capital efficiency buyer, not growth acquirer.</strong> Seneca will prioritize ROI and reliability arguments over innovation. RMH's positioning should lead with uptime, parts availability, and service SLA — not new technology. This is an account that rewards trusted vendor relationships, not flashy demos.</div></li>
+        <li><span class="fit-icon">✓</span><div><strong>Robotics is the largest untapped potential at $97K — and seasonal peak operations create the economic case.</strong> Seneca's harvest-season production spikes are a textbook robotics and automation trigger. High seasonal labor demand + private label volume pressure = the exact conditions where RMH Robotics ROI is easiest to quantify.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 4: Opp History -->
+  <div class="section" id="opps">
+    <div class="section-header">Section 4 · Past Opportunity Notes &amp; Account History</div>
+    <div class="section-body">
+      <table class="opp-table" style="margin-bottom:12px;">
+        <thead>
+          <tr><th>Product Line</th><th>Location</th><th>Revenue on Record</th><th>Status</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PKG (Packaging)</td>
+            <td>Cumberland, WI</td>
+            <td>$158,278</td>
+            <td><span class="opp-status status-active">Active Customer</span></td>
+            <td>RMH's sole active site. Charge account #2164164. Tenure 7 months as of Feb 2025. Recent acquisition — likely still in early relationship stage.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="net-new-box">
+        <strong>16 Additional Sites — No RMH Contact or Revenue on Record.</strong><br><br>
+        RMH has one active foothold at Seneca's Cumberland, WI packaging operation. The remaining 16 Seneca plants in MN, WI, and IL have no RMH transaction history. The play here is not prospecting from scratch — it's using the Cumberland relationship as a reference to unlock multi-site conversations.
+        <br><br>
+        <span style="color:var(--teal);font-weight:700;">Rep note:</span> Confirm who at Cumberland authorizes PKG purchases. That person may have a counterpart at other WI/MN plants or may have visibility into a plant operations network. The fastest path to site 2 is through the contact at site 1.
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Flags -->
+  <div class="section" id="flags">
+    <div class="section-header">Section 5 · Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="flag-row"><span class="flag-icon green">✓</span><div class="flag-text"><strong>Tier A confirmed at 72 pts.</strong> Scored above the 70-pt threshold. Qualifies for active pursuit with regular contact and dedicated rep coverage per RMH's best-practice guidelines for A-tier accounts.</div></li>
+        <li class="flag-row"><span class="flag-icon green">✓</span><div class="flag-text"><strong>$163,575 in untapped incremental potential identified.</strong> Robotics ($97K), MHE ($35K), Scales ($18K), and Cranes ($14K) represent the expansion runway. PKG potential is 0 because Cumberland is already buying — the base is captured, the upside is cross-sell.</div></li>
+        <li class="flag-row"><span class="flag-icon green">✓</span><div class="flag-text"><strong>Active job openings confirmed (Job Openings Y/N = Y).</strong> Current openings in plant maintenance and operations roles at multiple facilities signal active operational investment — favorable timing for RMH conversations about equipment, service, and systems.</div></li>
+        <li class="flag-row"><span class="flag-icon green">✓</span><div class="flag-text"><strong>17 of 24 plants physically located in RMH's core states (MN, WI, IL).</strong> Despite corporate HQ in NY, the operational footprint is almost entirely in-territory. Field rep coverage is directly applicable — no need for out-of-territory coordination to serve these sites.</div></li>
+        <li class="flag-row"><span class="flag-icon amber">!</span><div class="flag-text"><strong>RFM: "Can't Lose Them" — used to buy more frequently; recency declining.</strong> Cumberland was a more active account and recency has fallen. Confirm: Is Cumberland's PKG relationship still active and on-plan? Has the primary contact changed? A churn signal on the only current site would be a critical early warning — investigate before expanding the conversation.</div></li>
+        <li class="flag-row"><span class="flag-icon green">✓</span><div class="flag-text"><strong>Key decision makers identified via LinkedIn research.</strong> Cumberland Maintenance Manager (John Brom, 15 years in role), SVP Operations Timothy Nelson, and multiple named MN/WI plant managers confirmed via public profiles. See Section 6 for full contact details and approach guidance.</div></li>
+        <li class="flag-row"><span class="flag-icon amber">!</span><div class="flag-text"><strong>HQ State (New York) scored 0 pts — corporate decision-making may be centralized outside RMH's core territory.</strong> For large capital purchases (Cranes, Robotics), procurement or approval authority may reside in Fairport, NY. Field-level relationships at the plant are essential for smaller transactions; understand the approval chain before proposing larger systems.</div></li>
+        <li class="flag-row"><span class="flag-icon amber">!</span><div class="flag-text"><strong>No liquid fill capability identified.</strong> Seneca is canned/frozen, not liquid fill — this eliminates one of RMH's differentiated product angles. Position around dry/bulk canning line equipment, conveyors, palletizers, and packaging automation rather than fill-to-palletize solutions.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 6: Decision Makers -->
+  <div class="section" id="dms">
+    <div class="section-header">Section 6 · Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">John Brom</div>
+            <div class="dm-title">Maintenance Manager · Cumberland, WI · 15 years in role</div>
+            <div class="dm-note"><strong>Your warmest entry point — the most likely buyer for the existing PKG account.</strong> John has been Maintenance Manager at Cumberland since 2010, previously Production Supervisor at the same site. Engineering/Industrial Management background (U of Missouri). With 15 years in seat, he owns the vendor relationships and equipment decisions at Cumberland. Start here: confirm the PKG relationship is healthy, then ask for a warm intro to his MN counterparts. LinkedIn: linkedin.com/in/john-brom-0b8183a8</div>
+          </div>
+          <div class="dm-role-badge influencer">Warmest Entry Point</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Timothy R. Nelson</div>
+            <div class="dm-title">SVP Operations · Seneca Foods Corporate · Fairport, NY</div>
+            <div class="dm-note">SVP Operations since 2018, COO-equivalent for manufacturing. Critically: he was the Plant Manager at Blue Earth, Montgomery, and Glencoe MN from 1999–2008 — he knows those sites intimately. Not the first call for a single-plant transaction, but if RMH can get to a multi-site MHE or Robotics conversation, Timothy is the executive who can unlock it. Approach through plant-level relationships first.</div>
+          </div>
+          <div class="dm-role-badge primary">SVP Operations</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Blake Bordson</div>
+            <div class="dm-title">Plant Manager · Montgomery, MN · Since Apr 2022</div>
+            <div class="dm-note">Currently Plant Manager at Montgomery, MN — one of RMH's 6 unserved MN sites. Previously Plant Manager at Clyman, WI (2020–2022) and Plant Superintendent at Blue Earth (2017–2018). Deep operations background across multiple Seneca Midwest sites. Strong first call for a MN expansion conversation — he knows both WI and MN operations. LinkedIn: linkedin.com/in/blake-bordson-53791658</div>
+          </div>
+          <div class="dm-role-badge influencer">MN Plant Manager</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Zach Woytcke</div>
+            <div class="dm-title">Plant Manager · Glencoe, MN · Since Mar 2022</div>
+            <div class="dm-note">Plant Manager at Glencoe, MN since March 2022. Previously Plant Manager at Montgomery MN (2020–2022). Good second call for MN — Glencoe is one of 6 MN sites and Zach has cross-site Seneca experience. LinkedIn: linkedin.com/in/zach-woytcke-72974a142</div>
+          </div>
+          <div class="dm-role-badge influencer">MN Plant Manager</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Jarrod Peters</div>
+            <div class="dm-title">Plant Manager · Baraboo, WI · Since Aug 2025</div>
+            <div class="dm-note">New Plant Manager at Baraboo, WI as of August 2025 — a recent promotion from Plant Superintendent (7+ years at Baraboo). New managers often reassess vendor relationships in their first year, creating a natural entry opportunity. Also recently liked Seneca's Berlin, WI float post — network suggests WI plant community is active. LinkedIn: linkedin.com/in/jarrod-peters-84523848</div>
+          </div>
+          <div class="dm-role-badge influencer">WI Plant Manager</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Norb Hughes</div>
+            <div class="dm-title">Plant Manager · Oakfield, WI · Since Oct 2018</div>
+            <div class="dm-note">Long-tenured Plant Manager at Oakfield, WI (since 2018). Also holds Plant Superintendent title concurrently — runs a tight operation. With nearly 7 years in the role, Norb has established vendor preferences; approach will need to demonstrate a clear differentiation from current suppliers. LinkedIn: linkedin.com/in/norb-hughes-32080b118</div>
+          </div>
+          <div class="dm-role-badge influencer">WI Plant Manager</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Dave Elfstrand</div>
+            <div class="dm-title">Director, Western Vegetable Operations · Le Sueur, MN</div>
+            <div class="dm-note">Director-level operations leader based at Le Sueur, MN — oversees multiple western vegetable plants. Previously Plant Manager at Rochester, MN (2011–2020). This is the regional operations authority above individual plant managers for the MN cluster. A conversation with Dave could unlock multiple MN sites simultaneously. Higher-value target but requires a warmer intro to access. LinkedIn: linkedin.com/in/dave-elfstrand-a4157412</div>
+          </div>
+          <div class="dm-role-badge primary">MN Regional Director</div>
+        </div>
+        <div class="dm-card">
+          <div>
+            <div class="dm-name">Darin Nelson</div>
+            <div class="dm-title">Maintenance Manager · Janesville, WI · Since May 2022</div>
+            <div class="dm-note">Maintenance Manager at Janesville, WI — previously Sanitation/Production Supervisor at the same site for 7 years. Long Seneca tenure means he knows the equipment well. Janesville is one of RMH's unserved WI sites. Good target for a first maintenance/service conversation — Maintenance Managers are often more receptive to new vendor conversations than Plant Managers. LinkedIn: linkedin.com/in/darin-nelson-958795118</div>
+          </div>
+          <div class="dm-role-badge influencer">WI Maintenance Mgr</div>
+        </div>
+      </div>
+      <p class="small-note">Contacts sourced via LinkedIn public profiles (May 2025). Verify current roles before outreach — plant manager assignments at Seneca rotate frequently. Do not cite this brief as the source of contact information in outreach.</p>
+    </div>
+  </div>
+
+  <!-- Section 7: Plant Footprint (RMH-specific) -->
+  <div class="section" id="plants">
+    <div class="section-header">Section 7 · Plant Footprint &amp; RMH Coverage Map</div>
+    <div class="section-body">
+      <div class="plant-summary-grid">
+        <div class="plant-stat"><div class="ps-num">24</div><div class="ps-label">Total Plants</div></div>
+        <div class="plant-stat"><div class="ps-num" style="color:var(--teal);">17</div><div class="ps-label">In RMH Target States</div></div>
+        <div class="plant-stat"><div class="ps-num" style="color:var(--green);">1</div><div class="ps-label">Currently Served</div></div>
+        <div class="plant-stat"><div class="ps-num" style="color:var(--amber);">16</div><div class="ps-label">Unserved in Territory</div></div>
+      </div>
+      <table class="plant-table">
+        <thead>
+          <tr><th>Location</th><th>State</th><th>RMH Served?</th><th>Priority</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1055 Elm Street, Cumberland, WI 54829</td><td><span class="state-chip">WI</span></td><td><span class="plant-served yes">Active — PKG</span></td><td>Protect + expand to Cranes/MHE</td></tr>
+          <tr><td>W1102 Buttercup Court, Berlin, WI 54923</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>High — WI territory, close to base</td></tr>
+          <tr><td>W13380 Chicago Avenue, Hancock, WI 54943</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>High — WI territory</td></tr>
+          <tr><td>801 West Commerce Street, Cambria, WI 53923</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>High — WI territory</td></tr>
+          <tr><td>437 Williams Street, Cambria, WI 53923</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>High — 2nd Cambria site</td></tr>
+          <tr><td>640 Caughlin Road, Clyman, WI 53016</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>Medium</td></tr>
+          <tr><td>500 South Clark Street, Mayville, WI 53050</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>Medium</td></tr>
+          <tr><td>477 Douglas Street, Ripon, WI 54971</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>Medium</td></tr>
+          <tr><td>Baraboo, WI 53913</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>Medium</td></tr>
+          <tr><td>418 East Conde Street, Janesville, WI 53546</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>Medium</td></tr>
+          <tr><td>229 West Waupun Street, Oakfield, WI 53065</td><td><span class="state-chip">WI</span></td><td><span class="plant-served no">Unserved</span></td><td>Medium</td></tr>
+          <tr><td>8519 Eagle Point Blvd, Lake Elmo, MN 55042</td><td><span class="state-chip" style="background:var(--teal);">MN</span></td><td><span class="plant-served no">Unserved</span></td><td><strong>Priority — MN anchor site</strong></td></tr>
+          <tr><td>710 East 7th Street, Blue Earth, MN 56013</td><td><span class="state-chip" style="background:var(--teal);">MN</span></td><td><span class="plant-served no">Unserved</span></td><td><strong>Priority — active hiring signal</strong></td></tr>
+          <tr><td>600 5th Street SE, Montgomery, MN 56069</td><td><span class="state-chip" style="background:var(--teal);">MN</span></td><td><span class="plant-served no">Unserved</span></td><td>High</td></tr>
+          <tr><td>308 20th Street SE, Rochester, MN 55904</td><td><span class="state-chip" style="background:var(--teal);">MN</span></td><td><span class="plant-served no">Unserved</span></td><td>High</td></tr>
+          <tr><td>1201 Vine Street, Le Sueur, MN 56058</td><td><span class="state-chip" style="background:var(--teal);">MN</span></td><td><span class="plant-served no">Unserved</span></td><td>High</td></tr>
+          <tr><td>101 8th Street West, Glencoe, MN 55336</td><td><span class="state-chip" style="background:var(--teal);">MN</span></td><td><span class="plant-served no">Unserved</span></td><td>High</td></tr>
+          <tr><td>606 South Tremont Avenue, Princeville, IL 61559</td><td><span class="state-chip" style="background:#3A5A8A;">IL</span></td><td><span class="plant-served no">Unserved</span></td><td>High — IL territory</td></tr>
+        </tbody>
+      </table>
+      <p class="small-note">Revenue potential modeled at ~$163K incremental per the RMH scoring model, scaled against Seneca's revenue band. Actual site-level potential varies by plant size, current equipment age, and production volume. Validate with plant manager before proposing.</p>
+
+      <!-- Potential by Product -->
+      <div style="margin-top:16px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--mid);margin-bottom:8px;">Estimated Incremental Potential by RMH Product Line</div>
+        <div class="potential-grid">
+          <div class="pot-item highlight-pot"><div class="pot-num">$97K</div><div class="pot-label">Robotics</div></div>
+          <div class="pot-item highlight-pot"><div class="pot-num">$35K</div><div class="pot-label">MHE</div></div>
+          <div class="pot-item"><div class="pot-num">$18K</div><div class="pot-label">Scales</div></div>
+          <div class="pot-item"><div class="pot-num">$14K</div><div class="pot-label">Cranes</div></div>
+          <div class="pot-item"><div class="pot-num">$0</div><div class="pot-label">PKG (captured)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 8: Sales Plays -->
+  <div class="section" id="plays">
+    <div class="section-header">Section 8 · Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-name">Play 1 · Cumberland Lever → MN Site Expansion</div>
+          <div class="play-tag">Expansion</div>
+        </div>
+        <div class="play-body">
+          <p class="play-context">RMH has a live PKG relationship at the Cumberland, WI plant. The fastest path to sites 2–17 is through that relationship — not a cold call into Minnesota. This play uses the existing account as a lever to get a warm introduction to Seneca's MN operations.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Confirm the Cumberland relationship is healthy before expanding.</strong> Call or visit the Cumberland contact and validate: Is the PKG installation performing well? Has their team been happy with RMH's service response? Any unresolved issues? A strained relationship at site 1 will torpedo the expansion conversation before it starts.</li>
+            <li data-step="2"><strong>Ask directly: "Who runs your Minnesota plants?"</strong> The magic question is: "Seneca has a number of plants in Minnesota that are very similar to Cumberland — do you know who handles equipment and maintenance decisions out there? I'd love an introduction." If they're willing, one email from the Cumberland contact to a Blue Earth or Lake Elmo plant manager is worth 10 cold calls.</li>
+            <li data-step="3"><strong>Introduce MHE and Robotics as the cross-sell from PKG.</strong> At Cumberland you did packaging. At Blue Earth and Lake Elmo, lead with MHE and Robotics — both represent the largest unrealized potential ($132K combined) and food manufacturing operations in those plants will have immediate context for the ROI argument.</li>
+            <li data-step="4"><strong>Quantify using Cumberland.</strong> "At Cumberland we've been providing [PKG service/product] for 7 months. If we could bring that same relationship to your Blue Earth and Lake Elmo plants, the model suggests there's roughly $35K–$97K in MHE and automation potential per year — across just those two sites."</li>
+            <li data-step="5"><strong>Ask for a plant visit, not a Zoom call.</strong> Food manufacturing decision-making happens on the plant floor, not in conference rooms. Ask for a 45-minute walk-through at one MN site. "Would you be open to having us visit Blue Earth so we can see your lines and come back with a specific recommendation?" This is the next step that counts.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-name">Play 2 · Robotics ROI for Seasonal Peak Operations</div>
+          <div class="play-tag">New Logo (Product Line)</div>
+        </div>
+        <div class="play-body">
+          <p class="play-context">Seneca operates high-volume harvest-season production cycles — peak periods where labor constraints and throughput pressure are most acute. This play positions RMH Robotics specifically against that operational challenge, and can be run independently of the Cumberland relationship with any MN or WI plant manager.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Lead with the harvest-season labor challenge, not the robot.</strong> Open with: "We work with a number of food manufacturers in Minnesota and Wisconsin — canning and frozen in particular. The consistent theme we hear in August through October is that throughput on the packing line is the constraint, not the harvest. We've been helping companies solve that with automation that pays for itself before the end of the season."</li>
+            <li data-step="2"><strong>Ask: "What does your peak season look like, and where does the line slow down?"</strong> Get them to articulate their own throughput problem. Ideal answer: a palletizing or end-of-line bottleneck during corn, pea, or bean pack season. That is the exact use case for RMH Robotics.</li>
+            <li data-step="3"><strong>Position RMH Robotics against the labor cost, not the capital cost.</strong> In food manufacturing, the CFO question is: "What does a season of overtime and temp labor cost versus a robotic palletizer?" Frame the ROI as a labor displacement calculation, not a technology investment. For a $1.58B company, the capital approval threshold is not the obstacle — labor cost certainty is the argument.</li>
+            <li data-step="4"><strong>Use the $97K modeled potential as a conversation anchor.</strong> "Based on what comparable food manufacturers of your size have done with us, there's typically $75K–$100K per year in robotics and automation opportunities across a plant of this type. We'd want to validate that on-site — does that scale of investment have a path to approval at this plant?"</li>
+            <li data-step="5"><strong>Close on a site assessment, not a proposal.</strong> "The most useful thing we can do at this stage is spend two hours on your line and come back to you with a prioritized recommendation — no cost, no commitment. Would next Tuesday or Thursday work for a walk-through?"</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 9: Talk Track -->
+  <div class="section" id="talktrack">
+    <div class="section-header">Section 9 · Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        <p>"Hi [Name], I'm [Rep] with RMH Systems — we specialize in material handling, packaging, and automation equipment for food and beverage manufacturers across the Midwest. We already work with your team at the Cumberland, Wisconsin facility, and I'm reaching out because Seneca's plants here in Minnesota are right in our core service area."</p>
+        <p>"I was looking at your operations and noticed Seneca has six plants within an hour or two of our service teams — Blue Earth, Le Sueur, Montgomery, Rochester, Glencoe, and Lake Elmo. That kind of production density is exactly where we've been able to help companies reduce downtime and get faster response on equipment issues, especially during peak pack season when you can't afford a line to be down for half a day waiting on a tech."</p>
+        <p>"I'm not calling to pitch you anything specific today — I'd actually just like to understand how you're handling equipment service and maintenance right now at your Minnesota sites, and whether faster response time or automation capacity is something you're thinking about heading into this year's season. Would you have 15 minutes this week or next?"</p>
+      </div>
+      <p class="small-note">Adjust based on who picks up: Plant Manager (lead with uptime and service response), Maintenance Lead (lead with parts availability and response SLA), VP Operations (lead with multi-site program efficiency and total cost of ownership). Core hook stays the same: 6 Seneca MN plants + RMH already in at Cumberland = fastest service response in the region.</p>
+    </div>
+  </div>
+
+  <!-- Section 10: Open Questions -->
+  <div class="section" id="questions">
+    <div class="section-header">Section 10 · Open Questions for First Call</div>
+    <div class="section-body">
+      <ol class="q-list">
+        <li>Who is the primary contact at the Cumberland, WI plant who authorized the PKG purchase — and are they still in that role? Is that relationship in good standing before we try to expand it?</li>
+        <li>Which equipment vendors or distributors does Seneca currently use for Cranes, conveyors, and MHE at the MN plants — and is there an incumbent relationship that's locked in, or are these sites buying opportunistically?</li>
+        <li>How does capital equipment approval work at Seneca — does a plant manager have authority to approve a $50–100K MHE or Robotics purchase, or does it go to a regional or corporate ops leader in Fairport?</li>
+        <li>What does Seneca's peak production season look like at the MN sites — and where are the current throughput or labor constraints on the packing and palletizing end of the line?</li>
+        <li>Are the MN and WI plants on a maintenance budget cycle that aligns to a calendar year or fiscal year — and is there remaining budget available in 2025, or is this a 2026 conversation?</li>
+        <li>Has Seneca evaluated robotics or automation at any of the MN sites in the last 2–3 years? If so, what happened — was it evaluated and deferred, or is it a greenfield conversation at this plant?</li>
+        <li>Is there a Seneca corporate procurement or preferred vendor program that RMH would need to qualify for before selling across multiple sites — or can each plant manager engage RMH independently?</li>
+      </ol>
+    </div>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<!-- ══════════════════════════════════════════════
+     REP ASSISTANT — Floating button + panel
+══════════════════════════════════════════════ -->
+
+<button id="rep-assistant-btn" onclick="raOpen()">
+  <div class="btn-dot"></div>
+  💬 Rep Assistant
+</button>
+
+<div id="ra-overlay" onclick="raClose()"></div>
+
+<div id="rep-assistant-panel">
+  <div class="ra-header">
+    <div class="ra-header-top">
+      <div class="ra-title"><div class="ra-dot"></div>Rep Assistant &middot; Seneca Foods</div>
+      <button class="ra-close" onclick="raClose()">&#x2715;</button>
+    </div>
+    <div class="ra-context-pill">&#9679;&nbsp; Tier A · 72 pts · $158K PKG (Cumberland) · 17 plants in territory · $163K incremental potential · Can't Lose Them RFM</div>
+  </div>
+
+  <div class="ra-quick-actions">
+    <div class="ra-quick-label">Quick actions &mdash; tap to generate</div>
+    <div class="ra-quick-grid">
+      <button class="ra-quick-btn" onclick="raQuick('q1')">Draft Cumberland expansion email</button>
+      <button class="ra-quick-btn" onclick="raQuick('q2')">MN site cold call script</button>
+      <button class="ra-quick-btn" onclick="raQuick('q3')">Robotics ROI pitch for food mfg</button>
+      <button class="ra-quick-btn" onclick="raQuick('q4')">Pre-call agenda for plant visit</button>
+      <button class="ra-quick-btn" onclick="raQuick('q5')">Multi-site expansion LinkedIn note</button>
+    </div>
+  </div>
+
+  <div class="ra-messages" id="ra-messages">
+    <div class="ra-msg system-note">Full Seneca Foods brief loaded — ICP score (72 pts Tier A), 17 plants in MN/WI/IL territory, Cumberland PKG relationship, $163K incremental potential, sales plays, talk track, and 7 open questions. Ask me anything or tap a quick action above.</div>
+  </div>
+
+  <div class="ra-typing" id="ra-typing">Thinking<span>.</span><span>.</span><span>.</span></div>
+
+  <div class="ra-input-area">
+    <div class="ra-input-row">
+      <textarea id="ra-input" placeholder="Ask anything about this account…" rows="1" onkeydown="raKey(event)" oninput="raResize(this)"></textarea>
+      <button id="ra-send" onclick="raSend()">Send</button>
+    </div>
+    <div class="ra-footer-note">Powered by Claude &middot; RMH Systems Internal Use Only &middot; Context: Seneca Foods AIB</div>
+  </div>
+</div>
+
+<script>
+// ── Scroll-Spy Nav ─────────────────────────────
+var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','plants','plays','talktrack','questions'];
+window.addEventListener('scroll', function() {
+  var scrollY = window.scrollY + 100;
+  var current = sections[0];
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollY) current = id;
+  });
+  document.querySelectorAll('.nav-btn').forEach(function(btn) {
+    var href = btn.getAttribute('href').replace('#','');
+    btn.classList.toggle('active', href === current);
+  });
+});
+
+// ── Rep Assistant ─────────────────────────────────────────────
+var raHistory = [];
+var raLoading = false;
+
+var RA_SYSTEM = `You are the RMH Systems Rep Assistant for Seneca Foods Corporation. You have deep knowledge of this specific account and help sales reps prepare for calls, draft outreach, and strategize on the account.
+
+ACCOUNT CONTEXT:
+- Account: Seneca Foods Corporation
+- Account Type: Existing Customer — Charge #2164164
+- ICP Score: 72 pts / 100 — Tier A (threshold: 70)
+- HQ: Fairport, NY (corporate); Cumberland, WI (RMH charge address)
+- Industry: Food Manufacturing (NAICS 311) — 100% ICP score
+- Revenue: ~$1.58 billion (privately owned)
+- Employees: 1,001–5,000
+- What They Produce: Canned/frozen vegetables and canned fruit — brands: Libby's, Aunt Nellie's, Green Giant, READ, Seneca Farms, Green Valley
+- Sales Channel: Direct to Consumer and Retail (100% ICP score)
+- Growth: 10% or less — modest growth, capital efficiency mindset
+
+ICP SCORING BREAKDOWN (all in raw points out of 100 max):
+- NAICS Food Manufacturing: 25/25 (100%)
+- What They Produce (Food/Bev): 15/15 (100%)
+- Sales Channel (D2C + Retail): 15/15 (100%)
+- HQ Revenue Band (>$1B): 7.5/15 (70% — $1B+ band scores 70%)
+- Growth Classification (≤10%): 7/10 (70%)
+- Number of Plants (24 plants — 10+ band = 80%): 7.5/10 (75%)
+- HQ State (New York — not in core states): 0/25 (0% penalty)
+- Ownership Class (privately owned — not PE-backed): 0 pts
+- TOTAL: 72/100 — Tier A
+
+PLANT FOOTPRINT (the key expansion asset):
+- 24 total plants nationwide
+- 17 plants in RMH target states (MN, WI, IL)
+- Currently served: 1 plant only — Cumberland, WI (PKG purchases only)
+- Unserved in territory: 16 plants
+MN plants (6): Lake Elmo, Blue Earth, Montgomery, Rochester, Le Sueur, Glencoe
+WI plants (10, unserved): Berlin, Hancock, Cambria (2 sites), Clyman, Mayville, Ripon, Baraboo, Janesville, Oakfield
+IL plants (1): Princeville
+
+CURRENT RMH REVENUE:
+- Total on record: $158,278 (PKG line only, Cumberland plant)
+- Tenure: 7 months (acquired Feb 2025)
+- All other product lines: $0 revenue — complete cross-sell whitespace
+
+INCREMENTAL REVENUE POTENTIAL (by product line):
+- Robotics: $97,000 (largest opportunity — seasonal food mfg is ideal automation use case)
+- MHE (Material Handling Equipment): $35,000
+- Scales: $17,500
+- Cranes: $14,000
+- PKG: $0 (already captured at Cumberland)
+- TOTAL INCREMENTAL: ~$163,575
+
+RFM SEGMENTATION:
+- Segment: "Can't Lose Them" — used to buy more frequently/recently, has fallen off
+- Definition: Customers who used to purchase quite often but haven't been buying recently
+- Action required: Re-engage with clear value messaging; confirm the Cumberland relationship is still healthy before expanding
+
+DECISION MAKERS (researched via LinkedIn — verify before outreach):
+- Paul Palmby — President & CEO (corporate, Fairport NY — not first call)
+- Timothy R. Nelson — SVP Operations (COO-equivalent; was Plant Manager at Blue Earth/Montgomery/Glencoe MN 1999–2008 — knows those sites personally)
+- Dave Elfstrand — Director, Western Vegetable Operations, Le Sueur MN — regional authority over multiple MN plants; previously Rochester Plant Manager
+- John Brom — Maintenance Manager, Cumberland WI (15 years in role since 2010) — YOUR WARMEST ENTRY POINT; likely the PKG buyer
+- Blake Bordson — Plant Manager, Montgomery MN (since Apr 2022); previously Plant Manager Clyman WI and Superintendent Blue Earth MN
+- Zach Woytcke — Plant Manager, Glencoe MN (since Mar 2022); previously Plant Manager Montgomery MN
+- Jarrod Peters — NEW Plant Manager, Baraboo WI (since Aug 2025 — just promoted from Superintendent); new managers reassess vendors
+- Norb Hughes — Plant Manager, Oakfield WI (since Oct 2018)
+- Darin Nelson — Maintenance Manager, Janesville WI (since May 2022)
+
+KEY SIGNALS:
+1. Active hiring at Blue Earth, MN and Berlin, WI plants for maintenance and production roles — signals active equipment investment cycle
+2. B&G Foods product alliance ongoing — expanding SKU volume through Seneca facilities, increasing throughput/packaging line demand
+3. 16 of 17 target-state plants unserved by RMH despite active vendor relationship at Cumberland — clear expansion opportunity
+
+PLAY 1 — Cumberland Lever to MN Expansion:
+Use the Cumberland PKG relationship as the warm entry point. Confirm relationship health first, then ask the Cumberland contact for an introduction to MN plant managers. Lead with MHE and Robotics at MN sites. Quantify using Cumberland as a reference.
+
+PLAY 2 — Robotics ROI for Seasonal Peak Operations:
+Lead with the harvest-season labor/throughput problem (Aug–Oct peak). Position Robotics as a labor displacement ROI, not a technology investment. Close on a site assessment visit, not a proposal.
+
+TALK TRACK HOOK: "RMH is already in at Cumberland — 6 Seneca MN plants are in our core service area and we can have a tech on-site faster than any alternative. The question is whether the plant team would benefit from having that same relationship here."
+
+OPEN QUESTIONS (1st call must answer):
+1. Is the Cumberland contact still in role and relationship in good standing?
+2. Who are the incumbent equipment vendors at the MN plants (MHE/Cranes)?
+3. What is the capital approval chain — plant manager authority vs. corporate?
+4. What are the peak season throughput constraints at MN plants?
+5. Is there remaining 2025 budget or is this a 2026 planning conversation?
+6. Has robotics been evaluated at any MN sites in the last 2–3 years?
+7. Is there a corporate preferred vendor program RMH needs to qualify for?
+
+Your tone should be direct, practical, and rep-focused. You are a pre-call prep tool, not a marketing generator. Help the rep sound like they've done their homework without being creepy. When asked about contacts, use the named individuals above — John Brom at Cumberland is the warmest entry. Never fabricate contact details like phone numbers or email addresses. If asked for something you don't have data on, say so and suggest how to find it.`;
+
+var RA_QUICK_PROMPTS = {
+  'q1': "Draft a short, warm email from an RMH rep to the Cumberland plant contact. The goal is to (1) check in on the PKG installation's performance, (2) mention that RMH serves several other food manufacturers in Minnesota, and (3) ask if the contact would be willing to introduce us to whoever handles equipment decisions at the Blue Earth or Lake Elmo plant. Keep it under 150 words, conversational, not salesy.",
+  'q2': "Write a cold call script for an RMH rep calling the plant manager at Seneca's Blue Earth, MN facility. The rep does NOT have a warm introduction — this is a cold outreach. Lead with RMH's experience in food manufacturing in the region and the seasonal throughput challenge. Include a clear ask for a 15-minute conversation. The script should be under 90 seconds when read aloud.",
+  'q3': "Build a Robotics ROI pitch specifically for Seneca's food manufacturing context. Use a harvest-season framing — assume peak production from August through October, high-volume canning lines, and seasonal labor pressure. Show how to frame the ROI as a labor cost displacement argument rather than a capital technology investment. Include a rough numbers example a rep can use in conversation.",
+  'q4': "Create a pre-call agenda for a 45-minute plant visit at Seneca's Blue Earth, MN facility. Include: what to observe during the plant walk, the 3 questions to ask the plant manager before proposing anything, what product lines to mention and which to hold back, and how to close the visit with a specific next step. Format it as a checklist the rep can print and bring on-site.",
+  'q5': "Write a LinkedIn connection request note from an RMH rep to a Seneca Foods plant manager in Minnesota. Do NOT mention the Cumberland relationship (the plant manager may not know who RMH is). Lead with RMH's food manufacturing expertise in the region. Keep it under 300 characters (LinkedIn limit for connection notes)."
+};
+
+function raOpen() {
+  document.getElementById('rep-assistant-panel').classList.add('open');
+  document.getElementById('ra-overlay').style.display = 'block';
+  document.getElementById('rep-assistant-btn').style.display = 'none';
+  setTimeout(function() { document.getElementById('ra-input').focus(); }, 300);
+}
+
+function raClose() {
+  document.getElementById('rep-assistant-panel').classList.remove('open');
+  document.getElementById('ra-overlay').style.display = 'none';
+  document.getElementById('rep-assistant-btn').style.display = 'flex';
+}
+
+function raResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function raKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); raSend(); }
+}
+
+function raSetLoading(on) {
+  raLoading = on;
+  document.getElementById('ra-send').disabled = on;
+  document.getElementById('ra-input').disabled = on;
+  document.querySelectorAll('.ra-quick-btn').forEach(function(b) { b.disabled = on; });
+  var t = document.getElementById('ra-typing');
+  t.className = 'ra-typing' + (on ? ' visible' : '');
+  if (on) { var m = document.getElementById('ra-messages'); m.scrollTop = m.scrollHeight; }
+}
+
+function raAppend(role, text) {
+  var m = document.getElementById('ra-messages');
+  var d = document.createElement('div');
+
+  var isArtifact = role === 'assistant' && (
+    text.includes('Email 1') || text.includes('Subject:') ||
+    text.includes('AGENDA') || text.includes('## ') || text.length > 700
+  );
+
+  if (isArtifact) {
+    var label = 'Generated Artifact';
+    if (text.includes('Subject:') || text.includes('Email 1')) label = 'Email / Outreach Draft';
+    else if (text.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+    else if (text.toLowerCase().includes('agenda') || text.toLowerCase().includes('checklist')) label = 'Call / Visit Agenda';
+    else if (text.toLowerCase().includes('roi') || text.toLowerCase().includes('robotics')) label = 'ROI Pitch Notes';
+    else if (text.toLowerCase().includes('script')) label = 'Call Script';
+    d.className = 'ra-msg assistant';
+    d.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+    d.querySelector('.ra-artifact-body').textContent = text;
+  } else {
+    d.className = 'ra-msg ' + role;
+    d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  }
+
+  m.appendChild(d);
+  m.scrollTop = m.scrollHeight;
+}
+
+function raCopy(btn) {
+  var text = btn.closest('.ra-artifact').querySelector('.ra-artifact-body').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy all'; }, 2000);
+  });
+}
+
+async function raQuick(key) {
+  var prompt = RA_QUICK_PROMPTS[key];
+  raAppend('user', prompt.substring(0, 80) + '…');
+  await raCall(prompt);
+}
+
+async function raSend() {
+  var inp = document.getElementById('ra-input');
+  var text = inp.value.trim();
+  if (!text || raLoading) return;
+  inp.value = ''; inp.style.height = 'auto';
+  raAppend('user', text);
+  await raCall(text);
+}
+
+async function raCall(userMsg) {
+  raSetLoading(true);
+  raHistory.push({ role: 'user', content: userMsg });
+
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
+    });
+
+    if (!resp.ok || !resp.body) {
+      var errData = await resp.json().catch(function() { return {}; });
+      var d = document.createElement('div');
+      d.className = 'ra-msg error-note';
+      d.textContent = '⚠ Error: ' + (errData.error && errData.error.message ? errData.error.message : resp.statusText);
+      document.getElementById('ra-messages').appendChild(d);
+      document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+      raHistory.pop();
+      raSetLoading(false);
+      return;
+    }
+
+    var m = document.getElementById('ra-messages');
+    var streamDiv = document.createElement('div');
+    streamDiv.className = 'ra-msg assistant';
+    m.appendChild(streamDiv);
+
+    var fullText = '';
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, { stream: true });
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line.startsWith('data: ')) continue;
+        var jsonStr = line.slice(6);
+        if (jsonStr === '[DONE]') continue;
+        try {
+          var event = JSON.parse(jsonStr);
+          if (event.type === 'content_block_delta' && event.delta && event.delta.type === 'text_delta') {
+            fullText += event.delta.text;
+            streamDiv.textContent = fullText;
+            m.scrollTop = m.scrollHeight;
+          }
+        } catch (e) { /* skip malformed lines */ }
+      }
+    }
+
+    var isArtifact = fullText.includes('Subject:') || fullText.includes('AGENDA') ||
+      fullText.includes('## ') || fullText.toLowerCase().includes('script') || fullText.length > 700;
+
+    if (isArtifact) {
+      var label = 'Generated Artifact';
+      if (fullText.includes('Subject:') || fullText.toLowerCase().includes('email')) label = 'Email / Outreach Draft';
+      else if (fullText.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+      else if (fullText.toLowerCase().includes('agenda') || fullText.toLowerCase().includes('checklist')) label = 'Call / Visit Agenda';
+      else if (fullText.toLowerCase().includes('roi') || fullText.toLowerCase().includes('robotics')) label = 'ROI Pitch Notes';
+      else if (fullText.toLowerCase().includes('script')) label = 'Call Script';
+      streamDiv.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+      streamDiv.querySelector('.ra-artifact-body').textContent = fullText;
+    } else {
+      streamDiv.innerHTML = fullText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    }
+
+    raHistory.push({ role: 'assistant', content: fullText });
+    m.scrollTop = m.scrollHeight;
+
+  } catch (err) {
+    var d = document.createElement('div');
+    d.className = 'ra-msg error-note';
+    d.textContent = '⚠ Network error — check your connection and try again.';
+    document.getElementById('ra-messages').appendChild(d);
+    document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+    raHistory.pop();
+  }
+
+  raSetLoading(false);
+}
+</script>
+
+</body>
+</html>

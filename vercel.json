@@ -4,7 +4,8 @@
   "rewrites": [
     { "source": "/3m-demo", "destination": "/3m-demo.html" },
     { "source": "/beacon-medical", "destination": "/beacon-medical.html" },
-    { "source": "/tr-demo", "destination": "/tr-demo.html" }
+    { "source": "/tr-demo", "destination": "/tr-demo.html" },
+    { "source": "/seneca-foods", "destination": "/seneca-foods-corporation.html" }
   ],
   "functions": {
     "api/chat.js": { "maxDuration": 60 }
