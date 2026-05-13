@@ -169,17 +169,38 @@ let ACCOUNTS = [];
 
 // ─── SYSTEM PROMPT ────────────────────────────────────────────────────────────
 function buildSystemPrompt(filtered) {
-  const data = JSON.stringify(filtered.map(a=>({name:a.n,owner:a.o,prospect:a.p,vertical:a.v,bombora:a.bomb,contact:a.contact,title:a.title,spend:a.spend,angle:a.angle,briefUrl:a.url})));
-  return `You are an AI assistant embedded in the TWC Account Intelligence Explorer for Revenue Insight. You have access to all TWC account brief data.
+  const data = JSON.stringify(filtered.map(a => {
+    const c0 = (a.contacts||[])[0];
+    return {
+      name: a.n,
+      owner: a.o,
+      prospect: a.p,
+      vertical: a.v,
+      bombora: a.bomb,
+      spend: a.spend,
+      angle: a.angle,
+      briefUrl: a.url,
+      primaryContact: c0 ? {name: c0.name, title: c0.title, tags: c0.tags||[]} : {name: a.contact, title: a.title},
+      allContacts: (a.contacts||[]).map(c=>({name:c.name,title:c.title,tags:c.tags||[]})),
+      salesPlays: (a.sales_plays||[]).map(p=>({title:p.title,type:p.type,summary:p.summary})),
+      talkTrack: a.talk_track_opener||'',
+      openQuestions: a.open_questions||[],
+      tier: a.tier||''
+    };
+  }));
+  return `You are an AI assistant embedded in the TWC Account Intelligence Explorer for Revenue Insight. You have access to all TWC account brief data including contacts, sales plays, talk tracks, and discovery questions.
 
 CURRENT FILTERED DATASET (${filtered.length} accounts):
 ${data}
 
 INSTRUCTIONS:
 - Answer questions about accounts, reps, verticals, spend, Bombora signals, contacts, and sales angles
+- For "who do I call" questions: give name, title, tags from allContacts
+- For "sales plays" or "how do I approach" questions: cite salesPlays titles and summaries
+- For "what do I say" or "talk track" questions: use the talkTrack field
+- For "discovery questions" or "open questions": use the openQuestions field
 - Be concise and specific — cite account names, rep names, and dollar figures
 - When asked about prioritization, weight Bombora signal + named CMO/VP contact + spend level
-- When asked about a specific account, give: contact name/title, sales angle, and brief URL
 - Format lists clearly with dashes
 - Keep answers under 300 words unless the user asks for detail`;
 }
