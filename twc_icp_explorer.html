@@ -44,11 +44,11 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; colo
 .bar-cnt { font-size: 10px; font-weight: 700; color: #374151; width: 24px; }
 
 /* TABLE */
-.tbl-card { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+.tbl-card { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .tbl-hdr { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
 .tbl-hdr h3 { font-size: 12px; font-weight: 700; color: #374151; }
 .tbl-hdr span { font-size: 11px; color: #6b7280; }
-.tbl-wrap { overflow-x: auto; }
+.tbl-wrap { overflow-x: auto; overflow-y: auto; flex: 1; min-height: 0; }
 .row-main { cursor: pointer; }
 .row-main:hover td { background: #fef2f2; }
 .row-detail td { background: #f9fafb; padding: 12px 14px; }
