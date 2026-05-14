@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Tatra Shipping Co. | Magaya × Revenue Insight</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+  :root {
+    --navy: #0D2137; --teal: #1A5E6A; --green: #7AB648;
+    --body: #2D3E50; --mid: #4A5E70; --light: #F0F4F7;
+    --border: #D8E2EA; --white: #FFFFFF; --red-flag: #C0392B; --amber: #E67E22;
+  }
+
+  /* ── Portal Shell ── */
+  .portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .portal-header .brand span { color: var(--green); }
+  .portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+
+  /* ── Brief Header ── */
+  .brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+  .brief-header .tier-badge { background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 4px; white-space: nowrap; text-align: center; }
+  .brief-header .tier-badge .score { display: block; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; text-align: center; }
+  .brief-header .tier-badge .label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; text-align: center; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+  /* ── What's New ── */
+  .whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+  .whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .whats-new ul { list-style: none; padding: 0; }
+  .whats-new ul li { font-size: 13px; color: #5D4200; padding: 3px 0 3px 16px; position: relative; }
+  .whats-new ul li::before { content: "\25B6"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 5px; }
+  .whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+
+  /* ── Sections ── */
+  .section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+  .section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+  .section-body { padding: 16px 18px; }
+
+  /* ── Snapshot ── */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+  .snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .snap-item .snap-value.highlight { color: var(--teal); }
+
+  /* ── Scorecard ── */
+  .scorecard { display: flex; flex-direction: column; gap: 8px; }
+  .score-row { display: grid; grid-template-columns: 180px 1fr 80px; align-items: center; gap: 10px; }
+  .score-dim { font-size: 12px; color: var(--body); }
+  .score-dim-sub { font-size: 10px; color: var(--mid); }
+  .score-bar-wrap { height: 10px; background: var(--light); border-radius: 5px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 5px; background: var(--teal); }
+  .score-bar.partial { background: #A8D08D; }
+  .score-bar.low { background: var(--border); }
+  .score-pts { font-size: 12px; font-weight: 700; color: var(--navy); text-align: right; }
+  .score-max { font-size: 10px; color: var(--mid); font-weight: 400; }
+  .score-total-row { display: grid; grid-template-columns: 180px 1fr 80px; align-items: center; gap: 10px; margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--navy); }
+  .score-total-label { font-size: 12px; font-weight: 700; color: var(--navy); }
+  .score-total-pts { font-size: 16px; font-weight: 700; color: var(--teal); text-align: right; }
+  .score-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-top: 16px; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+  .score-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .tier-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; margin-left: 8px; }
+  .tier-a { background: #D5EFC0; color: #2A6018; }
+  .tier-b { background: #EBF1FB; color: #1A3D8B; }
+  .tier-c { background: #FFF3CD; color: #7A5200; }
+
+  /* ── Fit List ── */
+  .fit-list { list-style: none; padding: 0; }
+  .fit-list li { padding: 6px 0 6px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+  .fit-list li:last-child { border-bottom: none; }
+  .fit-list li::before { content: "\2713"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .fit-list li strong { color: var(--navy); }
+
+  /* ── Plays ── */
+  .play-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+  .play-card:last-child { margin-bottom: 0; }
+  .play-card-header { background: var(--navy); color: var(--white); padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+  .play-num { background: var(--green); color: var(--white); font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .play-title { font-size: 13px; font-weight: 700; }
+  .play-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; background: rgba(122,182,72,0.25); color: var(--green); margin-left: auto; }
+  .play-body { padding: 12px 14px; }
+  .play-body p { font-size: 13px; line-height: 1.55; color: var(--body); }
+  .play-steps { list-style: none; padding: 0; margin-top: 8px; }
+  .play-steps li { padding: 4px 0 4px 20px; position: relative; font-size: 13px; line-height: 1.55; color: var(--body); }
+  .play-steps li::before { content: attr(data-step); position: absolute; left: 0; width: 14px; height: 14px; background: var(--teal); color: var(--white); font-size: 9px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 6px; }
+
+  /* ── Decision Makers ── */
+  .dm-grid { display: flex; flex-direction: column; gap: 12px; }
+  .dm-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
+  .dm-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--teal); color: var(--white); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .dm-title { font-size: 12px; color: var(--mid); margin-top: 1px; }
+  .dm-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .dm-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+  .dm-tag.primary { background: var(--navy); color: var(--white); }
+  .dm-tag.influencer { background: var(--teal); color: var(--white); }
+  .dm-tag.find { background: var(--light); color: var(--mid); border: 1px solid var(--border); }
+  .dm-note { font-size: 12px; color: var(--mid); margin-top: 6px; font-style: italic; }
+
+  /* ── Expansion Section (Section 7) ── */
+  .expansion-intro { font-size: 13px; color: var(--body); margin-bottom: 14px; line-height: 1.6; }
+  .expansion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .exp-card { border-radius: 6px; padding: 12px 14px; border: 1px solid var(--border); }
+  .exp-card.owned { border-left: 4px solid var(--teal); background: #F0F8F8; }
+  .exp-card.opportunity { border-left: 4px solid var(--green); background: #F0F8E8; }
+  .exp-card.watch { border-left: 4px solid var(--amber); background: #FFF8E6; }
+  .exp-card-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
+  .exp-card-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .exp-card-body { font-size: 12px; color: var(--body); line-height: 1.55; }
+  .exp-arpu-bar { background: var(--navy); border-radius: 5px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .exp-arpu-label { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .exp-arpu-value { font-size: 18px; font-weight: 700; color: var(--green); }
+
+  /* ── Opps ── */
+  .net-new-box { background: var(--light); border: 1px solid var(--border); border-left: 4px solid var(--teal); border-radius: 6px; padding: 14px 16px; font-size: 13px; color: var(--body); line-height: 1.6; }
+  .net-new-box strong { color: var(--navy); }
+
+  /* ── Flags ── */
+  .flag-list { list-style: none; padding: 0; }
+  .flag-list li { padding: 5px 0 5px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+  .flag-list li:last-child { border-bottom: none; }
+  .flag-list li::before { content: "\2691"; position: absolute; left: 0; color: var(--amber); font-size: 12px; top: 6px; }
+  .flag-list li.green::before { color: var(--green); }
+  .flag-list li.red::before { color: var(--red-flag); }
+
+  /* ── Talk Track ── */
+  .talk-track-box { background: var(--light); border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 16px; font-size: 14px; font-style: italic; color: var(--navy); line-height: 1.6; margin-bottom: 12px; }
+
+  /* ── Open Questions ── */
+  .oq-list { list-style: none; padding: 0; counter-reset: oq; }
+  .oq-list li { padding: 6px 0 6px 24px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); counter-increment: oq; }
+  .oq-list li:last-child { border-bottom: none; }
+  .oq-list li::before { content: counter(oq); position: absolute; left: 0; width: 16px; height: 16px; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 8px; }
+
+  /* ── Footer ── */
+  .brief-footer { background: var(--navy); color: rgba(255,255,255,0.5); font-size: 11px; padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+  .small-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; }
+
+  /* ── Nav ── */
+  .section-nav { background: var(--navy); border-bottom: 3px solid var(--green); padding: 10px 32px 12px; position: sticky; top: 0; z-index: 100; }
+  .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+  .nav-inner { display: flex; flex-wrap: wrap; gap: 6px; }
+  .nav-btn { display: inline-block; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-decoration: none; padding: 5px 13px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .nav-btn:hover { background: rgba(122,182,72,0.2); border-color: rgba(122,182,72,0.5); color: var(--white); }
+  .nav-btn.active { background: var(--green); border-color: var(--green); color: var(--white); }
+
+  /* ══════════════════════════════════════════════
+     REP ASSISTANT
+  ══════════════════════════════════════════════ */
+  #rep-assistant-btn {
+    position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+    background: var(--navy); color: var(--white); border: none;
+    border-radius: 28px; padding: 11px 20px 11px 15px;
+    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.32);
+    transition: background 0.15s, transform 0.12s;
+  }
+  #rep-assistant-btn:hover { background: #162e4d; transform: translateY(-2px); }
+  #rep-assistant-btn .btn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(122,182,72,0.5);} 50%{box-shadow:0 0 0 5px rgba(122,182,72,0);} }
+
+  #ra-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.22); z-index: 9001; }
+
+  #rep-assistant-panel {
+    position: fixed; top: 0; right: -460px; width: 440px; height: 100vh;
+    background: var(--white); z-index: 9002; display: flex; flex-direction: column;
+    transition: right 0.28s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -6px 0 40px rgba(0,0,0,0.16);
+  }
+  #rep-assistant-panel.open { right: 0; }
+
+  .ra-header { background: var(--navy); padding: 14px 16px 12px; flex-shrink: 0; }
+  .ra-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .ra-title { font-size: 13px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
+  .ra-title .ra-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .ra-close { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.75); font-size: 17px; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .ra-close:hover { background: rgba(255,255,255,0.2); }
+  .ra-context-pill { display: inline-flex; align-items: center; gap: 5px; background: rgba(122,182,72,0.15); border: 1px solid rgba(122,182,72,0.3); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.3px; }
+
+  .ra-quick-actions { background: var(--light); border-bottom: 1px solid var(--border); padding: 10px 14px; flex-shrink: 0; }
+  .ra-quick-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 7px; }
+  .ra-quick-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ra-quick-btn { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 20px; border: 1px solid var(--teal); color: var(--teal); background: var(--white); cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .ra-quick-btn:hover:not(:disabled) { background: var(--teal); color: var(--white); }
+  .ra-quick-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .ra-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+
+  .ra-msg { max-width: 94%; font-size: 13px; line-height: 1.55; border-radius: 6px; padding: 9px 12px; word-break: break-word; }
+  .ra-msg.user { align-self: flex-end; background: var(--navy); color: var(--white); border-radius: 6px 6px 2px 6px; }
+  .ra-msg.assistant { align-self: flex-start; background: var(--light); color: var(--body); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; }
+  .ra-msg.assistant strong { color: var(--navy); }
+  .ra-msg.system-note { align-self: center; background: #FFF8E6; border: 1px solid #F5C842; color: #5D4200; font-size: 11px; font-style: italic; text-align: center; max-width: 100%; }
+  .ra-msg.error-note { align-self: center; background: #FBEBEB; border: 1px solid #E8AAAA; color: #7A1A1A; font-size: 11px; text-align: center; max-width: 100%; }
+
+  .ra-artifact { background: var(--white); border: 1px solid var(--border); border-radius: 6px; margin-top: 8px; overflow: hidden; }
+  .ra-artifact-header { background: var(--navy); padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .ra-artifact-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--green); }
+  .ra-artifact-copy { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.65); background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; padding: 2px 8px; cursor: pointer; transition: background 0.15s; }
+  .ra-artifact-copy:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+  .ra-artifact-body { padding: 10px 12px; font-size: 12px; line-height: 1.65; color: var(--body); white-space: pre-wrap; }
+
+  .ra-typing { display: none; align-self: flex-start; padding: 8px 12px; background: var(--light); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; font-size: 12px; color: var(--mid); font-style: italic; }
+  .ra-typing.visible { display: block; }
+  .ra-typing span { display: inline-block; animation: blink 1.2s infinite; }
+  .ra-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .ra-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.15;} 40%{opacity:1;} }
+
+  .ra-input-area { border-top: 1px solid var(--border); padding: 10px 12px; background: var(--white); flex-shrink: 0; }
+  .ra-input-row { display: flex; gap: 8px; align-items: flex-end; }
+  #ra-input { flex: 1; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 13px; color: var(--body); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; resize: none; min-height: 38px; max-height: 100px; line-height: 1.4; outline: none; transition: border-color 0.15s; }
+  #ra-input:focus { border-color: var(--teal); }
+  #ra-send { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: 700; background: var(--teal); color: var(--white); border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
+  #ra-send:hover:not(:disabled) { background: #124850; }
+  #ra-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ra-footer-note { font-size: 10px; color: var(--mid); text-align: center; margin-top: 6px; }
+
+  @media print {
+    .section-nav, #rep-assistant-btn, #rep-assistant-panel, #ra-overlay { display: none !important; }
+  }
+  @media (max-width: 500px) {
+    #rep-assistant-panel { width: 100%; right: -100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> &middot; Account Intelligence Portal</div>
+  <div class="portal-label">Magaya Sales &middot; Prospect Brief</div>
+</div>
+
+<div id="section-nav" class="section-nav">
+  <div class="nav-label">Jump to section</div>
+  <div class="nav-inner">
+    <a class="nav-btn active" href="#signals">⚡ What's New</a>
+    <a class="nav-btn" href="#snapshot">1 · Snapshot</a>
+    <a class="nav-btn" href="#scorecard">2 · ICP Score</a>
+    <a class="nav-btn" href="#fit">3 · Why They Fit</a>
+    <a class="nav-btn" href="#opps">4 · Opp History</a>
+    <a class="nav-btn" href="#flags">5 · Data Flags</a>
+    <a class="nav-btn" href="#dms">6 · Decision Makers</a>
+    <a class="nav-btn" href="#expansion">7 · Expansion Opportunity</a>
+    <a class="nav-btn" href="#plays">8 · Sales Plays</a>
+    <a class="nav-btn" href="#talktrack">9 · Talk Track</a>
+    <a class="nav-btn" href="#questions">10 · Open Questions</a>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Tatra Shipping Co.</div>
+      <div class="account-sub">Ocean Freight Forwarder &amp; NVOCC &middot; Bridgeview, IL (Chicago) &middot; Current Magaya Cargo Customer</div>
+    </div>
+    <div class="tier-badge">
+      <span class="score">B/A/B</span>
+      <span class="label">RM / CC / Core Tier</span>
+    </div>
+  </div>
+
+  <!-- ⚡ WHAT'S NEW -->
+  <div class="whats-new" id="signals">
+    <div class="wn-header">⚡ What's New &middot; Signals &amp; Recent Activity</div>
+    <ul>
+      <li><strong>Active transatlantic trade lane confirmed via U.S. Customs import records (Feb 2024).</strong> — Import data shows Tatra actively moving freight between Hamburg, Germany and Newark/New York Area as recently as February 2024, indicating sustained ocean freight volume on established EU corridors. This is a clear Rate Management conversation starter.</li>
+      <li><strong>Company expanding to 30+ European country destinations — up from original Slovakia-only focus.</strong> — Tatraship now markets door-to-door delivery to 30+ European countries (ocean and air), having grown from a niche Slovakia/Czech corridor play. More lanes = more rate complexity and more need for a systematic quoting tool.</li>
+      <li><strong>FMC-certified NVOCC operating in regulated U.S. ocean trades — tariff compliance obligation confirmed.</strong> — As a Federal Maritime Commission-licensed Ocean Freight Forwarder, Tatra is legally required to file tariffs. Magaya Rate Management includes FMC tariff filing automation — directly solving a compliance burden Tatra carries today.</li>
+      <li><strong>Website refresh and bilingual (EN/SK) customer experience signals deliberate growth investment.</strong> — The tatraship.com site is professionally rebuilt, bilingual, and added WhatsApp as an international support channel — all signals of a company investing in scalable customer acquisition, not staying static.</li>
+      <li><strong>Vehicle shipping specialization creates specialty rate management complexity.</strong> — Tatra handles vehicle exports including classic/collector cars, motorcycles, and containerized personal effects — cargo types requiring tailored rates, surcharges, and careful documentation. A Magaya Rate Management or Customs Compliance module would serve this specialized workflow.</li>
+      <li><strong>Current Magaya Cargo customer — $3,520 ARR (2023). Existing relationship is the warm entry point.</strong> — Tatra already uses Magaya Cargo, meaning no cold-start objection. The rep opens with a product conversation rooted in a live customer relationship, not a prospecting pitch.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 1: SNAPSHOT -->
+  <div class="section" id="snapshot">
+    <div class="section-header">1 &middot; Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item">
+          <div class="snap-label">Organization</div>
+          <div class="snap-value">Tatra Shipping Co. (Tatraship)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">HQ Location</div>
+          <div class="snap-value highlight">Bridgeview, IL (Chicago Metro)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Founded</div>
+          <div class="snap-value">2008</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Primary Service</div>
+          <div class="snap-value highlight">Ocean Freight Forwarding · NVOCC</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Additional Services</div>
+          <div class="snap-value">Air Freight, Vehicle Shipping, Int'l Moving, Package Forwarding</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">ICP Segment</div>
+          <div class="snap-value highlight">Core / RM / Customs Compliance</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Employee Count</div>
+          <div class="snap-value">~10 (SMB Owner-Operated)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">FMC Certification</div>
+          <div class="snap-value highlight">Ocean Freight Forwarder (OFF)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Account Type</div>
+          <div class="snap-value">Current Magaya Customer (Cargo)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Territory</div>
+          <div class="snap-value">NORAM</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Current Magaya ARR</div>
+          <div class="snap-value" style="color:var(--amber);">$3,520 (2023)</div>
+        </div>
+        <div class="snap-item">
+          <div class="snap-label">Est. Expansion ARR Potential</div>
+          <div class="snap-value highlight">$12,000–$18,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: ICP SCORECARD -->
+  <div class="section" id="scorecard">
+    <div class="section-header">2 &middot; ICP Fit Scorecard</div>
+    <div class="section-body">
+      <p style="font-size:12px; color:var(--mid); margin-bottom:12px;">Magaya scores accounts against three independent ICP models — Rate Management (RM), Customs Compliance (CC), and Core. Each is scored 0–100. Tatra is evaluated across all three.</p>
+
+      <!-- RM Model -->
+      <div class="score-section-label">Rate Management (RM) ICP &mdash; Score: 66 / 100 <span class="tier-tag tier-b">Tier B</span></div>
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">Industry Fit<br><span class="score-dim-sub">Weight: 50 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:70%;"></div></div>
+          <div class="score-pts">35 <span class="score-max">/ 50</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Employee Band<br><span class="score-dim-sub">Weight: 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:30%;"></div></div>
+          <div class="score-pts">3 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Port City Location<br><span class="score-dim-sub">Weight: 20 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">20 <span class="score-max">/ 20</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim"># of Locations<br><span class="score-dim-sub">Weight: 15 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:27%;"></div></div>
+          <div class="score-pts">4 <span class="score-max">/ 15</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Territory<br><span class="score-dim-sub">Weight: 0 pts (RM)</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:0%;"></div></div>
+          <div class="score-pts">0 <span class="score-max">/ 0</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Revenue Band<br><span class="score-dim-sub">Weight: 5 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:40%;"></div></div>
+          <div class="score-pts">4 <span class="score-max">/ 5</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">RM Total Score</div>
+          <div></div>
+          <div class="score-total-pts">66 <span class="score-max" style="font-size:12px;">/ 100</span></div>
+        </div>
+      </div>
+
+      <!-- CC Model -->
+      <div class="score-section-label" style="margin-top:20px;">Customs Compliance (CC) ICP &mdash; Score: 80 / 100 <span class="tier-tag tier-a">Tier A</span></div>
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">Industry Fit<br><span class="score-dim-sub">Weight: 35 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">35 <span class="score-max">/ 35</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Employee Band<br><span class="score-dim-sub">Weight: 15 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:53%;"></div></div>
+          <div class="score-pts">8 <span class="score-max">/ 15</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Port City Location<br><span class="score-dim-sub">Weight: 30 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">30 <span class="score-max">/ 30</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim"># of Locations<br><span class="score-dim-sub">Weight: 5 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:20%;"></div></div>
+          <div class="score-pts">1 <span class="score-max">/ 5</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Territory<br><span class="score-dim-sub">Weight: 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:60%;"></div></div>
+          <div class="score-pts">6 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Revenue Band<br><span class="score-dim-sub">Weight: 5 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:0%;"></div></div>
+          <div class="score-pts" style="color:var(--amber);">0 <span class="score-max">/ 5</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">CC Total Score</div>
+          <div></div>
+          <div class="score-total-pts">80 <span class="score-max" style="font-size:12px;">/ 100</span></div>
+        </div>
+      </div>
+
+      <!-- Core Model -->
+      <div class="score-section-label" style="margin-top:20px;">Core ICP &mdash; Score: 63 / 100 <span class="tier-tag tier-b">Tier B</span></div>
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">Industry Fit<br><span class="score-dim-sub">Weight: 25 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">25 <span class="score-max">/ 25</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Employee Band<br><span class="score-dim-sub">Weight: 30 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:50%;"></div></div>
+          <div class="score-pts">15 <span class="score-max">/ 30</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Port City Location<br><span class="score-dim-sub">Weight: 30 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%;"></div></div>
+          <div class="score-pts">30 <span class="score-max">/ 30</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim"># of Locations<br><span class="score-dim-sub">Weight: 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:30%;"></div></div>
+          <div class="score-pts">3 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Territory<br><span class="score-dim-sub">Weight: 5 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:60%;"></div></div>
+          <div class="score-pts">3 <span class="score-max">/ 5</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Revenue Band<br><span class="score-dim-sub">Weight: 0 pts (Core)</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:0%;"></div></div>
+          <div class="score-pts">0 <span class="score-max">/ 0</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">Core Total Score</div>
+          <div></div>
+          <div class="score-total-pts">76 <span class="score-max" style="font-size:12px;">/ 100</span></div>
+        </div>
+      </div>
+
+      <div class="score-note">Score thresholds: RM — A ≥ 70 · B ≥ 65 · C ≥ 55 · D &lt; 55 &nbsp;|&nbsp; CC — A ≥ 75 · B ≥ 65 · C ≥ 45 · D &lt; 45 &nbsp;|&nbsp; Core — A ≥ 70 · B ≥ 60 · C ≥ 55 · D &lt; 55. Tatra's strongest score is Customs Compliance (A-Tier / 80) driven by perfect industry and port city scores — this is the primary expansion play. Size is the limiting factor holding RM and Core to B-Tier, but employee count is consistent with Magaya's proven SMB customer base.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: WHY THEY FIT -->
+  <div class="section" id="fit">
+    <div class="section-header">3 &middot; Why Tatra Shipping Is a Fit</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>FMC-licensed NVOCC in an active U.S.-to-EU trade lane creates direct Rate Management and compliance workflow demand.</strong> — Tatra holds an Ocean Freight Forwarder license from the Federal Maritime Commission, which legally obligates them to file and maintain FMC tariffs. Magaya Rate Management automates exactly this workflow — FMC tariff filing, margin management, and RFQ response — solving a real compliance cost Tatra already carries.</li>
+        <li><strong>Bridgeview, IL (Chicago metro) qualifies as a top-15 U.S. port city — 100% credit in both CC and Core port city scoring dimensions.</strong> — Chicago is a major inland port and intermodal hub. The port city dimension is the second-largest scoring factor in both CC (30 pts) and Core (30 pts). Tatra scores full credit on both, anchoring their above-average overall ICP position.</li>
+        <li><strong>Multi-modal, multi-lane service mix (ocean FCL/LCL, air, vehicle, parcels, 30+ countries) generates exactly the rate and documentation complexity that Magaya's platform is built to manage.</strong> — Tatra doesn't just do one shipment type. They quote FCL, LCL, air freight, vehicle exports, and package forwarding — all with different carriers, surcharges, and transit terms. Managing quotes manually across these lanes is a known growth bottleneck for companies at this stage.</li>
+        <li><strong>Existing Magaya Cargo relationship eliminates the cold-start objection — this is an expansion conversation, not a new vendor conversation.</strong> — Tatra has been a Magaya Cargo customer generating $3,520 in ARR. The rep enters with a warm account relationship, existing login credentials on their side, and a foundation of operational trust. The pitch is "how do we get more out of what you already have," not "please consider us."</li>
+        <li><strong>Vehicle shipping specialization — including classic and collector cars — creates premium, non-commoditized rate complexity where Magaya Rate Management provides clear ROI.</strong> — Collector vehicle exports require one-off pricing, careful customs documentation, and carrier coordination that can't be templated easily. Tatra's growth in this segment since 2015 signals deliberate service diversification — and a need for rate management tooling that handles specialty cargo.</li>
+        <li><strong>Owner-operated, founder-led structure (Zuzana and Peter) means the buying decision is close to the operational pain — no long enterprise procurement cycle.</strong> — Co-founders run both operations and customer service. When the rep surfaces a tool that saves them quoting time or eliminates a compliance risk, the decision maker is already in the room. SMB freight forwarders at this scale convert faster when the ROI is operationally concrete.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PAST OPPORTUNITY NOTES -->
+  <div class="section" id="opps">
+    <div class="section-header">4 &middot; Past Opportunity Notes</div>
+    <div class="section-body">
+      <div class="net-new-box">
+        <strong>Existing Customer — Magaya Cargo Module. No Expansion Opportunity on Record.</strong><br><br>
+        Tatra Shipping Co. has been a Magaya Cargo customer since approximately 2022, generating $3,453 ARR in 2022 and $3,520 ARR in 2023 — stable, but flat. There is no record of a prior expansion opportunity in the CRM. This is first-touch territory for Rate Management, Customs Compliance, or Digital Freight Portal modules.<br><br>
+        <span style="color: var(--teal); font-weight:700;">Rep note:</span> The existing Cargo relationship is the warm entry point. Frame this as a product discovery conversation with a known customer — "You've been using Cargo for a couple of years; I want to make sure you know what else is available that could make your day easier" — not a cold expansion pitch.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: DATA FLAGS -->
+  <div class="section" id="flags">
+    <div class="section-header">5 &middot; Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="green">ICP scores confirmed: <strong>RM Tier B (66/100) · CC Tier A (80/100) · Core Tier B (76/100)</strong>. Customs Compliance is the priority expansion play based on score strength.</li>
+        <li class="green">Active ocean freight operations confirmed via U.S. Customs import records — Hamburg to Newark/New York trade lane active as of February 2024. Real operational footprint, not dormant account.</li>
+        <li class="green">FMC Ocean Freight Forwarder license confirmed — creates a direct FMC tariff compliance obligation that Magaya Rate Management solves automatically.</li>
+        <li class="green">Existing Magaya Cargo customer — warm relationship, no cold-start friction. Rep enters with standing to have a product conversation.</li>
+        <li class="amber">Revenue data limited — Magaya ARR is $3,520 (2023). No external revenue figure confirmed. Estimated company revenue likely sub-$5M based on headcount (~10 employees). Rep should confirm during discovery.</li>
+        <li class="amber">Decision makers identified by name (Zuzana, Peter) from public website — no direct contact information in CRM. Rep should pull contact from existing Cargo account record or use LinkedIn before outreach.</li>
+        <li class="amber">Employee count (~10) places Tatra at the small end of the RM ICP band (100–200 ideal for RM). Qualify whether rate volume justifies RM investment before leading with that module.</li>
+        <li class="red">No Customs Compliance module currently in use despite FMC license — this is either a gap in the account's tooling or an indication they use a separate customs broker. Confirm in first call.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 6: DECISION MAKERS -->
+  <div class="section" id="dms">
+    <div class="section-header">6 &middot; Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+        <div class="dm-card">
+          <div class="dm-avatar">Z</div>
+          <div>
+            <div class="dm-name">Zuzana (Co-Founder)</div>
+            <div class="dm-title">Head of International Operations &middot; Bridgeview, IL</div>
+            <div class="dm-tags"><span class="dm-tag primary">Primary Decision Maker</span></div>
+            <div class="dm-note">Zuzana runs all international shipping operations and customer-facing logistics — she is the person who lives the daily workflow pain. She likely owns or co-owns the Magaya Cargo account. If any module will get adopted, she needs to see how it saves her time on quotes, rate lookups, and customs filings. Start here. Her name appears prominently in customer testimonials, suggesting strong relationship-builder instincts — a value-led, low-pressure conversation will land better than a feature pitch.</div>
+          </div>
+        </div>
+        <div class="dm-card">
+          <div class="dm-avatar">P</div>
+          <div>
+            <div class="dm-name">Peter (Co-Founder)</div>
+            <div class="dm-title">Head of U.S. Operations &middot; Bridgeview, IL</div>
+            <div class="dm-tags"><span class="dm-tag influencer">Influencer / Co-Decision Maker</span></div>
+            <div class="dm-note">Peter oversees domestic shipping operations and is focused on expanding U.S. reach. He started the company with a vehicle transport specialty and has been driving the domestic growth side. He likely has a co-decision role on software investments. The vehicle export workflow — with its custom documentation and specialized rates — is a strong hook for his side of the business.</div>
+          </div>
+        </div>
+        <div class="dm-card" style="border-style: dashed;">
+          <div class="dm-avatar" style="background:var(--border); color:var(--mid);">?</div>
+          <div>
+            <div class="dm-name">Current Customs Broker / CC Vendor</div>
+            <div class="dm-title">Not yet identified</div>
+            <div class="dm-tags"><span class="dm-tag find">Find This Person</span></div>
+            <div class="dm-note">As an FMC-licensed NVOCC, Tatra either self-files customs entries or uses an external customs broker. Identifying which — and who — is critical before leading with Magaya Customs Compliance. If they outsource customs work, Magaya CC is a direct cost savings play. If they self-file manually, it's a time savings and accuracy play. Either way, this is a first-call question.</div>
+          </div>
+        </div>
+      </div>
+      <div class="small-note">Contact details: Zuzana and Peter are reachable via tatraship.com contact form and +1-708-576-8834. Verify direct contact in existing Magaya Cargo account record before outreach. LinkedIn: search "Tatraship" or "Tatra Shipping Bridgeview" to locate profiles.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: EXPANSION OPPORTUNITY -->
+  <div class="section" id="expansion">
+    <div class="section-header">7 &middot; Expansion Opportunity &mdash; Beyond Magaya Cargo</div>
+    <div class="section-body">
+      <p class="expansion-intro">Tatra currently pays $3,520/year for Magaya Cargo. Based on their FMC license, active EU trade lanes, multi-modal service mix, and growing country coverage, three additional Magaya modules represent a credible expansion path worth an estimated $8,000–$14,000 in incremental ARR — a 3–4x uplift on the current account.</p>
+
+      <div class="expansion-grid">
+        <div class="exp-card owned">
+          <div class="exp-card-label">Currently Owned</div>
+          <div class="exp-card-title">Magaya Cargo (Supply Chain)</div>
+          <div class="exp-card-body">Core freight management — shipment tracking, warehouse receipts, invoicing. In use since ~2022. Stable at $3,520 ARR. The operational foundation the expansion plays attach to.</div>
+        </div>
+
+        <div class="exp-card opportunity">
+          <div class="exp-card-label">Primary Expansion Target</div>
+          <div class="exp-card-title">Magaya Customs Compliance</div>
+          <div class="exp-card-body">ACE-certified ABI solution for customs filings, FTZ inventory, and CBP compliance. Tatra's FMC license and active US-EU trade lanes create a direct compliance obligation this module addresses. If they're currently outsourcing to a broker, this is a cost-displacement play. If self-filing manually, it's an error-reduction and time savings play. Strongest ICP alignment (CC Tier A / 80).</div>
+        </div>
+
+        <div class="exp-card opportunity">
+          <div class="exp-card-label">Secondary Expansion Target</div>
+          <div class="exp-card-title">Magaya Rate Management</div>
+          <div class="exp-card-body">Single control tower for rate search, margin management, FMC tariff filing, and RFQ response. As an FMC-licensed NVOCC, Tatra must publish tariffs — this is a direct compliance workflow. Their multi-lane, multi-modal service mix (ocean, air, vehicle, parcels across 30+ countries) creates real quoting complexity that manual spreadsheets can't handle efficiently at scale. RM Tier B / 66.</div>
+        </div>
+
+        <div class="exp-card watch">
+          <div class="exp-card-label">Watch — Future Opportunity</div>
+          <div class="exp-card-title">Magaya Digital Freight Portal</div>
+          <div class="exp-card-body">Customer-facing quote and booking portal. Tatra already has a modern bilingual website and WhatsApp support — they're investing in digital customer experience. A Magaya Digital Freight Portal would let their 30+ country customers self-serve quotes and track shipments online. Stronger fit once Rate Management is established as the quoting backbone. Plant the seed in early conversations.</div>
+        </div>
+      </div>
+
+      <div class="exp-arpu-bar">
+        <div class="exp-arpu-label">Estimated Full-Platform ARR Potential</div>
+        <div class="exp-arpu-value">$11,500–$17,500 / year</div>
+      </div>
+      <div class="small-note">Current ARR: $3,520 (Cargo only). Estimate based on Magaya's published module pricing for SMB freight forwarders. Confirm actual pricing with your pricing guide before quoting. Priority sequence: Customs Compliance → Rate Management → Digital Freight Portal.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: SALES PLAYS -->
+  <div class="section" id="plays">
+    <div class="section-header">8 &middot; Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">1</div>
+          <div class="play-title">FMC Compliance Upgrade — Customs to Rate Management Bundle</div>
+          <div class="play-tag">Expansion</div>
+        </div>
+        <div class="play-body">
+          <p>Tatra holds an FMC Ocean Freight Forwarder license and operates Hamburg-to-Newark import lanes. They have a legal tariff-filing obligation and active customs workflow — but no Magaya Customs Compliance or Rate Management module. Lead with the compliance angle (risk removal, not feature sell) and bundle both modules into one expansion conversation.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Open by referencing the existing Cargo relationship.</strong> Call Zuzana: "Hey Zuzana, this is [Rep Name] from Magaya — you've been on Cargo with us for a couple years. I was reviewing your account and noticed you're a licensed NVOCC, which means you're filing FMC tariffs. I want to make sure you know there's a Magaya module built specifically for that — it's actually one of the most popular add-ons for forwarders your size."</li>
+            <li data-step="2"><strong>Qualify the customs workflow.</strong> "Right now, when a shipment comes in from Hamburg — how are you handling the customs filing side? Do you have a broker doing that, or is someone on your team self-filing?" The answer dictates whether CC is a cost-displacement or time-savings pitch.</li>
+            <li data-step="3"><strong>Position Magaya Customs Compliance against the specific pain.</strong> If outsourcing: "A customs broker for your volume likely runs $200–400 per entry. Magaya CC handles ABI filings inside the same system your cargo is already tracked in — you'd recover the cost on about 10–15 entries and own the process." If self-filing: "If you're self-filing manually, CC automates the ABI submission, CBP response tracking, and billing in one window — eliminates a big slice of administrative time."</li>
+            <li data-step="4"><strong>Layer in Rate Management via the FMC tariff hook.</strong> "The other piece — and this might be even more relevant to you as an NVOCC — is that Magaya Rate Management handles your FMC tariff publication directly. You can manage your ocean rates, respond to RFQs, and file your tariff all from one place instead of juggling a separate tariff system."</li>
+            <li data-step="5"><strong>Ask for a 30-minute demo with both Zuzana and Peter.</strong> "Can I get 30 minutes with you and Peter to walk through both modules on your actual setup? I can show you exactly how it connects to your existing Cargo workflow — shouldn't take long and you'll know within the first 10 minutes if it's useful."</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">2</div>
+          <div class="play-title">Vehicle Shipping Rate Complexity Play</div>
+          <div class="play-tag">Expansion</div>
+        </div>
+        <div class="play-body">
+          <p>Tatra's vehicle shipping specialty — classic cars, motorcycles, collector vehicles exported from the U.S. to Europe — creates one-off rate and documentation complexity that isn't well-served by a basic Cargo-only workflow. Use the vehicle specialty as the specific pain hook to introduce Magaya Rate Management.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Lead with the vehicle-specific pain point.</strong> "I was reading through your website — you're doing a lot of classic car and collector vehicle exports, which is a pretty specialized workflow. How are you managing rate quotes for those? Because that's not a standard commodity rate you can just pull off a carrier's rate card."</li>
+            <li data-step="2"><strong>Probe the quoting process.</strong> "When a collector contacts you about shipping a vehicle to Slovakia or the Czech Republic, how long does it take to put a quote together? Are you going back to carriers manually each time, or do you have a rate database you're pulling from?"</li>
+            <li data-step="3"><strong>Position Rate Management as the quoting control tower.</strong> "Magaya Rate Management lets you store all your carrier rates — ocean, air, specialty cargo surcharges — in one place. When the next classic car inquiry comes in, you're pulling a quote in minutes instead of making three carrier calls. And when rates change, you update once and every quote you run reflects it."</li>
+            <li data-step="4"><strong>Quantify the time savings.</strong> "If your team spends 45–60 minutes on each specialty vehicle quote and you're handling even 10–15 of those a month, that's 8–15 hours of quoting time. Rate Management typically cuts that by 60–70%. For a team your size, that's effectively getting a part-time person back."</li>
+            <li data-step="5"><strong>Offer a scoped, low-stakes next step.</strong> "Let me send you a quick overview specifically on Rate Management for specialty freight forwarders — two pages, not a brochure. And if it looks relevant, we can do a 20-minute screen share where I show you how it works against a sample vehicle shipment quote. Fair?"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="small-note">Lead with Play 1 if Zuzana owns the customs workflow. Lead with Play 2 if Peter is the first point of contact and owns the vehicle specialty. Both plays ultimately converge on the same module recommendation — start where the pain is sharpest.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 9: TALK TRACK -->
+  <div class="section" id="talktrack">
+    <div class="section-header">9 &middot; Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        "Hey Zuzana, this is [Rep Name] from Magaya — you've been a Cargo customer with us for a couple of years now, so not a cold call. I was going through your account and I noticed you're an FMC-licensed Ocean Freight Forwarder, which means you're in U.S.-regulated ocean trades. I wanted to reach out because we have two modules — Customs Compliance and Rate Management — that are built specifically for forwarders in your position, and I don't think you've seen them yet.<br><br>
+        What prompted me to call specifically is that I saw you're running Hamburg-to-Newark lanes and you've expanded to 30+ European countries — that's a lot of different rates, carriers, and customs workflows to manage. A lot of NVOCCs your size are still handling those manually, which is fine when you're doing 5 lanes, but it starts to create real overhead once you're across 30 destinations.<br><br>
+        I'm not trying to sell you anything today — I just want 15 minutes to ask a few questions about how you're currently handling quotes and customs filings. If what I'm seeing in your account doesn't match how you actually operate, we'll figure that out and I won't waste your time. Would [day/time] work?"
+      </div>
+      <div class="small-note">Adjust for Peter: lead with the vehicle shipping and U.S. operations angle — "I wanted to ask about how you're pricing your vehicle export quotes, because that's a workflow where we've been hearing a lot from forwarders about the manual overhead." Core hook stays the same: warm customer, observed operational gaps, low-pressure discovery ask.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 10: OPEN QUESTIONS -->
+  <div class="section" id="questions">
+    <div class="section-header">10 &middot; Open Questions for First Call</div>
+    <div class="section-body">
+      <ol class="oq-list">
+        <li>How are you currently handling FMC tariff filing? Is that done inside Magaya Cargo today, or are you using a separate system or third party to publish your tariff as an NVOCC?</li>
+        <li>On the customs side — are you self-filing ABI entries for your Hamburg-Newark imports, or are you using an outside customs broker? If outsourcing, roughly how many entries per month?</li>
+        <li>When a vehicle or specialty shipment inquiry comes in, how are you building the rate quote? How long does that process typically take, and is it centralized or does each person pull rates differently?</li>
+        <li>You've expanded to 30+ European countries — are you managing all those carrier relationships and rates in one place, or is it spread across spreadsheets, emails, and individual carrier systems?</li>
+        <li>Your website is clearly growing — bilingual, WhatsApp support, new service lines. Is the plan to keep growing the business, or is it more about running the current volume more efficiently? (This tells you whether to pitch growth enablement or operational efficiency.)</li>
+        <li>Who is the decision maker on software and tools for the business — do you and Peter decide those together, or does one of you own the operations technology side?</li>
+      </ol>
+    </div>
+  </div>
+
+</div><!-- end .page-wrap -->
+
+<div class="brief-footer">
+  <div><span class="ri-tag">Revenue Insight</span> &middot; Confidential &mdash; for internal Magaya use only</div>
+  <div>Data sources: Magaya CRM &middot; tatraship.com &middot; U.S. Customs Import Records &middot; ICP Scoring Model &middot; Generated 2026-05-14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     REP ASSISTANT — Floating button + panel
+══════════════════════════════════════════════ -->
+
+<button id="rep-assistant-btn" onclick="raOpen()">
+  <div class="btn-dot"></div>
+  💬 Rep Assistant
+</button>
+
+<div id="ra-overlay" onclick="raClose()"></div>
+
+<div id="rep-assistant-panel">
+  <div class="ra-header">
+    <div class="ra-header-top">
+      <div class="ra-title"><div class="ra-dot"></div>Rep Assistant &middot; Tatra Shipping Co.</div>
+      <button class="ra-close" onclick="raClose()">&#x2715;</button>
+    </div>
+    <div class="ra-context-pill">&#9679;&nbsp; CC A-Tier 80 · RM B-Tier 66 · FMC NVOCC · Cargo customer $3.5K ARR · 30+ EU countries</div>
+  </div>
+
+  <div class="ra-quick-actions">
+    <div class="ra-quick-label">Quick actions &mdash; tap to generate</div>
+    <div class="ra-quick-grid">
+      <button class="ra-quick-btn" onclick="raQuick('email-sequence')">✉ 3-Email Sequence</button>
+      <button class="ra-quick-btn" onclick="raQuick('linkedin')">LinkedIn DM to Zuzana</button>
+      <button class="ra-quick-btn" onclick="raQuick('agenda')">Call Agenda</button>
+      <button class="ra-quick-btn" onclick="raQuick('objection')">Handle Objections</button>
+      <button class="ra-quick-btn" onclick="raQuick('followup')">Post-Call Follow-Up</button>
+    </div>
+  </div>
+
+  <div class="ra-messages" id="ra-messages">
+    <div class="ra-msg system-note">Full Tatra Shipping brief loaded — ICP scores (CC A-Tier/80, RM B-Tier/66, Core B-Tier/76), existing Cargo customer $3,520 ARR, FMC license, Hamburg-Newark trade lane, expansion plays. Ask me anything or tap a quick action above.</div>
+  </div>
+
+  <div class="ra-typing" id="ra-typing">Thinking<span>.</span><span>.</span><span>.</span></div>
+
+  <div class="ra-input-area">
+    <div class="ra-input-row">
+      <textarea id="ra-input" placeholder="Ask anything about this account…" rows="1" onkeydown="raKey(event)" oninput="raResize(this)"></textarea>
+      <button id="ra-send" onclick="raSend()">Send</button>
+    </div>
+    <div class="ra-footer-note">Powered by Claude &middot; Magaya Internal Use Only &middot; Context: Tatra Shipping AIB</div>
+  </div>
+</div>
+
+<script>
+// ── Nav scroll-spy ─────────────────────────────────────────────
+document.querySelectorAll('.nav-btn[href^="#"]').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
+    var navH = document.getElementById('section-nav').offsetHeight;
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - navH - 12, behavior: 'smooth' });
+  });
+});
+var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','expansion','plays','talktrack','questions'];
+function onScroll() {
+  var navH = document.getElementById('section-nav').offsetHeight;
+  var scrollY = window.pageYOffset + navH + 24;
+  var current = sections[0];
+  sections.forEach(function(id) { var el = document.getElementById(id); if (el && el.offsetTop <= scrollY) current = id; });
+  document.querySelectorAll('.nav-btn').forEach(function(btn) { btn.classList.toggle('active', btn.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// ── Rep Assistant ─────────────────────────────────────────────
+var raHistory = [];
+var raLoading = false;
+
+var RA_SYSTEM = "You are a Rep Assistant embedded inside a Revenue Insight Account Intelligence Brief for Magaya's sales team. You have full context of the Tatra Shipping Co. brief and help reps prepare for calls and generate outreach artifacts.\n\nACCOUNT CONTEXT — Tatra Shipping Co. (Tatraship)\n- ICP Scores: Rate Management Tier B (66/100) · Customs Compliance Tier A (80/100) · Core Tier B (76/100)\n- Primary expansion play: Magaya Customs Compliance (CC Tier A — strongest score due to FMC license + Chicago port city)\n- Secondary play: Magaya Rate Management (FMC tariff filing obligation, multi-lane quoting complexity)\n- Current Magaya relationship: Cargo module only · $3,520 ARR (2023) · Customer since ~2022\n- HQ: Bridgeview, IL (Chicago metro) · FMC-licensed Ocean Freight Forwarder (NVOCC)\n- Founded 2008 by Zuzana (international ops) and Peter (U.S. ops) — husband-and-wife team\n- ~10 employees, owner-operated SMB\n\nOPERATIONAL PROFILE:\n- Active Hamburg, Germany → Newark, NJ ocean trade lane (confirmed via U.S. Customs import records, Feb 2024)\n- Services: Ocean FCL/LCL, Air Freight, International Moving, Vehicle Shipping (specialty: classic/collector cars, motorcycles), Package Forwarding\n- Market: 30+ European countries · Bilingual website (EN/SK) · WhatsApp customer support\n- Niche: Only FMC-certified freight forwarder in the U.S. with Slovak heritage — built a loyal Eastern European expat/business customer base\n\nKEY SIGNALS:\n- FMC NVOCC license = legal tariff-filing obligation → Magaya Rate Management solves this directly\n- No Customs Compliance module despite active ocean imports — gap in current tooling\n- Vehicle shipping specialty (collector cars) = complex, one-off rates not served by standard cargo workflows\n- Website refresh + WhatsApp support + 30-country expansion = deliberate growth investment signals\n- ARR flat 2022-2023 ($3,453 → $3,520) — no upsell has occurred yet\n\nEXPANSION PATH:\n- Priority 1: Magaya Customs Compliance — direct tie to FMC license and Hamburg-Newark import workflow. If outsourcing customs, this is a cost-displacement play. If self-filing, it's a time/accuracy play.\n- Priority 2: Magaya Rate Management — FMC tariff publication + multi-lane rate management + vehicle export quoting efficiency\n- Future: Magaya Digital Freight Portal — customer self-service once Rate Management is the quoting backbone\n- Estimated full-platform ARR: $11,500–$17,500 (3–4x current ARR)\n\nDECISION MAKERS:\n- Zuzana (Co-Founder): Runs international operations. PRIMARY contact. Lives the daily workflow — quoting, customs, customer communication. Start here.\n- Peter (Co-Founder): Runs U.S. operations and vehicle shipping specialty. SECONDARY contact / co-decision maker.\n- Customs broker/CC vendor: NOT YET IDENTIFIED — must qualify in first call whether they self-file or outsource.\n\nSALES PLAYS:\n- Play 1 (Expansion): FMC Compliance Upgrade — Lead with customs workflow qualification, bundle CC + Rate Management modules, warm entry via existing Cargo relationship\n- Play 2 (Expansion): Vehicle Shipping Rate Complexity — Lead with classic car/collector vehicle quoting pain, introduce Rate Management as the quoting control tower\n\nTALK TRACK HOOK: Warm call to existing Cargo customer. Open with FMC license observation + Hamburg-Newark lane data. Ask about customs workflow and quoting process before pitching. Low-pressure 15-minute discovery ask.\n\nOPEN QUESTIONS: (1) How are you handling FMC tariff filing today? (2) Are you self-filing ABI entries or using an outside broker, and how many per month? (3) How do you build vehicle/specialty shipment rate quotes and how long does it take? (4) How are 30+ country carrier rates managed — centralized or scattered? (5) Growth-mode or efficiency-mode? (6) Who is the sole software decision maker — Zuzana, Peter, or both?\n\nYOUR ROLE:\n- Answer research questions about Tatra, the freight forwarding industry, FMC compliance, or the contacts with specificity\n- Generate outreach artifacts that are account-specific — always reference Tatra, Zuzana, Peter, Hamburg-Newark lanes, FMC license, vehicle shipping specialty, or the existing Cargo relationship\n- Never be generic — every artifact must be specific to Tatra Shipping. If it could appear word-for-word in a different account's brief, rewrite it.\n- For email sequences: write 3 distinct emails — Email 1 (warm check-in to existing customer, surface FMC compliance angle), Email 2 (vehicle shipping rate complexity angle, 5–7 days later), Email 3 (final ask with specific next step, 5–7 days after that). Include subject lines.\n- For objection handling: prep the rep for the most likely Tatra objections: 'we're too small for that module,' 'we already have a customs broker,' 'we use spreadsheets and it's fine'\n- Format artifacts clearly with headers so the rep can copy them directly\n- Keep tone professional but conversational — rep-facing, not corporate";
+
+var RA_QUICK_PROMPTS = {
+  'email-sequence': "Write a 3-email outreach sequence for Zuzana at Tatra Shipping Co., an existing Magaya Cargo customer we want to expand into Customs Compliance and Rate Management. Email 1: warm check-in from existing customer relationship, surface the FMC compliance angle (they're a licensed NVOCC with a Hamburg-Newark ocean trade lane — do they know Magaya has a CC module?). Email 2: 5-7 days later, lead with the vehicle shipping rate complexity angle — they specialize in classic car and collector vehicle exports, which have complex one-off rates. Email 3: final ask with a specific 20-minute demo request. Include subject lines. Make each email specific to Tatra — not generic forwarder outreach.",
+  'linkedin': "Write a LinkedIn connection message to Zuzana, co-founder of Tatra Shipping Co. in Bridgeview, IL. She runs international operations. We're reaching out as an existing Magaya customer (they use Magaya Cargo) to discuss their FMC license and whether they know about Magaya's Customs Compliance module. Under 300 characters. Warm, not salesy — we're already a vendor of theirs.",
+  'agenda': "Build a discovery call agenda for my first expansion call with Zuzana at Tatra Shipping. They're an existing Magaya Cargo customer. Goal is to qualify their customs workflow (self-file or outsource?) and quoting process (especially for vehicle shipments) to determine fit for CC and Rate Management modules. Use the 6 open questions from the brief as the backbone. 30 minutes total. Include a brief intro section (2 min), context-setting on why I'm calling (3 min), discovery questions (15 min), and next steps (5 min). Format as a usable call guide.",
+  'objection': "Prepare me for the 3 most likely objections I'll hear from Zuzana or Peter at Tatra Shipping when I try to expand them beyond Magaya Cargo. Objection 1: 'We're too small for those modules.' Objection 2: 'We already have a customs broker — we don't need Magaya CC.' Objection 3: 'We manage rates in spreadsheets and it works fine.' For each objection, give me: (a) why they're saying it, (b) the specific Tatra-relevant reframe, and (c) a one-line verbal response I can use on the call.",
+  'followup': "I just got off a discovery call with Zuzana at Tatra Shipping. She confirmed they ARE outsourcing customs filing to an outside broker (about 20 entries per month at roughly $250/entry = $5,000/month in broker fees). She seemed interested in Magaya Customs Compliance but said she needs to loop in Peter before committing to a demo. Write a follow-up email that: (1) summarizes what we discussed, (2) does the math on the $5,000/month broker cost vs. Magaya CC, (3) proposes a 30-minute demo with both Zuzana and Peter. Specific to Tatra — not generic."
+};
+
+function raOpen() {
+  document.getElementById('rep-assistant-panel').classList.add('open');
+  document.getElementById('ra-overlay').style.display = 'block';
+  document.getElementById('rep-assistant-btn').style.display = 'none';
+  setTimeout(function() { document.getElementById('ra-input').focus(); }, 300);
+}
+
+function raClose() {
+  document.getElementById('rep-assistant-panel').classList.remove('open');
+  document.getElementById('ra-overlay').style.display = 'none';
+  document.getElementById('rep-assistant-btn').style.display = 'flex';
+}
+
+function raResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function raKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); raSend(); }
+}
+
+function raSetLoading(on) {
+  raLoading = on;
+  document.getElementById('ra-send').disabled = on;
+  document.getElementById('ra-input').disabled = on;
+  document.querySelectorAll('.ra-quick-btn').forEach(function(b) { b.disabled = on; });
+  var t = document.getElementById('ra-typing');
+  t.className = 'ra-typing' + (on ? ' visible' : '');
+  if (on) { var m = document.getElementById('ra-messages'); m.scrollTop = m.scrollHeight; }
+}
+
+function raAppend(role, text) {
+  var m = document.getElementById('ra-messages');
+  var d = document.createElement('div');
+
+  var isArtifact = role === 'assistant' && (
+    text.includes('Email 1') || text.includes('Subject:') ||
+    text.includes('AGENDA') || text.includes('## ') || text.length > 700
+  );
+
+  if (isArtifact) {
+    var label = 'Generated Artifact';
+    if (text.includes('Subject:') || text.includes('Email 1')) label = 'Email Sequence';
+    else if (text.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+    else if (text.toLowerCase().includes('agenda') || text.toLowerCase().includes('call guide')) label = 'Call Agenda';
+    else if (text.toLowerCase().includes('objection')) label = 'Objection Guide';
+    d.className = 'ra-msg assistant';
+    d.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+    d.querySelector('.ra-artifact-body').textContent = text;
+  } else {
+    d.className = 'ra-msg ' + role;
+    d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  }
+
+  m.appendChild(d);
+  m.scrollTop = m.scrollHeight;
+}
+
+function raCopy(btn) {
+  var text = btn.closest('.ra-artifact').querySelector('.ra-artifact-body').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy all'; }, 2000);
+  });
+}
+
+async function raQuick(key) {
+  var prompt = RA_QUICK_PROMPTS[key];
+  raAppend('user', prompt.substring(0, 80) + '…');
+  await raCall(prompt);
+}
+
+async function raSend() {
+  var inp = document.getElementById('ra-input');
+  var text = inp.value.trim();
+  if (!text || raLoading) return;
+  inp.value = ''; inp.style.height = 'auto';
+  raAppend('user', text);
+  await raCall(text);
+}
+
+async function raCall(userMsg) {
+  raSetLoading(true);
+  raHistory.push({ role: 'user', content: userMsg });
+
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
+    });
+
+    if (!resp.ok || !resp.body) {
+      var errData = await resp.json().catch(function() { return {}; });
+      var d = document.createElement('div');
+      d.className = 'ra-msg error-note';
+      d.textContent = 'Error: ' + (errData.error && errData.error.message ? errData.error.message : resp.statusText);
+      document.getElementById('ra-messages').appendChild(d);
+      document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+      raHistory.pop();
+      raSetLoading(false);
+      return;
+    }
+
+    var m = document.getElementById('ra-messages');
+    var streamDiv = document.createElement('div');
+    streamDiv.className = 'ra-msg assistant';
+    m.appendChild(streamDiv);
+
+    var fullText = '';
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, { stream: true });
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line.startsWith('data: ')) continue;
+        var jsonStr = line.slice(6);
+        if (jsonStr === '[DONE]') continue;
+        try {
+          var event = JSON.parse(jsonStr);
+          if (event.type === 'content_block_delta' && event.delta && event.delta.type === 'text_delta') {
+            fullText += event.delta.text;
+            streamDiv.textContent = fullText;
+            m.scrollTop = m.scrollHeight;
+          }
+        } catch (e) { /* skip malformed lines */ }
+      }
+    }
+
+    var isArtifact = fullText.includes('Email 1') || fullText.includes('Subject:') ||
+      fullText.includes('AGENDA') || fullText.includes('## ') || fullText.length > 700;
+
+    if (isArtifact) {
+      var label = 'Generated Artifact';
+      if (fullText.includes('Subject:') || fullText.includes('Email 1')) label = 'Email Sequence';
+      else if (fullText.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+      else if (fullText.toLowerCase().includes('agenda') || fullText.toLowerCase().includes('call guide')) label = 'Call Agenda';
+      streamDiv.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+      streamDiv.querySelector('.ra-artifact-body').textContent = fullText;
+    } else {
+      streamDiv.innerHTML = fullText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    }
+
+    raHistory.push({ role: 'assistant', content: fullText });
+    m.scrollTop = m.scrollHeight;
+
+  } catch (err) {
+    var d = document.createElement('div');
+    d.className = 'ra-msg error-note';
+    d.textContent = 'Network error — check your connection and try again.';
+    document.getElementById('ra-messages').appendChild(d);
+    document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+    raHistory.pop();
+  }
+
+  raSetLoading(false);
+}
+</script>
+
+</body>
+</html>

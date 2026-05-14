@@ -6,7 +6,8 @@
     { "source": "/beacon-medical", "destination": "/beacon-medical.html" },
     { "source": "/tr-demo", "destination": "/tr-demo.html" },
     { "source": "/seneca-foods", "destination": "/seneca-foods-corporation.html" },
-    { "source": "/icp-explorer", "destination": "/twc_icp_explorer.html" }
+    { "source": "/icp-explorer", "destination": "/twc_icp_explorer.html" },
+    { "source": "/tatra-shipping", "destination": "/tatra-shipping.html" }
   ],
   "functions": {
     "api/chat.js": { "maxDuration": 60 }
