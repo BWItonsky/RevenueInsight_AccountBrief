@@ -7,7 +7,8 @@
     { "source": "/tr-demo", "destination": "/tr-demo.html" },
     { "source": "/seneca-foods", "destination": "/seneca-foods-corporation.html" },
     { "source": "/icp-explorer", "destination": "/twc_icp_explorer.html" },
-    { "source": "/tatra-shipping", "destination": "/tatra-shipping.html" }
+    { "source": "/tatra-shipping", "destination": "/tatra-shipping.html" },
+    { "source": "/checkr", "destination": "/checkr.html" }
   ],
   "functions": {
     "api/chat.js": { "maxDuration": 60 }

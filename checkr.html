@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Checkr | IANS Research × Revenue Insight</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+  :root {
+    --navy: #0D2137; --teal: #1A5E6A; --green: #7AB648;
+    --body: #2D3E50; --mid: #4A5E70; --light: #F0F4F7;
+    --border: #D8E2EA; --white: #FFFFFF; --red-flag: #C0392B; --amber: #E67E22;
+  }
+  .portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .portal-header .brand span { color: var(--green); }
+  .portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+  .brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+  .brief-header .tier-badge { background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 4px; white-space: nowrap; text-align: center; }
+  .brief-header .tier-badge .score { display: block; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; }
+  .brief-header .tier-badge .label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 2px; }
+  .whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+  .whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .whats-new ul { list-style: none; padding: 0; }
+  .whats-new ul li { font-size: 13px; color: #5D4200; padding: 4px 0 4px 16px; position: relative; }
+  .whats-new ul li::before { content: "\25B6"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 7px; }
+  .whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+  .section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+  .section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+  .section-body { padding: 16px 18px; }
+  .snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+  .snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .snap-item .snap-value.highlight { color: var(--teal); }
+  .scorecard { display: flex; flex-direction: column; gap: 8px; }
+  .score-row { display: grid; grid-template-columns: 170px 1fr 60px; align-items: center; gap: 10px; }
+  .score-dim { font-size: 12px; color: var(--body); }
+  .score-bar-wrap { height: 10px; background: var(--light); border-radius: 5px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 5px; background: var(--teal); }
+  .score-bar.partial { background: #A8D08D; }
+  .score-bar.zero { background: var(--border); }
+  .score-pts { font-size: 12px; font-weight: 700; color: var(--navy); text-align: right; }
+  .score-max { font-size: 10px; color: var(--mid); font-weight: 400; }
+  .score-total-row { display: grid; grid-template-columns: 170px 1fr 60px; align-items: center; gap: 10px; margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--navy); }
+  .score-total-label { font-size: 12px; font-weight: 700; color: var(--navy); }
+  .score-total-pts { font-size: 16px; font-weight: 700; color: var(--navy); text-align: right; }
+  .score-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .fit-list { list-style: none; padding: 0; }
+  .fit-list li { padding: 6px 0 6px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+  .fit-list li:last-child { border-bottom: none; }
+  .fit-list li::before { content: "\2713"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .fit-list li strong { color: var(--navy); }
+  .opp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .opp-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); padding: 6px 10px; border-bottom: 2px solid var(--navy); }
+  .opp-table td { padding: 8px 10px; border-bottom: 1px solid var(--light); vertical-align: top; }
+  .opp-table tr:last-child td { border-bottom: none; }
+  .opp-table tr.total-row { background: var(--light); font-weight: 700; }
+  .opp-status { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .status-lost { background: #FBEBEB; color: #8B1A1A; }
+  .flag-list { list-style: none; padding: 0; }
+  .flag-list li { padding: 5px 0 5px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+  .flag-list li:last-child { border-bottom: none; }
+  .flag-list li::before { content: "\2691"; position: absolute; left: 0; color: var(--amber); font-size: 12px; top: 6px; }
+  .flag-list li.green::before { color: var(--green); content: "\2713"; font-size: 14px; }
+  .flag-list li.red::before { color: var(--red-flag); }
+  .dm-grid { display: flex; flex-direction: column; gap: 12px; }
+  .dm-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: start; }
+  .dm-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--teal); color: var(--white); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dm-avatar.find { background: var(--border); color: var(--mid); }
+  .dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .dm-title { font-size: 12px; color: var(--mid); margin-top: 1px; }
+  .dm-note { font-size: 12px; color: var(--mid); margin-top: 6px; font-style: italic; }
+  .dm-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 3px; white-space: nowrap; align-self: start; }
+  .badge-primary { background: var(--navy); color: var(--white); }
+  .badge-influencer { background: var(--teal); color: var(--white); }
+  .badge-champion { background: #EBF3F5; color: var(--teal); border: 1px solid var(--teal); }
+  .badge-find { background: var(--light); color: var(--mid); border: 1px solid var(--border); }
+  .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .signal-card { border-radius: 6px; border: 1px solid var(--border); padding: 12px 14px; }
+  .signal-card.trigger { border-left: 3px solid var(--green); background: #F5FBF0; }
+  .signal-card.watch { border-left: 3px solid var(--amber); background: #FFF8E6; }
+  .signal-card.risk { border-left: 3px solid var(--red-flag); background: #FBF0F0; }
+  .signal-type { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
+  .signal-card.trigger .signal-type { color: #2A6018; }
+  .signal-card.watch .signal-type { color: #8B5A00; }
+  .signal-card.risk .signal-type { color: var(--red-flag); }
+  .signal-headline { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .signal-body { font-size: 12px; color: var(--body); line-height: 1.5; }
+  .play-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+  .play-card:last-child { margin-bottom: 0; }
+  .play-card-header { background: var(--navy); color: var(--white); padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+  .play-num { background: var(--green); color: var(--white); font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .play-title { font-size: 13px; font-weight: 700; }
+  .play-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; background: rgba(122,182,72,0.25); color: var(--green); margin-left: auto; }
+  .play-body { padding: 12px 14px; }
+  .play-body p { font-size: 13px; line-height: 1.55; color: var(--body); }
+  .play-steps { list-style: none; padding: 0; margin-top: 8px; }
+  .play-steps li { padding: 4px 0 4px 22px; position: relative; font-size: 13px; line-height: 1.55; color: var(--body); }
+  .play-steps li::before { content: attr(data-step); position: absolute; left: 0; width: 14px; height: 14px; background: var(--teal); color: var(--white); font-size: 9px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 6px; }
+  .talk-track-box { background: var(--light); border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 16px; font-size: 14px; font-style: italic; color: var(--navy); line-height: 1.6; margin-bottom: 12px; }
+  .talk-track-note { font-size: 12px; color: var(--mid); margin-top: 8px; font-style: normal; }
+  .oq-list { list-style: none; padding: 0; counter-reset: oq; }
+  .oq-list li { padding: 6px 0 6px 24px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); counter-increment: oq; }
+  .oq-list li:last-child { border-bottom: none; }
+  .oq-list li::before { content: counter(oq); position: absolute; left: 0; width: 16px; height: 16px; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 8px; }
+  .section-nav { background: var(--navy); border-bottom: 3px solid var(--green); padding: 10px 32px 12px; position: sticky; top: 0; z-index: 100; }
+  .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+  .nav-inner { display: flex; flex-wrap: wrap; gap: 6px; }
+  .nav-btn { display: inline-block; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-decoration: none; padding: 5px 13px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .nav-btn:hover { background: rgba(122,182,72,0.2); border-color: rgba(122,182,72,0.5); color: var(--white); }
+  .nav-btn.active { background: var(--green); border-color: var(--green); color: var(--white); }
+  .brief-footer { background: var(--navy); color: rgba(255,255,255,0.5); font-size: 11px; padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+  .small-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; }
+  .interp-box { margin-top: 12px; padding: 10px 12px; background: var(--light); border-radius: 5px; font-size: 12px; color: var(--mid); font-style: italic; }
+  .interp-box strong { color: var(--navy); font-style: normal; }
+  @media print {
+    .section-nav, #rep-assistant-btn, #rep-assistant-panel, #ra-overlay { display: none !important; }
+  }
+
+  /* ══ REP ASSISTANT ══ */
+  #rep-assistant-btn { position: fixed; bottom: 28px; right: 28px; z-index: 9000; background: var(--navy); color: var(--white); border: none; border-radius: 28px; padding: 11px 20px 11px 15px; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.32); transition: background 0.15s, transform 0.12s; }
+  #rep-assistant-btn:hover { background: #162e4d; transform: translateY(-2px); }
+  #rep-assistant-btn .btn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(122,182,72,0.5);} 50%{box-shadow:0 0 0 5px rgba(122,182,72,0);} }
+  #ra-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.22); z-index: 9001; }
+  #rep-assistant-panel { position: fixed; top: 0; right: -460px; width: 440px; height: 100vh; background: var(--white); z-index: 9002; display: flex; flex-direction: column; transition: right 0.28s cubic-bezier(0.4,0,0.2,1); box-shadow: -6px 0 40px rgba(0,0,0,0.16); }
+  #rep-assistant-panel.open { right: 0; }
+  .ra-header { background: var(--navy); padding: 14px 16px 12px; flex-shrink: 0; }
+  .ra-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .ra-title { font-size: 13px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
+  .ra-title .ra-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .ra-close { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.75); font-size: 17px; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .ra-close:hover { background: rgba(255,255,255,0.2); }
+  .ra-context-pill { display: inline-flex; align-items: center; gap: 5px; background: rgba(122,182,72,0.15); border: 1px solid rgba(122,182,72,0.3); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.3px; }
+  .ra-quick-actions { background: var(--light); border-bottom: 1px solid var(--border); padding: 10px 14px; flex-shrink: 0; }
+  .ra-quick-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+  .ra-quick-btns { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ra-quick-btn { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 4px 10px; font-size: 11px; font-weight: 700; color: var(--navy); cursor: pointer; transition: border-color 0.15s, background 0.15s; font-family: Calibri, 'Segoe UI', Arial, sans-serif; }
+  .ra-quick-btn:hover { border-color: var(--teal); background: #EBF3F5; color: var(--teal); }
+  .ra-quick-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ra-messages { flex: 1; overflow-y: auto; padding: 14px 14px 0; display: flex; flex-direction: column; gap: 10px; }
+  .ra-msg { max-width: 88%; font-size: 13px; line-height: 1.5; padding: 9px 12px; border-radius: 10px; }
+  .ra-msg.user { background: var(--navy); color: var(--white); align-self: flex-end; border-radius: 10px 10px 3px 10px; }
+  .ra-msg.assistant { background: var(--light); color: var(--body); align-self: flex-start; border-radius: 10px 10px 10px 3px; border: 1px solid var(--border); }
+  .ra-msg.error-note { background: #FBF0F0; border: 1px solid #F5C8C8; color: var(--red-flag); font-size: 12px; align-self: flex-start; border-radius: 6px; padding: 8px 10px; }
+  .ra-artifact { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .ra-artifact-header { background: var(--navy); padding: 7px 12px; display: flex; justify-content: space-between; align-items: center; }
+  .ra-artifact-label { font-size: 11px; font-weight: 700; color: var(--white); letter-spacing: 0.5px; }
+  .ra-artifact-copy { background: rgba(122,182,72,0.2); border: 1px solid rgba(122,182,72,0.4); border-radius: 4px; color: var(--green); font-size: 11px; font-weight: 700; padding: 2px 8px; cursor: pointer; font-family: Calibri, 'Segoe UI', Arial, sans-serif; }
+  .ra-artifact-copy:hover { background: rgba(122,182,72,0.35); }
+  .ra-artifact-body { padding: 12px; font-size: 12px; line-height: 1.6; color: var(--body); white-space: pre-wrap; background: var(--white); max-height: 260px; overflow-y: auto; }
+  .ra-typing { display: none; padding: 4px 14px 8px; }
+  .ra-typing.visible { display: block; }
+  .ra-dots { display: flex; gap: 4px; align-items: center; }
+  .ra-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--mid); animation: dot 1.4s infinite; }
+  .ra-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .ra-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dot { 0%,80%,100%{opacity:0.2;transform:scale(0.8);} 40%{opacity:1;transform:scale(1);} }
+  .ra-input-area { padding: 10px 12px 12px; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .ra-input-row { display: flex; gap: 8px; align-items: flex-end; }
+  #ra-input { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 13px; color: var(--body); resize: none; line-height: 1.4; height: 36px; max-height: 100px; overflow-y: auto; transition: border-color 0.15s; }
+  #ra-input:focus { outline: none; border-color: var(--teal); }
+  #ra-send { background: var(--navy); border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 16px; flex-shrink: 0; transition: background 0.15s; }
+  #ra-send:hover { background: var(--teal); }
+  #ra-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ra-footer-note { font-size: 10px; color: var(--mid); text-align: center; margin-top: 6px; letter-spacing: 0.3px; }
+</style>
+</head>
+<body>
+
+<div class="portal-header">
+  <div class="brand">Revenue Insight &middot; <span>IANS Research</span> Account Intelligence Portal</div>
+  <div class="portal-label">Rep-Facing &middot; Confidential &middot; Internal Use Only</div>
+</div>
+
+<nav class="section-nav" id="main-nav">
+  <div class="nav-label">Quick Jump</div>
+  <div class="nav-inner">
+    <a class="nav-btn" href="#signals">What's New</a>
+    <a class="nav-btn" href="#snapshot">Snapshot</a>
+    <a class="nav-btn" href="#scorecard">ICP Score</a>
+    <a class="nav-btn" href="#fit">Why Fit</a>
+    <a class="nav-btn" href="#opps">Opp History</a>
+    <a class="nav-btn" href="#flags">Flags</a>
+    <a class="nav-btn" href="#dms">Decision Makers</a>
+    <a class="nav-btn" href="#buying-signals">Buying Signals</a>
+    <a class="nav-btn" href="#plays">Sales Plays</a>
+    <a class="nav-btn" href="#talk-track">Talk Track</a>
+    <a class="nav-btn" href="#open-questions">Open Questions</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Checkr, Inc.</div>
+      <div class="account-sub">San Francisco, CA &middot; High Tech &middot; HR / Background Screening Software &middot; Mid-Market A &middot; Prospect</div>
+      <div class="account-sub" style="margin-top:5px; color:var(--teal); font-weight:700;">Account Owner: Michael Fiorelli &middot; MM West Territory 2 &middot; Region 3</div>
+    </div>
+    <div class="tier-badge">
+      <span class="score">80</span>
+      <span class="label">A-Tier &middot; ICP Score / 100</span>
+    </div>
+  </div>
+
+  <!-- WHAT'S NEW -->
+  <div class="whats-new" id="signals">
+    <div class="wn-header">&#9889; What's New &mdash; Live Signals (May 2026)</div>
+    <ul>
+      <li><strong>Checkr Secured $250M Growth Equity Round at $5B Valuation (2023).</strong> Checkr raised a $250M round co-led by Fidelity, T. Rowe Price, and IVP, pushing total funding to over $600M. Post-funding, investor expectations for security and compliance infrastructure at scale have intensified — a primary IANS buying trigger.</li>
+      <li><strong>25% Workforce Reduction in 2023; Headcount Stabilized at ~469 (2026).</strong> Checkr cut roughly 350 employees in 2023 following rapid over-hiring. Security teams doing more with less are the core IANS value proposition — practitioner advisory as a force multiplier, not a headcount add.</li>
+      <li><strong>New CISO and Security Leadership Build-Out Underway.</strong> Checkr has significantly expanded its trust and security function in response to FCRA enforcement actions and SOC 2 audit requirements. The security team sits at 9 — within IANS's pricing band and a confirmed-reachable buyer set.</li>
+      <li><strong>CFPB and FTC Regulatory Scrutiny on Background Check Accuracy Escalating.</strong> Consumer Financial Protection Bureau enforcement actions against background screening companies surged in 2024–2025. Checkr's CISO and legal teams face direct regulatory pressure — ask-an-expert access on FTC/CFPB compliance is an immediate, concrete IANS use case.</li>
+      <li><strong>Discovery Meeting Completed February 26, 2026.</strong> IANS reps held a discovery meeting with Checkr on Feb 26, 2026. The account is warm and engaged. Three consecutive closed-lost opps (2023–2025) signal proposal fit or timing mismatch — not disengagement.</li>
+      <li><strong>Checkr Expanding into International Hiring Verification (UK, Canada).</strong> As Checkr pushes beyond the US market, cross-border compliance complexity multiplies. IANS practitioner expertise in international data protection and regulatory frameworks is directly relevant to the security and legal teams managing this expansion.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 1: SNAPSHOT -->
+  <div class="section" id="snapshot">
+    <div class="section-header">1 &middot; Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item"><div class="snap-label">Organization</div><div class="snap-value">Checkr, Inc.</div></div>
+        <div class="snap-item"><div class="snap-label">Website</div><div class="snap-value"><a href="https://www.checkr.com" target="_blank" style="color:var(--teal);text-decoration:none;">www.checkr.com ↗</a></div></div>
+        <div class="snap-item"><div class="snap-label">HQ Location</div><div class="snap-value">San Francisco, CA 94108</div></div>
+        <div class="snap-item"><div class="snap-label">Primary Industry</div><div class="snap-value highlight">Human Resources Software</div></div>
+        <div class="snap-item"><div class="snap-label">Internal Segment</div><div class="snap-value highlight">High Tech</div></div>
+        <div class="snap-item"><div class="snap-label">IANS Segment</div><div class="snap-value highlight">Mid-Market A</div></div>
+        <div class="snap-item"><div class="snap-label">ICP Tier</div><div class="snap-value highlight">A-Tier &middot; 80 / 100</div></div>
+        <div class="snap-item"><div class="snap-label">Employees</div><div class="snap-value">469 (251–500 band)</div></div>
+        <div class="snap-item"><div class="snap-label">Est. Annual Revenue</div><div class="snap-value">~$224M</div></div>
+        <div class="snap-item"><div class="snap-label">Revenue Band</div><div class="snap-value">$100M–$500M</div></div>
+        <div class="snap-item"><div class="snap-label">Public Company</div><div class="snap-value">No (VC-backed)</div></div>
+        <div class="snap-item"><div class="snap-label">Ownership</div><div class="snap-value">VC — Accel, IVP, T. Rowe, Fidelity</div></div>
+        <div class="snap-item"><div class="snap-label">Security Team Size</div><div class="snap-value highlight">9 (Actual) &middot; 1–9 Band</div></div>
+        <div class="snap-item"><div class="snap-label">Security Titles in DB</div><div class="snap-value">5 (DMs + Influencers + Champions)</div></div>
+        <div class="snap-item"><div class="snap-label">IT Contacts in DB</div><div class="snap-value">6</div></div>
+        <div class="snap-item"><div class="snap-label">Contactable Contacts</div><div class="snap-value">11 total &middot; 2 addressable</div></div>
+        <div class="snap-item"><div class="snap-label">CRM Account Type</div><div class="snap-value">Prospect (0 Closed Won)</div></div>
+        <div class="snap-item"><div class="snap-label">Account Owner</div><div class="snap-value">Michael Fiorelli</div></div>
+        <div class="snap-item" style="grid-column:span 3;"><div class="snap-label">Company Description</div><div class="snap-value" style="font-weight:400;font-size:13px;">Checkr is a San Francisco-based background screening and identity verification platform serving companies like Uber, Instacart, Compass, and Shipt. Their platform automates compliant, fast background checks at scale for gig economy, enterprise, and SMB employers. Checkr operates at the intersection of HR technology and compliance risk — handling SSNs, financial records, and criminal history data under FCRA, CCPA, and SOC 2 frameworks. Their security and trust teams carry disproportionate responsibility relative to headcount, making IANS practitioner advisory a strategic resource multiplier.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: SCORECARD -->
+  <div class="section" id="scorecard">
+    <div class="section-header">2 &middot; ICP Fit Scorecard &mdash; Why A-Tier (80 / 100)</div>
+    <div class="section-body">
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">Internal Segment<br><span style="font-size:10px;color:var(--mid);">High Tech = full 20 pts</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 <span class="score-max">/ 20</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim"># Security Titles in DB<br><span style="font-size:10px;color:var(--mid);">5 titles &middot; 4+ = full 20 pts</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 <span class="score-max">/ 20</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Opportunities Created<br><span style="font-size:10px;color:var(--mid);">3 past opps &middot; 1 = 50% of max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:50%"></div></div>
+          <div class="score-pts">10 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Annual Revenue<br><span style="font-size:10px;color:var(--mid);">~$224M &middot; $100M–$500M band</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 <span class="score-max">/ 20</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Public Company<br><span style="font-size:10px;color:var(--mid);">Private = 0 pts</span></div>
+          <div class="score-bar-wrap"><div class="score-bar zero" style="width:0%"></div></div>
+          <div class="score-pts">0 <span class="score-max">/ —</span></div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim"># IT Contacts in DB<br><span style="font-size:10px;color:var(--mid);">6 IT contacts &middot; 5+ = full 10 pts</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">10 <span class="score-max">/ 10</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">Total ICP Score</div>
+          <div></div>
+          <div class="score-total-pts">80 / 100</div>
+        </div>
+      </div>
+      <div class="score-note">Score formula: raw dimension values &times; 10. A-Tier threshold = 70 pts. Checkr scores 80 — 10 pts above cutoff. Primary drivers: High Tech segment (full), revenue band (full), IT contact density (full), 5 security titles (full). Only drag: Private company = 0 pts. A new CISO hire or expanded security team size (10+) would push the account toward 90+.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: WHY FIT -->
+  <div class="section" id="fit">
+    <div class="section-header">3 &middot; Why Checkr Is a Fit for IANS</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>A-Tier ICP score of 80/100 — 10 points above the priority threshold.</strong> Checkr qualifies on all scored dimensions except Public Company. High Tech classification, revenue band, security title density, and IT contact count all score at maximum.</li>
+        <li><strong>Security team of 9 with 5 active contacts in the IANS database.</strong> IANS prices by the number of practitioners who consume the platform. A team of 9 represents a meaningful initial subscription footprint — and as the team grows under regulatory pressure, so does the contract.</li>
+        <li><strong>Operates in an acute regulatory and compliance environment.</strong> Checkr handles SSNs, financial records, and criminal history data at scale under FCRA, CCPA, and SOC 2. Their security and legal teams are precisely the audience IANS serves — practitioners needing vendor-agnostic, expert guidance on rapidly evolving compliance risk.</li>
+        <li><strong>Three consecutive prior opportunities confirm budget awareness and buyer engagement.</strong> 2023 ($50,500 ARR), 2024 ($42,000 ARR), 2025 ($40,000 ARR). Checkr has been in the IANS pipeline for three straight years. This is not a cold account — it is a stalled one, which is a fundamentally different problem to solve.</li>
+        <li><strong>Discovery meeting completed February 26, 2026.</strong> IANS reps have been inside the account within the past 90 days. Checkr knows the offering. The next touchpoint should address what prior proposals missed — not re-introduce the product.</li>
+        <li><strong>Closed-lost history signals high re-win probability.</strong> Per IANS's own ICP model, a past closed opportunity — including closed-lost — is one of the strongest predictors of future conversion. Checkr has three. The model is telling you this account can close.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: OPP HISTORY -->
+  <div class="section" id="opps">
+    <div class="section-header">4 &middot; Opportunity History (CRM &mdash; 3 Opps on Record)</div>
+    <div class="section-body">
+      <table class="opp-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Opps Created</th>
+            <th>Closed Won</th>
+            <th>Closed Lost</th>
+            <th>ARR Created</th>
+            <th>ARR Closed Lost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2023</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>$50,500</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>2024</td>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>$42,000</td>
+            <td>$50,500</td>
+          </tr>
+          <tr>
+            <td>2025</td>
+            <td>1</td>
+            <td>0</td>
+            <td>2</td>
+            <td>$40,000</td>
+            <td>$82,000</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total</td>
+            <td>3</td>
+            <td>0</td>
+            <td>3</td>
+            <td>$132,500</td>
+            <td>$132,500</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="interp-box">
+        <strong>Rep Interpretation:</strong> Checkr has appeared in the IANS pipeline for three consecutive years with declining ARR per proposal ($50.5K &rarr; $42K &rarr; $40K). Zero Closed Won with a Feb 2026 discovery meeting on record signals a structural proposal gap — not a relationship or awareness problem. The downward ARR trend suggests proposals have been sized down to try to close, which is the wrong move. The play is to rebuild the business case at the correct value tier, anchored to regulatory pressure and team capacity — not to discount further. IANS's own ICP model flags accounts with past closed opportunities as higher-conversion prospects; this account has three.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: FLAGS -->
+  <div class="section" id="flags">
+    <div class="section-header">5 &middot; Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="green">ICP score confirmed: <strong>80/100 (A-Tier)</strong>. Above the 70-point threshold. Priority prospect for MM West Territory 2.</li>
+        <li class="green">Account is contactable and addressable: <strong>5 security titles and 6 IT contacts</strong> active in the IANS database. Multi-threaded outreach is possible today.</li>
+        <li class="green">Completed Discovery Meeting on record (Feb 26, 2026). Warm account — rep has been in the room.</li>
+        <li class="green">Revenue band confirmed (~$224M est. ARR). Meets the $100M–$500M IANS Mid-Market A criteria.</li>
+        <li class="green">Three prior opportunities confirm ongoing buyer engagement. Per IANS ICP model, past closed-lost is a <strong>positive</strong> conversion indicator.</li>
+        <li>&#9888; <strong>Zero Closed Won across 3 years.</strong> Declining proposal ARR ($50.5K &rarr; $40K) suggests the proposal pitch or sizing has not been landing. Investigate what objections surfaced in prior losses before next outreach.</li>
+        <li>&#9888; <strong>Private company (VC-backed).</strong> Budget cycles may be less predictable than a public company. Confirm whether Checkr is on an annual SaaS renewal model or project-based budget. Apax-style investor discipline not confirmed — validate budgeting process with Yin's analog in this account.</li>
+        <li>&#9888; <strong>Only 2 addressable contacts out of 11 contactable.</strong> The gap between contactable (11) and addressable (2) suggests data freshness or enrichment gaps. Confirm contact records in CRM before outreach — especially for the CISO and Head of Security.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 6: DECISION MAKERS -->
+  <div class="section" id="dms">
+    <div class="section-header">6 &middot; Key Decision Makers &amp; Contacts</div>
+    <div class="section-body">
+      <div class="dm-grid">
+
+        <div class="dm-card">
+          <div class="dm-avatar">JB</div>
+          <div>
+            <div class="dm-name">Jonathan Beckett</div>
+            <div class="dm-title">Chief Information Security Officer (CISO) &middot; San Francisco, CA</div>
+            <div class="dm-note">Primary economic sponsor and likely final decision-maker on IANS subscription. Responsible for Checkr's SOC 2, FCRA security compliance, and trust infrastructure. CISOs at IANS clients use the platform for practitioner-to-practitioner advisory — Beckett's team of 9 is exactly the buying profile. Approach with a regulatory-pressure framing (CFPB, FCRA enforcement), not a generic security research pitch. <strong>Verify this contact in CRM before outreach — confirm title and confirm active status post-2024 layoffs.</strong></div>
+          </div>
+          <div class="dm-badge badge-primary">Primary DM</div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">SK</div>
+          <div>
+            <div class="dm-name">Sarah Kim</div>
+            <div class="dm-title">VP, Security Engineering &middot; San Francisco, CA</div>
+            <div class="dm-note">Likely influencer or day-to-day evaluator for any IANS subscription decision. Manages the technical implementation of Checkr's security stack — her team would be the primary consumers of IANS practitioner content and ask-an-expert access. A strong champion here accelerates the CISO's decision. Worth connecting before the formal proposal. <strong>Confirm current role and contact details in CRM — verify not impacted by 2023–2024 reductions.</strong></div>
+          </div>
+          <div class="dm-badge badge-influencer">Influencer</div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">?</div>
+          <div>
+            <div class="dm-name">Head of Compliance / GRC</div>
+            <div class="dm-title">Not yet identified — confirm before outreach</div>
+            <div class="dm-note">Checkr's FCRA and CFPB compliance exposure means a GRC or Compliance Officer is a distinct and high-value buying center. This person is likely in legal or risk and may be separate from the CISO's team. Search LinkedIn for "Checkr compliance director" or "Checkr GRC." IANS's regulatory advisory is a direct value sell to this role — do not skip this contact in multi-thread outreach.</div>
+          </div>
+          <div class="dm-badge badge-find">Find This Person</div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">MF</div>
+          <div>
+            <div class="dm-name">Michael Fiorelli</div>
+            <div class="dm-title">IANS Account Owner &middot; MM West Territory 2</div>
+            <div class="dm-note">Internal IANS rep assigned to Checkr. Has conducted the Feb 2026 discovery meeting. All outreach and proposal activity should route through Michael. Three prior proposal cycles have not closed — Michael should debrief on what objections surfaced in each loss before structuring the next approach.</div>
+          </div>
+          <div class="dm-badge" style="background:var(--light);color:var(--mid);border:1px solid var(--border);">Internal</div>
+        </div>
+
+      </div>
+      <div class="small-note">Contact details should be verified in CRM and enrichment tools (ZoomInfo / LinkedIn Sales Navigator) before any outreach. Checkr went through layoffs in 2023 and 2024 — confirm all contacts are still active.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: BUYING SIGNALS (Client-specific) -->
+  <div class="section" id="buying-signals">
+    <div class="section-header">7 &middot; Security Buying Signals &mdash; What to Watch at Checkr</div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--mid); margin-bottom:12px; font-style:italic;">IANS's buyer (CISO and security team) is triggered by specific events. These are the six most relevant signal types for Checkr. Monitor these before each outreach cycle to time proposals correctly.</p>
+      <div class="signal-grid">
+
+        <div class="signal-card trigger">
+          <div class="signal-type">&#9679; Active Trigger</div>
+          <div class="signal-headline">Regulatory Enforcement Action</div>
+          <div class="signal-body">CFPB and FTC are actively pursuing background screening companies for FCRA violations. Any new enforcement announcement — even against a competitor — creates urgency for Checkr's CISO to validate their compliance posture. IANS ask-an-expert is the fastest path to practitioner guidance on how similar companies have responded.</div>
+        </div>
+
+        <div class="signal-card trigger">
+          <div class="signal-type">&#9679; Active Trigger</div>
+          <div class="signal-headline">New CISO or Security Leadership Hire</div>
+          <div class="signal-body">A new CISO or VP Security hire is the single highest-value IANS timing signal. New security leaders at Checkr's profile company always audit their tool and advisory stack in the first 90 days. Monitor Checkr's LinkedIn page and leadership announcements weekly. A new hire is a direct opening for a warm outreach and product demo.</div>
+        </div>
+
+        <div class="signal-card trigger">
+          <div class="signal-type">&#9679; Active Trigger</div>
+          <div class="signal-headline">SOC 2 or Security Audit Cycle</div>
+          <div class="signal-body">Checkr undergoes annual SOC 2 Type II audits as a requirement for enterprise client contracts. The 60–90 days preceding audit scope opens are a strong buying window — CISOs and security engineers are actively researching best practices and seeking practitioner guidance on controls, evidence collection, and auditor expectations.</div>
+        </div>
+
+        <div class="signal-card watch">
+          <div class="signal-type">&#9650; Watch Signal</div>
+          <div class="signal-headline">International Expansion Announcements</div>
+          <div class="signal-body">Checkr's push into UK and Canadian background screening introduces GDPR, PIPEDA, and local employment law complexity the US security team has not managed before. Watch for job postings with "international" or "GDPR" in the description — these are leading indicators that the security team is being asked to cover new regulatory terrain and will need outside advisory.</div>
+        </div>
+
+        <div class="signal-card watch">
+          <div class="signal-type">&#9650; Watch Signal</div>
+          <div class="signal-headline">Security Headcount Expansion (10+ Titles)</div>
+          <div class="signal-body">Checkr's security team currently sits at 9 — the top of the 1–9 scoring band. A 10th security hire moves the account into the 10+ band (100% scoring weight) and increases the IANS subscription footprint. Monitor LinkedIn for new security engineering, GRC, or threat intelligence roles — any of these is a pre-close signal for a larger seat count deal.</div>
+        </div>
+
+        <div class="signal-card risk">
+          <div class="signal-type">&#9660; Risk Signal</div>
+          <div class="signal-headline">Additional Layoffs or Budget Freeze</div>
+          <div class="signal-body">Checkr has cut headcount twice (2023 and 2024). A third reduction would signal budget tightening and make discretionary advisory spend harder to justify. Monitor for press releases, LinkedIn activity from departing employees, or job postings suddenly disappearing. If this signal appears, pause proposal activity and requalify budget owner before investing further in the cycle.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: PLAYS -->
+  <div class="section" id="plays">
+    <div class="section-header">8 &middot; Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">1</div>
+          <div class="play-title">The Re-Engage: Regulatory Urgency Reset</div>
+          <div class="play-tag">Re-Engage</div>
+        </div>
+        <div class="play-body">
+          <p>Checkr has been in the IANS pipeline since 2023 with three closed-lost proposals. The pattern suggests prior pitches were framed as "general security research platform" rather than tied to Checkr's specific and acute regulatory exposure. CFPB enforcement against background screening companies has accelerated sharply — this is the reset moment. Come back with a FCRA/CFPB-specific ask-an-expert example, not a feature pitch.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Reference the Feb 2026 discovery meeting as the warm opening.</strong> Email the CISO or VP Security: "Following our conversation in February, I wanted to share something timely — [specific CFPB enforcement action or industry development]. Our practitioners have been fielding a lot of questions on exactly this from similar companies. I'd like to set up 20 minutes to walk you through how they're responding."</li>
+            <li data-step="2"><strong>Lead with a practitioner-to-practitioner proof point, not a features list.</strong> Find a recent IANS Faculty insight on FCRA compliance, background screening data handling, or CFPB response strategies. Share it as a free artifact in the outreach email. Let the quality of the content sell the subscription — not the pitch deck.</li>
+            <li data-step="3"><strong>Reframe the price around the team of 9, not the platform.</strong> Prior proposals declined ($50.5K &rarr; $40K). Don't go lower — reframe upward. "For a team of 9 practitioners managing FCRA, SOC 2, and now international compliance, this is $5–6K per person per year for on-demand expert access. What's the alternative — outside counsel at $600/hour?" Anchor the comparison correctly.</li>
+            <li data-step="4"><strong>Ask for a 20-minute call with the CISO and one other member of the security team.</strong> Multi-threading the conversation (CISO + VP Security, or CISO + GRC lead) reduces single-threaded risk that killed prior proposals.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">2</div>
+          <div class="play-title">The Force Multiplier: Security Team of 9 Doing the Work of 20</div>
+          <div class="play-tag">New Logo Close</div>
+        </div>
+        <div class="play-body">
+          <p>Checkr's security team of 9 is managing a disproportionate compliance and risk surface area — FCRA, SOC 2, CCPA, international expansion, and investor security expectations — with no headcount growth after layoffs. The IANS value proposition is not more research tools; it is effectively adding senior practitioner capacity to a lean team. Position the subscription as operational leverage, not a discretionary research budget line.</p>
+          <ul class="play-steps">
+            <li data-step="1"><strong>Open with the capacity math.</strong> "Your team of 9 is managing a compliance surface that companies three times your size staff with 25+ people. IANS gives your team on-demand access to 300+ practitioners who have solved the exact problems you're facing — FCRA enforcement response, SOC 2 evidence collection, GDPR for your international expansion — without adding headcount."</li>
+            <li data-step="2"><strong>Quantify the alternative cost.</strong> Three outside counsel calls at $600/hour = $1,800. An IANS annual subscription for a team of 9 is roughly the same cost as 30 hours of outside counsel. Frame it as: "You're going to pay for this expertise either way — the question is whether you're paying for access or for the same answer every time you have a new question."</li>
+            <li data-step="3"><strong>Offer a live ask-an-expert demo scoped to a real Checkr question.</strong> Ask the rep to identify one active compliance question the Checkr security team is working on. Bring that question to a 30-minute demo and show — live — how an IANS Faculty member would respond. This demo format converts at significantly higher rates than feature walkthroughs for this buyer profile.</li>
+            <li data-step="4"><strong>Propose a team-of-9 subscription at the correct ARR.</strong> Do not come back at $40K. Price for the full team with a 12-month term. If budget is the stated objection, offer a 90-day pilot for 3 seats — not a permanent discount on the full contract.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 9: TALK TRACK -->
+  <div class="section" id="talk-track">
+    <div class="section-header">9 &middot; Opening Talk Track &mdash; Warm Re-Engage</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        "We've talked a few times over the past couple of years, and I know the timing hasn't been right to move forward. I'm reaching back out today because something specific has changed in your environment that I think matters to your team. The CFPB has escalated enforcement activity against background screening companies significantly — and the questions your peers' security teams are asking right now are exactly the kinds of things IANS practitioners are built to answer fast. I'd rather show you a real example than pitch you again. Can I send you a practitioner note on how companies with your FCRA exposure are structuring their response — and then get 20 minutes on the calendar to see if this is the right moment to revisit?"
+      </div>
+      <div class="talk-track-note">
+        <strong>Why this works:</strong> It acknowledges the prior relationship without relitigating past proposals. It leads with a specific regulatory signal that is real and current — not a generic pitch. It replaces the "let me show you our platform" opener with "let me show you something useful" — which is the correct conversion mechanism for a CISO buyer who already declined three times. The close is low-friction (send something useful first, then ask for 20 minutes — not a full demo).
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 10: OPEN QUESTIONS -->
+  <div class="section" id="open-questions">
+    <div class="section-header">10 &middot; Open Questions for Discovery</div>
+    <div class="section-body">
+      <ol class="oq-list">
+        <li>What specifically caused the three prior IANS proposals to close-lost? Was it budget, timing, internal champion, or a competing solution? Michael Fiorelli should document the loss reasons before the next outreach cycle.</li>
+        <li>Is the CISO a confirmed active contact in the IANS database? Who exactly did the Feb 2026 discovery meeting involve — was it the CISO directly, or an influencer/champion one level below?</li>
+        <li>What does Checkr's budget cycle look like for security tools? Annual (January), mid-year, or rolling? Knowing this determines whether to push for a decision now or time the proposal to a budget window.</li>
+        <li>Has Checkr adopted a competing security research or advisory platform (e.g., Gartner, Forrester, or a boutique CISO advisory)? If yes, is the contract up for renewal and when?</li>
+        <li>How is the CFPB/FCRA regulatory pressure landing internally — is the CISO actively escalating this to the board, or is it being managed as a known risk? The urgency level determines how aggressive to be with the regulatory framing in the pitch.</li>
+        <li>What is the current status of Checkr's international expansion (UK, Canada)? Has the security team been formally asked to cover GDPR and PIPEDA — or is this still in planning? Cross-border compliance is a second, distinct use case to sell.</li>
+        <li>Who owns the IANS evaluation internally at Checkr? Is there a single champion who can shepherd the decision through, or has every prior evaluation died at the budget approval stage?</li>
+      </ol>
+    </div>
+  </div>
+
+</div><!-- /.page-wrap -->
+
+<div class="brief-footer">
+  <div>Account Intelligence Brief &middot; <strong>Checkr, Inc.</strong> &middot; Generated May 2026</div>
+  <div class="ri-tag">Revenue Insight &middot; IANS Research Engagement</div>
+</div>
+
+<!-- REP ASSISTANT BUTTON -->
+<button id="rep-assistant-btn" onclick="raOpen()">
+  <span class="btn-dot"></span>
+  Rep Assistant
+</button>
+
+<div id="ra-overlay" onclick="raClose()"></div>
+
+<!-- REP ASSISTANT PANEL -->
+<div id="rep-assistant-panel">
+  <div class="ra-header">
+    <div class="ra-header-top">
+      <div class="ra-title"><span class="ra-dot"></span>Rep Assistant &middot; Checkr</div>
+      <button class="ra-close" onclick="raClose()">&times;</button>
+    </div>
+    <div class="ra-context-pill">A-Tier &middot; 80/100 &middot; 9-person security team &middot; 3 closed-lost opps &middot; $0 ARR &middot; Discovery: Feb 2026</div>
+  </div>
+
+  <div class="ra-quick-actions">
+    <div class="ra-quick-label">Quick Actions</div>
+    <div class="ra-quick-btns">
+      <button class="ra-quick-btn" onclick="raQuick('reopen')">Re-open email</button>
+      <button class="ra-quick-btn" onclick="raQuick('objection')">Handle budget objection</button>
+      <button class="ra-quick-btn" onclick="raQuick('callprep')">Call prep guide</button>
+      <button class="ra-quick-btn" onclick="raQuick('linkedin')">LinkedIn outreach</button>
+      <button class="ra-quick-btn" onclick="raQuick('lossdebrief')">Loss debrief questions</button>
+    </div>
+  </div>
+
+  <div class="ra-messages" id="ra-messages">
+    <div class="ra-msg assistant">Hi Michael — I'm loaded up on Checkr. A-Tier prospect, security team of 9, three closed-lost proposals, and a Feb 2026 discovery meeting on record. The account is warm but stalled. What do you need?</div>
+  </div>
+
+  <div class="ra-typing" id="ra-typing"><div class="ra-dots"><span></span><span></span><span></span></div></div>
+
+  <div class="ra-input-area">
+    <div class="ra-input-row">
+      <textarea id="ra-input" placeholder="Ask anything about Checkr…" rows="1" onkeydown="raKey(event)" oninput="raResize(this)"></textarea>
+      <button id="ra-send" onclick="raSend()">&#9650;</button>
+    </div>
+    <div class="ra-footer-note">Powered by Claude &middot; IANS Research Internal Use Only &middot; Context: Checkr AIB</div>
+  </div>
+</div>
+
+<script>
+var raHistory = [];
+var raLoading = false;
+
+var RA_SYSTEM = "You are the IANS Research Rep Assistant, an AI sales coach embedded in the Account Intelligence Brief for Checkr, Inc. You help Michael Fiorelli, the IANS account rep for MM West Territory 2, prepare for and execute outreach to Checkr.\n\nACCOUNT CONTEXT:\n- Account: Checkr, Inc. (www.checkr.com)\n- HQ: San Francisco, CA\n- Industry: Human Resources Software / High Tech\n- Segment: Mid-Market A\n- Employees: 469\n- Est. Annual Revenue: ~$224M\n- Ownership: VC-backed (Accel, IVP, T. Rowe Price, Fidelity). Total funding: $600M+\n- Public: No\n\nICP SCORE: 80/100 — A-Tier (threshold: 70)\n- Internal Segment (High Tech): 20/20 — full\n- Security Titles in DB (5 titles, 4+ = full): 20/20 — full\n- Opportunities Created (3 opps): 10/10 — full\n- Annual Revenue (~$224M, $100M-$500M band): 20/20 — full\n- Public Company (Private): 0 — zero\n- IT Contacts in DB (6 contacts, 5+ = full): 10/10 — full\n\nSECURITY TEAM:\n- Security Team Size (Actual): 9 people\n- Security Titles in IANS DB: 5 (DMs, Influencers, Champions)\n- IT Contacts in DB: 6\n- Contactable: 11 total, 2 addressable\n- Key contacts: CISO (Jonathan Beckett — verify active), VP Security Engineering (Sarah Kim — verify active), Head of Compliance/GRC (not yet identified)\n\nOPPORTUNITY HISTORY (CRM):\n- 2023: 1 opp created, ARR $50,500 — not yet closed lost (carried)\n- 2024: 1 opp created ($42,000 ARR), 1 closed lost ($50,500 ARR)\n- 2025: 1 opp created ($40,000 ARR), 2 closed lost ($82,000 ARR)\n- Total: 3 opps, 0 closed won, 3 closed lost, $0 ARR\n- Pattern: declining proposal ARR ($50.5K -> $42K -> $40K) suggests downsizing proposals to try to close — wrong direction\n- Per IANS ICP model, past closed-lost = POSITIVE re-win indicator\n\nWHAT'S NEW SIGNALS (May 2026):\n1. $250M growth equity at $5B valuation (Fidelity, T. Rowe, IVP) — investor compliance expectations intensified\n2. 25% workforce reduction in 2023; headcount stabilized at 469 — security team of 9 doing more with less, force multiplier argument is strong\n3. CISO and security leadership build-out underway post-cuts\n4. CFPB and FTC enforcement on background screening companies escalating — FCRA, CCPA, SOC 2 pressure acute\n5. Discovery meeting completed Feb 26, 2026 — warm account, not cold outreach\n6. International expansion (UK, Canada) — GDPR and PIPEDA compliance added to security team's surface area\n\nSALES PLAYS:\nPlay 1 — Re-engage with Regulatory Urgency Reset: Lead with CFPB enforcement specifics, not platform features. Share a practitioner note as a free artifact. Reframe price around $5-6K per person/year vs. $600/hour outside counsel. Multi-thread with CISO and VP Security.\nPlay 2 — Force Multiplier pitch: Position IANS as operational leverage for a 9-person team with 25-person compliance surface. Offer live ask-an-expert demo on a real Checkr question. Don't discount — offer a 90-day 3-seat pilot instead.\n\nTALK TRACK HOOK: 'The CFPB has escalated enforcement against background screening companies significantly — the questions your peers' security teams are asking right now are exactly what IANS practitioners answer fast. I'd rather show you a real example than pitch you again.'\n\nOPEN QUESTIONS:\n1. Why did the three prior proposals close-lost? Loss reasons not documented.\n2. Who was in the Feb 2026 discovery meeting — CISO directly, or one level below?\n3. What is Checkr's budget cycle for security tools?\n4. Does Checkr have a competing security research platform (Gartner, Forrester)?\n5. How is CFPB pressure landing internally — board-level or managed risk?\n6. Status of UK/Canada expansion — has security team been formally tasked?\n7. Who is the internal IANS champion at Checkr?\n\nYOUR ROLE:\nHelp Michael prepare outreach emails, call scripts, objection handling, discovery questions, and follow-up artifacts. Always ground your responses in Checkr's actual situation — the regulatory pressure, the 9-person security team, the three closed-lost history. Never give generic sales advice that could apply to any account. If Michael shares new information from a call or email, update your recommendations accordingly. Keep responses concise and actionable — Michael is a rep, not a strategist.";
+
+var RA_QUICK_PROMPTS = {
+  'reopen': "Write a re-engagement email from Michael Fiorelli to the Checkr CISO (Jonathan Beckett) that references the Feb 2026 discovery meeting and leads with the CFPB enforcement escalation against background screening companies as the reason to reconnect. Don't pitch the platform — offer a free practitioner note on FCRA response as the opener, then ask for 20 minutes. Keep it under 150 words. Make it specific to Checkr's actual situation.",
+  'objection': "The Checkr security leader just said 'We already looked at this twice and the price didn't work for our budget.' Give me a word-for-word response I can use on the call right now that reframes the price around cost-per-person for a 9-person team vs. outside counsel rates, without dropping the price. I don't want to discount — I want to reanchor the comparison.",
+  'callprep': "Build me a 20-minute call prep guide for a re-engagement call with the Checkr CISO. Include: (1) the 3 things I need to learn on this call that I don't know yet, (2) the 2 things I must say about IANS that are specific to Checkr's situation, and (3) the close I should use to end the call with a clear next step. Make it specific to the three closed-lost history and the regulatory pressure they're under.",
+  'linkedin': "Write a LinkedIn connection message from Michael Fiorelli to the Head of Compliance or GRC at Checkr (role not yet identified — write it generically for a GRC or compliance leader). The message should be under 300 characters (LinkedIn limit), reference Checkr's FCRA and CFPB exposure, and not sound like a cold pitch. The goal is to get the connection accepted, not to sell on the first touch.",
+  'lossdebrief': "I need to debrief internally on why the three Checkr proposals (2023, 2024, 2025) closed-lost before I go back in. Write me 5 specific questions I should ask my manager or pull from Salesforce notes to understand what actually happened in those cycles. I need to know if this was a price problem, a champion problem, a timing problem, or something else before I invest more time."
+};
+
+function raOpen() {
+  document.getElementById('rep-assistant-panel').classList.add('open');
+  document.getElementById('ra-overlay').style.display = 'block';
+  document.getElementById('rep-assistant-btn').style.display = 'none';
+  setTimeout(function() { document.getElementById('ra-input').focus(); }, 300);
+}
+
+function raClose() {
+  document.getElementById('rep-assistant-panel').classList.remove('open');
+  document.getElementById('ra-overlay').style.display = 'none';
+  document.getElementById('rep-assistant-btn').style.display = 'flex';
+}
+
+function raResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function raKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); raSend(); }
+}
+
+function raSetLoading(on) {
+  raLoading = on;
+  document.getElementById('ra-send').disabled = on;
+  document.getElementById('ra-input').disabled = on;
+  document.querySelectorAll('.ra-quick-btn').forEach(function(b) { b.disabled = on; });
+  var t = document.getElementById('ra-typing');
+  t.className = 'ra-typing' + (on ? ' visible' : '');
+  if (on) { var m = document.getElementById('ra-messages'); m.scrollTop = m.scrollHeight; }
+}
+
+function raAppend(role, text) {
+  var m = document.getElementById('ra-messages');
+  var d = document.createElement('div');
+  var isArtifact = role === 'assistant' && (
+    text.includes('Subject:') || text.includes('Email 1') ||
+    text.includes('AGENDA') || text.includes('## ') || text.length > 700
+  );
+  if (isArtifact) {
+    var label = 'Generated Artifact';
+    if (text.includes('Subject:') || text.includes('Email')) label = 'Email Draft';
+    else if (text.toLowerCase().includes('linkedin')) label = 'LinkedIn Message';
+    else if (text.toLowerCase().includes('call') || text.toLowerCase().includes('agenda')) label = 'Call Guide';
+    d.className = 'ra-msg assistant';
+    d.innerHTML = '<div class="ra-artifact"><div class="ra-artifact-header"><span class="ra-artifact-label">' + label + '</span><button class="ra-artifact-copy" onclick="raCopy(this)">Copy all</button></div><div class="ra-artifact-body"></div></div>';
+    d.querySelector('.ra-artifact-body').textContent = text;
+  } else {
+    d.className = 'ra-msg ' + role;
+    d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  }
+  m.appendChild(d);
+  m.scrollTop = m.scrollHeight;
+}
+
+function raCopy(btn) {
+  var text = btn.closest('.ra-artifact').querySelector('.ra-artifact-body').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy all'; }, 2000);
+  });
+}
+
+async function raQuick(key) {
+  var prompt = RA_QUICK_PROMPTS[key];
+  raAppend('user', prompt.substring(0, 80) + '…');
+  await raCall(prompt);
+}
+
+async function raSend() {
+  var inp = document.getElementById('ra-input');
+  var text = inp.value.trim();
+  if (!text || raLoading) return;
+  inp.value = ''; inp.style.height = 'auto';
+  raAppend('user', text);
+  await raCall(text);
+}
+
+async function raCall(userMsg) {
+  raSetLoading(true);
+  raHistory.push({ role: 'user', content: userMsg });
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: raHistory, system: RA_SYSTEM })
+    });
+    var data = await resp.json();
+    if (data.error) {
+      var d = document.createElement('div');
+      d.className = 'ra-msg error-note';
+      d.textContent = 'Error: ' + (data.error.message || JSON.stringify(data.error));
+      document.getElementById('ra-messages').appendChild(d);
+      document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+      raHistory.pop();
+    } else {
+      var reply = data.content && data.content[0] ? data.content[0].text : '';
+      raHistory.push({ role: 'assistant', content: reply });
+      raAppend('assistant', reply);
+    }
+  } catch (err) {
+    var d = document.createElement('div');
+    d.className = 'ra-msg error-note';
+    d.textContent = 'Network error — check connection and try again.';
+    document.getElementById('ra-messages').appendChild(d);
+    document.getElementById('ra-messages').scrollTop = document.getElementById('ra-messages').scrollHeight;
+    raHistory.pop();
+  }
+  raSetLoading(false);
+}
+
+// Scroll-spy nav
+(function() {
+  var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','buying-signals','plays','talk-track','open-questions'];
+  var navBtns = document.querySelectorAll('.nav-btn');
+  function onScroll() {
+    var scrollY = window.scrollY + 120;
+    var active = sections[0];
+    sections.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) active = id;
+    });
+    navBtns.forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('href') === '#' + active);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
