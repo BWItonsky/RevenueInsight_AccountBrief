@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Acme Software Solutions | Revenue Insight</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+:root {
+  --navy: #0D2137; --teal: #1A5E6A; --green: #7AB648;
+  --body: #2D3E50; --mid: #4A5E70; --light: #F0F4F7;
+  --border: #D8E2EA; --white: #FFFFFF;
+  --red-flag: #C0392B; --amber: #E67E22;
+}
+.portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+.portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.portal-header .brand span { color: var(--green); }
+.portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+.section-nav { background: var(--navy); border-bottom: 3px solid var(--green); padding: 10px 32px 12px; position: sticky; top: 0; z-index: 100; }
+.nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+.nav-inner { display: flex; flex-wrap: wrap; gap: 6px; }
+.nav-btn { display: inline-block; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-decoration: none; padding: 5px 13px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+.nav-btn:hover { background: rgba(122,182,72,0.2); border-color: rgba(122,182,72,0.5); color: var(--white); }
+.nav-btn.active { background: var(--green); border-color: var(--green); color: var(--white); }
+.page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+.brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+.brief-header .tier-badge { background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 4px; white-space: nowrap; letter-spacing: 0.5px; text-align: center; flex-shrink: 0; }
+.brief-header .tier-badge .score { display: block; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; }
+.brief-header .tier-badge .label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+.whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+.whats-new ul { list-style: none; padding: 0; }
+.whats-new ul li { font-size: 13px; color: #5D4200; padding: 3px 0 3px 16px; position: relative; }
+.whats-new ul li::before { content: "▶"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 5px; }
+.whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+.section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+.section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+.section-body { padding: 16px 18px; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+.snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+.snap-item .snap-value.highlight { color: var(--teal); }
+.scorecard { display: flex; flex-direction: column; gap: 8px; }
+.score-row { display: grid; grid-template-columns: 180px 1fr 70px; align-items: center; gap: 10px; }
+.score-dim { font-size: 12px; color: var(--body); }
+.score-bar-wrap { height: 10px; background: var(--light); border-radius: 5px; overflow: hidden; }
+.score-bar { height: 100%; border-radius: 5px; background: var(--teal); }
+.score-bar.partial { background: #A8D08D; }
+.score-bar.low { background: var(--border); }
+.score-pts { font-size: 12px; font-weight: 700; color: var(--navy); text-align: right; }
+.score-max { font-size: 10px; color: var(--mid); font-weight: 400; }
+.score-gap { display: block; font-size: 10px; color: var(--amber); }
+.score-total-row { display: grid; grid-template-columns: 180px 1fr 70px; align-items: center; gap: 10px; margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--navy); }
+.score-total-label { font-size: 12px; font-weight: 700; color: var(--navy); }
+.score-total-pts { font-size: 16px; font-weight: 700; color: var(--navy); text-align: right; }
+.score-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.fit-list { list-style: none; padding: 0; }
+.fit-list li { padding: 6px 0 6px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+.fit-list li:last-child { border-bottom: none; }
+.fit-list li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; font-size: 13px; }
+.fit-list li strong { color: var(--navy); }
+.opp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.opp-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); padding: 6px 10px; border-bottom: 2px solid var(--navy); }
+.opp-table td { padding: 8px 10px; border-bottom: 1px solid var(--light); vertical-align: top; }
+.opp-table tr:last-child td { border-bottom: none; }
+.opp-status { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.status-won { background: #EBF5EB; color: #1A6B1A; }
+.status-lost { background: #FBEBEB; color: #8B1A1A; }
+.opp-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 3px; }
+.flag-list { list-style: none; padding: 0; }
+.flag-list li { padding: 5px 0 5px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+.flag-list li:last-child { border-bottom: none; }
+.flag-list li::before { content: "⚑"; position: absolute; left: 0; color: var(--amber); font-size: 12px; top: 6px; }
+.flag-list li.green::before { color: var(--green); }
+.flag-list li.red::before { color: var(--red-flag); }
+.dm-grid { display: flex; flex-direction: column; gap: 12px; }
+.dm-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
+.dm-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--teal); color: var(--white); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+.dm-title { font-size: 12px; color: var(--mid); margin-top: 1px; }
+.dm-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.dm-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+.tag-buyer { background: #EBF5EB; color: #1A6B1A; }
+.tag-influencer { background: #EBF1FB; color: #1A3D8B; }
+.tag-champion { background: #F3EBFB; color: #5B1A8B; }
+.tag-economic { background: #FBF3EB; color: #8B4A1A; }
+.dm-note { font-size: 12px; color: var(--mid); margin-top: 6px; font-style: italic; }
+.play-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+.play-card:last-child { margin-bottom: 0; }
+.play-card-header { background: var(--navy); color: var(--white); padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+.play-num { background: var(--green); color: var(--white); font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.play-title { font-size: 13px; font-weight: 700; }
+.play-body { padding: 12px 14px; }
+.play-body p { font-size: 13px; line-height: 1.55; color: var(--body); }
+.play-action { margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; }
+.talk-track-box { background: var(--light); border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 16px; font-size: 14px; font-style: italic; color: var(--navy); line-height: 1.6; margin-bottom: 12px; }
+.talk-track-alt { font-size: 12px; color: var(--mid); margin-top: 8px; font-style: normal; }
+.oq-list { list-style: none; padding: 0; counter-reset: oq; }
+.oq-list li { padding: 6px 0 6px 24px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); counter-increment: oq; }
+.oq-list li:last-child { border-bottom: none; }
+.oq-list li::before { content: counter(oq); position: absolute; left: 0; width: 16px; height: 16px; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 8px; }
+.brief-footer { background: var(--navy); color: rgba(255,255,255,0.5); font-size: 11px; padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+.brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+.rep-assistant-fab { position: fixed; bottom: 28px; right: 28px; z-index: 200; }
+.rep-assistant-btn { background: var(--navy); color: var(--white); border: none; border-radius: 50px; padding: 12px 20px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(13,33,55,0.35); letter-spacing: 0.3px; }
+.rep-assistant-btn .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-panel { position: fixed; bottom: 90px; right: 28px; width: 360px; background: var(--white); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(13,33,55,0.2); z-index: 200; display: none; flex-direction: column; overflow: hidden; max-height: 480px; }
+.chat-panel.open { display: flex; }
+.chat-header { background: var(--navy); color: var(--white); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.chat-header-left { display: flex; align-items: center; gap: 10px; }
+.chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-title { font-size: 13px; font-weight: 700; }
+.chat-subtitle { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 1px; }
+.chat-close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 18px; cursor: pointer; padding: 0; line-height: 1; }
+.chat-context-bar { background: #EBF5EB; border-bottom: 1px solid #C0DCBA; padding: 6px 12px; font-size: 10px; color: #1A6B1A; font-weight: 700; letter-spacing: 0.3px; }
+.chat-quick-actions { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.chat-quick-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--mid); margin-bottom: 6px; }
+.chat-quick-btns { display: flex; flex-wrap: wrap; gap: 5px; }
+.chat-quick-btn { font-size: 11px; background: var(--light); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; cursor: pointer; color: var(--navy); font-weight: 600; white-space: nowrap; }
+.chat-quick-btn:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 88%; font-size: 12px; line-height: 1.5; }
+.msg.assistant { background: var(--light); border-radius: 0 8px 8px 8px; padding: 8px 10px; color: var(--body); align-self: flex-start; white-space: pre-wrap; }
+.msg.user { background: var(--teal); border-radius: 8px 0 8px 8px; padding: 8px 10px; color: var(--white); align-self: flex-end; }
+.msg.thinking { color: var(--mid); font-style: italic; font-size: 11px; }
+.chat-input-row { padding: 10px 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+.chat-input { flex: 1; border: 1px solid var(--border); border-radius: 20px; padding: 7px 12px; font-size: 12px; outline: none; font-family: inherit; color: var(--body); }
+.chat-input:focus { border-color: var(--teal); }
+.chat-send { background: var(--teal); border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.chat-send svg { width: 14px; height: 14px; fill: var(--white); }
+.powered-by { font-size: 10px; color: var(--mid); text-align: center; padding: 4px 12px 8px; }
+@media print { body { background: white; } .section-nav, .rep-assistant-fab, .chat-panel { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> · Account Intelligence Portal</div>
+  <div class="portal-label">New Logo · B2B SaaS</div>
+</div>
+
+<nav class="section-nav" id="section-nav">
+  <div class="nav-label">Jump to section</div>
+  <div class="nav-inner">
+    <a href="#signals" class="nav-btn">⚡ What's New</a>
+    <a href="#snapshot" class="nav-btn">1 · Snapshot</a>
+    <a href="#scorecard" class="nav-btn">2 · ICP Score</a>
+    <a href="#fit" class="nav-btn">3 · Why They Fit</a>
+    <a href="#opps" class="nav-btn">4 · Opp History</a>
+    <a href="#flags" class="nav-btn">5 · Data Flags</a>
+    <a href="#dms" class="nav-btn">6 · Decision Makers</a>
+    <a href="#plays" class="nav-btn">7 · Sales Plays</a>
+    <a href="#talktrack" class="nav-btn">8 · Talk Track</a>
+    <a href="#questions" class="nav-btn">9 · Open Questions</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Acme Software Solutions</div>
+      <div class="account-sub">Austin, TX · B2B SaaS · RevOps Platform · 185 employees · Founded 2017</div>
+      <div class="account-sub" style="margin-top:4px;">Brief generated: [Date] | Revenue Insight · New Logo Pipeline</div>
+    </div>
+    <div class="tier-badge">
+      <span class="score">87</span>
+      <span class="label">A-Tier / 100 pts</span>
+    </div>
+  </div>
+
+  <div class="whats-new" id="signals">
+    <div class="wn-header">⚡ What's New · Signals &amp; Recent Activity</div>
+    <ul>
+      <li><strong>Series B closed ($28M, Q1 this year):</strong> New capital with a mandate to scale — typically triggers a 90-day GTM infrastructure review. Budget exists, board pressure is real, and leadership is actively looking for systems that can support the next growth phase.</li>
+      <li><strong>VP of Sales hired 6 weeks ago:</strong> New sales leadership = open mind on tooling. Incoming VPs evaluate and often replace the existing stack in the first 90 days. This is the optimal window for an initial conversation.</li>
+      <li><strong>LinkedIn hiring signals — 4 open AE roles:</strong> Adding reps without upgrading the GTM infrastructure is a known pain accelerator. Territory, ICP, and coverage design become critical as headcount scales past 20 sellers.</li>
+      <li><strong>G2 reviews mention "ICP clarity" and "territory overlap" as friction points:</strong> Social proof of the exact pain your solution addresses. These are buyer-surfaced signals, not analyst projections.</li>
+      <li><strong>Competitive displacement opportunity:</strong> Current stack appears to be legacy CRM + spreadsheet territory model — consistent with a company that has outgrown its founding tools but hasn't yet formalized a GTM infrastructure.</li>
+    </ul>
+  </div>
+
+  <div class="section" id="snapshot">
+    <div class="section-header">1 · Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item"><div class="snap-label">Organization</div><div class="snap-value">Acme Software Solutions</div></div>
+        <div class="snap-item"><div class="snap-label">HQ Location</div><div class="snap-value">Austin, TX</div></div>
+        <div class="snap-item"><div class="snap-label">Founded</div><div class="snap-value">2017</div></div>
+        <div class="snap-item"><div class="snap-label">Industry</div><div class="snap-value">B2B SaaS · RevOps Platform</div></div>
+        <div class="snap-item"><div class="snap-label">Employees</div><div class="snap-value">185</div></div>
+        <div class="snap-item"><div class="snap-label">Funding Stage</div><div class="snap-value highlight">Series B · $28M (Q1 2026)</div></div>
+        <div class="snap-item"><div class="snap-label">Annual Revenue (Est.)</div><div class="snap-value">$12–18M ARR</div></div>
+        <div class="snap-item"><div class="snap-label">Sales Team Size</div><div class="snap-value">~22 AEs (growing)</div></div>
+        <div class="snap-item"><div class="snap-label">CRM</div><div class="snap-value">Salesforce (confirmed)</div></div>
+        <div class="snap-item"><div class="snap-label">ICP Segment</div><div class="snap-value">Mid-Market · Growth Stage</div></div>
+        <div class="snap-item"><div class="snap-label">ICP Tier</div><div class="snap-value highlight">A-Tier · 87 / 100</div></div>
+        <div class="snap-item"><div class="snap-label">Current RI ARR</div><div class="snap-value">$0 (Prospect)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="scorecard">
+    <div class="section-header">2 · ICP Fit Scorecard — Why A-Tier</div>
+    <div class="section-body">
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">Growth Stage &amp; Funding <span class="score-max">/ 25 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:92%"></div></div>
+          <div class="score-pts">23 / 25</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Sales Team Size (15–50) <span class="score-max">/ 20 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 / 20</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">B2B SaaS Vertical Fit <span class="score-max">/ 20 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 / 20</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">PE / VC Backed <span class="score-max">/ 15 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">15 / 15</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Active Hiring Signals <span class="score-max">/ 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:70%"></div></div>
+          <div class="score-pts">7 / 10</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Tech Stack Compatibility <span class="score-max">/ 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar partial" style="width:20%"></div></div>
+          <div class="score-pts">2 / 10 <span class="score-gap">data gap</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">Total ICP Score</div>
+          <div></div>
+          <div class="score-total-pts">87</div>
+        </div>
+      </div>
+      <div class="score-note">Tech Stack Compatibility scored 2/10 due to incomplete data — full tool set beyond Salesforce not confirmed. Rep should surface the full stack on the discovery call. Upside of +8 points if RevOps tooling confirms a fit (e.g., ZoomInfo + Outreach or Apollo stack signals strong ICP alignment).</div>
+    </div>
+  </div>
+
+  <div class="section" id="fit">
+    <div class="section-header">3 · Why Acme Is a Fit</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>Series B with a board mandate to scale GTM:</strong> New capital creates both budget and urgency. Investors expect a documented, repeatable GTM motion within 90 days of close. RI's Design &amp; Diagnose phase is built exactly for this moment.</li>
+        <li><strong>New VP of Sales 6 weeks in:</strong> Incoming revenue leaders evaluate and often replace the existing GTM infrastructure in their first quarter. This is the highest-probability window for a first conversation — before the stack gets locked in.</li>
+        <li><strong>22 AEs and growing — territory design is a live pain:</strong> Companies scaling from 15 to 30+ reps without a formal territory model create coverage gaps, account overlap, and capacity mismatches. These are the exact symptoms RI's Coverage pillar addresses.</li>
+        <li><strong>ICP clarity flagged as a friction point in G2 reviews:</strong> Buyer-surfaced evidence of the core pain. When customers publicly describe "ICP confusion" or "unclear targeting," the GTM system is misaligned — not the people.</li>
+        <li><strong>Salesforce-native — no integration friction:</strong> Confirmed CRM means RI's workflow outputs can feed directly into existing pipeline infrastructure. No rip-and-replace conversation required.</li>
+        <li><strong>Revenue in the $12–18M ARR range is optimal entry timing:</strong> Companies at this stage have enough data to run a meaningful retrospective ICP analysis but haven't yet locked into an enterprise-scale GTM architecture. The window to design the right system is open now.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="opps">
+    <div class="section-header">4 · Past Opportunity History</div>
+    <div class="section-body">
+      <table class="opp-table">
+        <thead>
+          <tr>
+            <th>Opportunity</th><th>Date</th><th>Type</th><th>Status</th><th>Value</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Acme — GTM Diagnostic Inbound</td>
+            <td>Q3 2024</td>
+            <td>Inbound inquiry</td>
+            <td><span class="opp-status status-lost">No decision</span></td>
+            <td>—</td>
+            <td>
+              Contacted via website form. Had one discovery call — champion was a RevOps manager, not VP-level. Stalled without executive sponsor. No competitive loss; timing and access were the gap.
+              <div class="opp-note">⚑ New VP of Sales is the sponsor this time. Re-approach with executive framing.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="flags">
+    <div class="section-header">5 · Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="green">A-Tier ICP score (87/100) — priority outreach account. Do not let this age more than 2 weeks given the new VP hire signal.</li>
+        <li class="green">Series B closed Q1 this year — budget exists and GTM mandate is active. Optimal contact window is the next 60 days.</li>
+        <li>Tech stack beyond Salesforce not confirmed. Full enrichment in Clay pending. Resolve before building the full outreach sequence.</li>
+        <li>Previous contact was at manager level — no executive relationship exists. New VP of Sales (Jordan Rivera) is the correct entry point. LinkedIn message or warm intro preferred over cold email.</li>
+        <li>G2 review signals are strong but public — competitor reps can see this too. Speed matters. Don't let this account sit.</li>
+        <li class="red">No confirmed PE sponsor identified. Acme is VC-backed, not PE. The board pressure dynamic applies but the language shifts — use "investor mandate" not "PE value creation" framing.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="dms">
+    <div class="section-header">6 · Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+
+        <div class="dm-card">
+          <div class="dm-avatar">JR</div>
+          <div>
+            <div class="dm-name">Jordan Rivera</div>
+            <div class="dm-title">VP of Sales · Austin, TX · In role 6 weeks</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-buyer">Primary Target</span>
+              <span class="dm-tag tag-economic">Economic Buyer</span>
+            </div>
+            <div class="dm-note">New hire from a Series C SaaS company — will have a point of view on GTM architecture. First 90 days are about diagnosing the current system and identifying what to fix. RI's diagnostic framing maps directly to this moment. Approach as a peer conversation, not a vendor pitch. LinkedIn: search "Jordan Rivera VP Sales Austin SaaS."</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">MK</div>
+          <div>
+            <div class="dm-name">Morgan Kim</div>
+            <div class="dm-title">Director of Revenue Operations · Austin, TX</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-champion">Champion</span>
+              <span class="dm-tag tag-influencer">Workflow Influencer</span>
+            </div>
+            <div class="dm-note">RevOps owns the Salesforce instance, territory assignments, and quota modeling. They will run the evaluation and feel the pain most acutely. The prior 2024 contact was likely at this level. Re-engage as the technical champion — they need the VP's buy-in to make RI happen, but they are the most motivated stakeholder.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">AS</div>
+          <div>
+            <div class="dm-name">Alex Sharma</div>
+            <div class="dm-title">CEO &amp; Co-Founder · Austin, TX</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-economic">Executive Sponsor</span>
+            </div>
+            <div class="dm-note">Founder-CEO who closed the Series B. Likely has a direct view on GTM effectiveness — founders at this stage often have opinions about ICP and territory that precede a formal process. Not a direct outreach target unless the VP conversation stalls, but relevant context for the board narrative and business case.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="plays">
+    <div class="section-header">7 · Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">1</div>
+          <div class="play-title">New VP Honeymoon Window — Executive-First Outreach</div>
+        </div>
+        <div class="play-body">
+          <p>Jordan Rivera is 6 weeks in. Every new VP of Sales spends their first 90 days diagnosing the GTM system. They are actively forming opinions on what's broken and what to fix. This is the highest-probability window for a peer conversation — not a vendor pitch.</p>
+          <p style="margin-top:8px;">Lead with the diagnostic frame: "We work with revenue leaders coming into new roles who need to get a clear read on the GTM system quickly — ICP alignment, coverage design, whether the territory model matches where the real opportunity is. Would a 30-minute diagnostic conversation be useful as you're building your 90-day plan?"</p>
+          <p style="margin-top:8px;">Do not lead with the product. Do not send a deck. Get on a call and ask questions. The AI Revenue Readiness Assessment is a credible, low-commitment tool to offer as a leave-behind after the first conversation.</p>
+          <div class="play-action">Entry point: <span>LinkedIn message to Jordan Rivera → discovery call → AI Readiness Assessment</span></div>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">2</div>
+          <div class="play-title">RevOps Champion Play — Technical Credibility First</div>
+        </div>
+        <div class="play-body">
+          <p>Morgan Kim in RevOps is the operational pain owner. They manage territories, quotas, and Salesforce — and they will be the person who actually runs the evaluation. If the VP play doesn't land immediately, route through RevOps with a technical, peer-level conversation.</p>
+          <p style="margin-top:8px;">Hook: "We work with RevOps teams at Series B SaaS companies who are scaling from 20 to 40 reps and hitting the limits of a spreadsheet territory model. We run a coverage audit that typically surfaces 2–3 structural issues the team already knows about but hasn't had a framework to fix. Would that be worth 30 minutes?"</p>
+          <div class="play-action">Entry point: <span>Direct outreach to Morgan Kim → coverage audit offer → VP introduction via champion</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section" id="talktrack">
+    <div class="section-header">8 · Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        "Jordan — congratulations on the new role at Acme. I'll be direct: I work with revenue leaders coming into Series B SaaS companies who need to get a fast read on the GTM system — ICP alignment, territory coverage, whether the model that got the company to $15M can get it to $40M. We see this pattern a lot in the first 90 days of a new VP role, and the companies that move quickly on diagnosis tend to get a full quarter ahead. Would it be worth 20 minutes to compare notes on what you're seeing?"
+      </div>
+      <div class="talk-track-alt">Alternate — if routing through RevOps first: "Morgan — I know RevOps is usually where the territory and ICP pain is most visible. We run a coverage audit for RevOps teams at Series B companies that typically takes 30 minutes and surfaces the 2–3 structural issues that don't show up in a pipeline review. Would that be a useful conversation before Q3 planning locks in?"</div>
+    </div>
+  </div>
+
+  <div class="section" id="questions">
+    <div class="section-header">9 · Open Questions for First Call</div>
+    <div class="section-body">
+      <ol class="oq-list">
+        <li>What was the state of territory design and ICP documentation when Jordan arrived? Is there a model in place or is this largely tribal knowledge?</li>
+        <li>How are territories currently assigned — geographic, named accounts, industry vertical, or a mix? How recently were they last redesigned?</li>
+        <li>What's the 12-month headcount plan for the sales team? Adding reps without a coverage model is the fastest way to create coverage gaps and account conflicts.</li>
+        <li>Is there an active tech stack evaluation underway — CRM, sequencing, intelligence tools — or is the priority to optimize the existing stack first?</li>
+        <li>What does the board expect in terms of GTM milestones for the next 12 months? Understanding the investor mandate clarifies the urgency and the business case.</li>
+        <li>Who was involved in the previous 2024 conversation? Any relationship equity or context that would inform how to re-engage?</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<div class="brief-footer">
+  <span class="ri-tag">Revenue Insight</span>
+  <span>Confidential — for internal use only · Data sources: LinkedIn · G2 · Crunchbase · Clay Enrichment</span>
+</div>
+
+<div class="rep-assistant-fab">
+  <button class="rep-assistant-btn" onclick="toggleChat()">
+    <span class="dot"></span>
+    💬 Rep Assistant
+  </button>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <span class="dot"></span>
+      <div>
+        <div class="chat-title">Rep Assistant · Acme Software</div>
+        <div class="chat-subtitle">Powered by Revenue Insight AI</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-context-bar">● A-Tier 87/100 · Series B $28M · New VP of Sales · 22 AEs · Greenfield</div>
+  <div class="chat-quick-actions">
+    <div class="chat-quick-label">Quick actions — tap to generate</div>
+    <div class="chat-quick-btns">
+      <button class="chat-quick-btn" onclick="sendQuick('Draft a 3-email outreach sequence for Jordan Rivera')">✉ 3-Email Sequence</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write a LinkedIn DM to Jordan Rivera')">LinkedIn DM</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Build a call agenda for the first discovery call')">Call Agenda</button>
+      <button class="chat-quick-btn" onclick="sendQuick('How should I handle the objection: we are not ready yet')">Handle Objections</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write a post-call follow-up email')">Post-Call Follow-Up</button>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg assistant">Full Acme Software brief loaded — ICP score 87/100, Series B signals, new VP of Sales, sales plays, and open questions. Ask me anything or tap a quick action above.</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask anything about this account..." onkeydown="if(event.key==='Enter') sendMessage()"/>
+    <button class="chat-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+  <div class="powered-by">Powered by Claude · Revenue Insight Internal Use Only · Context: Acme Software AIB</div>
+</div>
+
+<script>
+var chatHistory = [];
+var systemContext = "You are the Rep Assistant for Revenue Insight, embedded in an Account Intelligence Brief for Acme Software Solutions. Account details: A-Tier ICP score 87/100. Series B closed Q1 2026 ($28M). New VP of Sales (Jordan Rivera) hired 6 weeks ago. 22 AEs growing. HQ Austin TX. B2B SaaS RevOps platform. 185 employees. Prior contact in 2024 stalled at manager level (RevOps). G2 reviews mention ICP clarity and territory overlap as pain points. Salesforce confirmed. Tech stack beyond SFDC not fully confirmed. Key decision makers: Jordan Rivera (VP Sales - primary target), Morgan Kim (Dir RevOps - champion), Alex Sharma (CEO). Sales plays: New VP honeymoon window play and RevOps champion play. Talk track opener provided. You help reps generate outreach sequences, LinkedIn messages, call agendas, objection handling, and follow-up emails. Be specific, direct, and use the account context in every response. Keep responses concise and actionable.";
+
+function toggleChat() {
+  var panel = document.getElementById('chatPanel');
+  panel.classList.toggle('open');
+}
+function sendQuick(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+async function sendMessage() {
+  var input = document.getElementById('chatInput');
+  var msgs = document.getElementById('chatMessages');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  chatHistory.push({ role: 'user', content: text });
+
+  var userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.textContent = text;
+  msgs.appendChild(userMsg);
+
+  var streamDiv = document.createElement('div');
+  streamDiv.className = 'msg assistant thinking';
+  streamDiv.textContent = 'Thinking...';
+  msgs.appendChild(streamDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: systemContext, messages: chatHistory })
+    });
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '', fullText = '';
+    streamDiv.className = 'msg assistant';
+    streamDiv.textContent = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, { stream: true });
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          var evt = JSON.parse(line.slice(6));
+          if (evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta') {
+            fullText += evt.delta.text;
+            streamDiv.textContent = fullText;
+            msgs.scrollTop = msgs.scrollHeight;
+          }
+        } catch(e) {}
+      }
+    }
+    chatHistory.push({ role: 'assistant', content: fullText });
+  } catch(e) {
+    streamDiv.className = 'msg assistant';
+    streamDiv.textContent = 'Error connecting to assistant. Please try again.';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','plays','talktrack','questions'];
+var navBtns = document.querySelectorAll('.nav-btn');
+function onScroll() {
+  var navH = document.getElementById('section-nav').offsetHeight;
+  var scrollY = window.pageYOffset + navH + 24;
+  var current = sections[0];
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollY) current = id;
+  });
+  navBtns.forEach(function(btn) {
+    var href = btn.getAttribute('href');
+    btn.classList.toggle('active', href === '#' + current);
+  });
+}
+document.querySelectorAll('.nav-btn[href^="#"]').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
+    var navH = document.getElementById('section-nav').offsetHeight;
+    var y = target.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+    window.scrollTo({top: y, behavior: 'smooth'});
+  });
+});
+window.addEventListener('scroll', onScroll, {passive: true});
+onScroll();
+</script>
+</body>
+</html>

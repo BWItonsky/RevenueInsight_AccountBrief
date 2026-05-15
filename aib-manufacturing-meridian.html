@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Meridian Manufacturing Group | Revenue Insight</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+:root {
+  --navy: #0D2137; --teal: #1A5E6A; --green: #7AB648;
+  --body: #2D3E50; --mid: #4A5E70; --light: #F0F4F7;
+  --border: #D8E2EA; --white: #FFFFFF;
+  --red-flag: #C0392B; --amber: #E67E22;
+}
+.portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+.portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.portal-header .brand span { color: var(--green); }
+.portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+.section-nav { background: var(--navy); border-bottom: 3px solid var(--green); padding: 10px 32px 12px; position: sticky; top: 0; z-index: 100; }
+.nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+.nav-inner { display: flex; flex-wrap: wrap; gap: 6px; }
+.nav-btn { display: inline-block; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-decoration: none; padding: 5px 13px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+.nav-btn:hover { background: rgba(122,182,72,0.2); border-color: rgba(122,182,72,0.5); color: var(--white); }
+.nav-btn.active { background: var(--green); border-color: var(--green); color: var(--white); }
+.page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+.brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+.brief-header .tier-badge { background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 4px; white-space: nowrap; letter-spacing: 0.5px; text-align: center; flex-shrink: 0; }
+.brief-header .tier-badge .score { display: block; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; }
+.brief-header .tier-badge .label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+.whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+.whats-new ul { list-style: none; padding: 0; }
+.whats-new ul li { font-size: 13px; color: #5D4200; padding: 3px 0 3px 16px; position: relative; }
+.whats-new ul li::before { content: "▶"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 5px; }
+.whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+.section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+.section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+.section-body { padding: 16px 18px; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+.snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+.snap-item .snap-value.highlight { color: var(--teal); }
+.scorecard { display: flex; flex-direction: column; gap: 8px; }
+.score-row { display: grid; grid-template-columns: 200px 1fr 70px; align-items: center; gap: 10px; }
+.score-dim { font-size: 12px; color: var(--body); }
+.score-bar-wrap { height: 10px; background: var(--light); border-radius: 5px; overflow: hidden; }
+.score-bar { height: 100%; border-radius: 5px; background: var(--teal); }
+.score-bar.partial { background: #A8D08D; }
+.score-bar.low { background: var(--border); }
+.score-pts { font-size: 12px; font-weight: 700; color: var(--navy); text-align: right; }
+.score-max { font-size: 10px; color: var(--mid); font-weight: 400; }
+.score-gap { display: block; font-size: 10px; color: var(--amber); }
+.score-total-row { display: grid; grid-template-columns: 200px 1fr 70px; align-items: center; gap: 10px; margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--navy); }
+.score-total-label { font-size: 12px; font-weight: 700; color: var(--navy); }
+.score-total-pts { font-size: 16px; font-weight: 700; color: var(--navy); text-align: right; }
+.score-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.fit-list { list-style: none; padding: 0; }
+.fit-list li { padding: 6px 0 6px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+.fit-list li:last-child { border-bottom: none; }
+.fit-list li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; font-size: 13px; }
+.fit-list li strong { color: var(--navy); }
+.opp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.opp-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); padding: 6px 10px; border-bottom: 2px solid var(--navy); }
+.opp-table td { padding: 8px 10px; border-bottom: 1px solid var(--light); vertical-align: top; }
+.opp-table tr:last-child td { border-bottom: none; }
+.opp-status { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.status-won { background: #EBF5EB; color: #1A6B1A; }
+.status-lost { background: #FBEBEB; color: #8B1A1A; }
+.status-new { background: #EBF1FB; color: #1A3D8B; }
+.flag-list { list-style: none; padding: 0; }
+.flag-list li { padding: 5px 0 5px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+.flag-list li:last-child { border-bottom: none; }
+.flag-list li::before { content: "⚑"; position: absolute; left: 0; color: var(--amber); font-size: 12px; top: 6px; }
+.flag-list li.green::before { color: var(--green); }
+.flag-list li.red::before { color: var(--red-flag); }
+.dm-grid { display: flex; flex-direction: column; gap: 12px; }
+.dm-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
+.dm-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--teal); color: var(--white); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+.dm-title { font-size: 12px; color: var(--mid); margin-top: 1px; }
+.dm-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.dm-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+.tag-buyer { background: #EBF5EB; color: #1A6B1A; }
+.tag-influencer { background: #EBF1FB; color: #1A3D8B; }
+.tag-champion { background: #F3EBFB; color: #5B1A8B; }
+.tag-economic { background: #FBF3EB; color: #8B4A1A; }
+.dm-note { font-size: 12px; color: var(--mid); margin-top: 6px; font-style: italic; }
+.play-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+.play-card:last-child { margin-bottom: 0; }
+.play-card-header { background: var(--navy); color: var(--white); padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+.play-num { background: var(--green); color: var(--white); font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.play-title { font-size: 13px; font-weight: 700; }
+.play-body { padding: 12px 14px; }
+.play-body p { font-size: 13px; line-height: 1.55; color: var(--body); }
+.play-action { margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; }
+.talk-track-box { background: var(--light); border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 16px; font-size: 14px; font-style: italic; color: var(--navy); line-height: 1.6; margin-bottom: 12px; }
+.talk-track-alt { font-size: 12px; color: var(--mid); margin-top: 8px; font-style: normal; }
+.oq-list { list-style: none; padding: 0; counter-reset: oq; }
+.oq-list li { padding: 6px 0 6px 24px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); counter-increment: oq; }
+.oq-list li:last-child { border-bottom: none; }
+.oq-list li::before { content: counter(oq); position: absolute; left: 0; width: 16px; height: 16px; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 8px; }
+.brief-footer { background: var(--navy); color: rgba(255,255,255,0.5); font-size: 11px; padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+.brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+.rep-assistant-fab { position: fixed; bottom: 28px; right: 28px; z-index: 200; }
+.rep-assistant-btn { background: var(--navy); color: var(--white); border: none; border-radius: 50px; padding: 12px 20px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(13,33,55,0.35); letter-spacing: 0.3px; }
+.rep-assistant-btn .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-panel { position: fixed; bottom: 90px; right: 28px; width: 360px; background: var(--white); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(13,33,55,0.2); z-index: 200; display: none; flex-direction: column; overflow: hidden; max-height: 480px; }
+.chat-panel.open { display: flex; }
+.chat-header { background: var(--navy); color: var(--white); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.chat-header-left { display: flex; align-items: center; gap: 10px; }
+.chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-title { font-size: 13px; font-weight: 700; }
+.chat-subtitle { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 1px; }
+.chat-close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 18px; cursor: pointer; padding: 0; line-height: 1; }
+.chat-context-bar { background: #EBF5EB; border-bottom: 1px solid #C0DCBA; padding: 6px 12px; font-size: 10px; color: #1A6B1A; font-weight: 700; letter-spacing: 0.3px; }
+.chat-quick-actions { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.chat-quick-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--mid); margin-bottom: 6px; }
+.chat-quick-btns { display: flex; flex-wrap: wrap; gap: 5px; }
+.chat-quick-btn { font-size: 11px; background: var(--light); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; cursor: pointer; color: var(--navy); font-weight: 600; white-space: nowrap; }
+.chat-quick-btn:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 88%; font-size: 12px; line-height: 1.5; }
+.msg.assistant { background: var(--light); border-radius: 0 8px 8px 8px; padding: 8px 10px; color: var(--body); align-self: flex-start; white-space: pre-wrap; }
+.msg.user { background: var(--teal); border-radius: 8px 0 8px 8px; padding: 8px 10px; color: var(--white); align-self: flex-end; }
+.msg.thinking { color: var(--mid); font-style: italic; font-size: 11px; }
+.chat-input-row { padding: 10px 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+.chat-input { flex: 1; border: 1px solid var(--border); border-radius: 20px; padding: 7px 12px; font-size: 12px; outline: none; font-family: inherit; color: var(--body); }
+.chat-input:focus { border-color: var(--teal); }
+.chat-send { background: var(--teal); border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.chat-send svg { width: 14px; height: 14px; fill: var(--white); }
+.powered-by { font-size: 10px; color: var(--mid); text-align: center; padding: 4px 12px 8px; }
+@media print { body { background: white; } .section-nav, .rep-assistant-fab, .chat-panel { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> · Account Intelligence Portal</div>
+  <div class="portal-label">New Logo · Manufacturing</div>
+</div>
+
+<nav class="section-nav" id="section-nav">
+  <div class="nav-label">Jump to section</div>
+  <div class="nav-inner">
+    <a href="#signals" class="nav-btn">⚡ What's New</a>
+    <a href="#snapshot" class="nav-btn">1 · Snapshot</a>
+    <a href="#scorecard" class="nav-btn">2 · ICP Score</a>
+    <a href="#fit" class="nav-btn">3 · Why They Fit</a>
+    <a href="#opps" class="nav-btn">4 · Opp History</a>
+    <a href="#flags" class="nav-btn">5 · Data Flags</a>
+    <a href="#dms" class="nav-btn">6 · Decision Makers</a>
+    <a href="#plays" class="nav-btn">7 · Sales Plays</a>
+    <a href="#talktrack" class="nav-btn">8 · Talk Track</a>
+    <a href="#questions" class="nav-btn">9 · Open Questions</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Meridian Manufacturing Group</div>
+      <div class="account-sub">Columbus, OH · Industrial Equipment Manufacturing · 1,200 employees · Founded 1989 · PE-Backed (Sponsor: [PE Firm Name])</div>
+      <div class="account-sub" style="margin-top:4px;">Brief generated: [Date] | Revenue Insight · New Logo Pipeline</div>
+    </div>
+    <div class="tier-badge">
+      <span class="score">79</span>
+      <span class="label">A-Tier / 100 pts</span>
+    </div>
+  </div>
+
+  <div class="whats-new" id="signals">
+    <div class="wn-header">⚡ What's New · Signals &amp; Recent Activity</div>
+    <ul>
+      <li><strong>PE sponsor confirmed — hold period ~2.5 years:</strong> Typical 5-year hold puts this company at approximately the midpoint. Value creation pressure is real and growing. Board is expecting a revenue growth story for the next 12–18 months.</li>
+      <li><strong>New CSO (Chief Sales Officer) appointed 3 months ago:</strong> Leadership change is the #1 buying trigger for GTM services. New CSO was brought in from a larger industrial company — likely has a more sophisticated GTM framework in mind than what's currently in place.</li>
+      <li><strong>Acquisition of regional competitor (closed Q4 last year):</strong> Post-acquisition integration typically creates ICP confusion, territory overlap, and coverage gaps. The combined sales team is almost certainly running on two legacy models. This is a structural design problem RI solves directly.</li>
+      <li><strong>LinkedIn hiring signals — 6 open field sales roles across 3 regions:</strong> Adding reps into a post-acquisition environment without a redesigned territory model creates waste immediately. Capacity is being deployed before the system is designed.</li>
+      <li><strong>No identifiable GTM strategy firm or RevOps vendor in their tech stack:</strong> Greenfield for strategic GTM work. Company appears to be running on a traditional field sales model with minimal technology infrastructure. High probability-to-win for an ICP-led diagnostic engagement.</li>
+    </ul>
+  </div>
+
+  <div class="section" id="snapshot">
+    <div class="section-header">1 · Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item"><div class="snap-label">Organization</div><div class="snap-value">Meridian Manufacturing Group</div></div>
+        <div class="snap-item"><div class="snap-label">HQ Location</div><div class="snap-value">Columbus, OH</div></div>
+        <div class="snap-item"><div class="snap-label">Founded</div><div class="snap-value">1989</div></div>
+        <div class="snap-item"><div class="snap-label">Industry</div><div class="snap-value">Industrial Equipment Manufacturing</div></div>
+        <div class="snap-item"><div class="snap-label">Employees</div><div class="snap-value">1,200 (post-acquisition)</div></div>
+        <div class="snap-item"><div class="snap-label">Ownership</div><div class="snap-value highlight">PE-Backed · [Sponsor Name]</div></div>
+        <div class="snap-item"><div class="snap-label">Est. Revenue</div><div class="snap-value">$180–220M</div></div>
+        <div class="snap-item"><div class="snap-label">Sales Team Size</div><div class="snap-value">~45 field reps (combined)</div></div>
+        <div class="snap-item"><div class="snap-label">CRM</div><div class="snap-value">Salesforce (legacy — two instances)</div></div>
+        <div class="snap-item"><div class="snap-label">ICP Segment</div><div class="snap-value">PE-Backed Industrial · Mid-Market</div></div>
+        <div class="snap-item"><div class="snap-label">ICP Tier</div><div class="snap-value highlight">A-Tier · 79 / 100</div></div>
+        <div class="snap-item"><div class="snap-label">Current RI ARR</div><div class="snap-value">$0 (Prospect)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="scorecard">
+    <div class="section-header">2 · ICP Fit Scorecard — Why A-Tier</div>
+    <div class="section-body">
+      <div class="scorecard">
+        <div class="score-row">
+          <div class="score-dim">PE-Backed with Active Hold Period <span class="score-max">/ 25 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">25 / 25</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Revenue Scale ($100M–$500M) <span class="score-max">/ 20 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 / 20</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Post-Acquisition Integration Signal <span class="score-max">/ 20 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">20 / 20</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">New Sales Leadership (CSO &lt;6 mo) <span class="score-max">/ 15 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:93%"></div></div>
+          <div class="score-pts">14 / 15</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">Field Sales Force (30+ reps) <span class="score-max">/ 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+          <div class="score-pts">10 / 10</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim">GTM Tech Stack Sophistication <span class="score-max">/ 10 pts max</span></div>
+          <div class="score-bar-wrap"><div class="score-bar low" style="width:10%"></div></div>
+          <div class="score-pts">0 / 10 <span class="score-gap">minimal stack detected</span></div>
+        </div>
+        <div class="score-total-row">
+          <div class="score-total-label">Total ICP Score</div>
+          <div></div>
+          <div class="score-total-pts">79</div>
+        </div>
+      </div>
+      <div class="score-note">GTM Tech Stack score is 0 — no modern sales intelligence, territory design, or RevOps tooling detected. This is actually a positive signal for RI: greenfield engagement with no incumbent to displace. Confirm on first call whether they have any external GTM advisory relationships that aren't visible in the tech stack.</div>
+    </div>
+  </div>
+
+  <div class="section" id="fit">
+    <div class="section-header">3 · Why Meridian Is a Fit</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>PE-backed at the midpoint of the hold period:</strong> Value creation pressure is at its peak. The sponsor needs a revenue growth story for the next 12–18 months. RI's Design &amp; Diagnose phase produces the board-ready GTM narrative PE sponsors need — anchored to data, not opinion.</li>
+        <li><strong>Post-acquisition integration = structural territory problem:</strong> Two companies, two sales teams, two legacy territory models. This is one of the highest-probability use cases for RI's coverage design work. The problem is visible, urgent, and has a clear owner (the new CSO).</li>
+        <li><strong>New CSO is the ideal entry point:</strong> Three months in, still forming opinions on the GTM system, hasn't locked in a vendor. The honeymoon window is open. Peer-level conversation about system design — not a product pitch.</li>
+        <li><strong>45-rep field force deploying into a post-acquisition environment:</strong> Without a redesigned territory model, these reps will overlap, cherry-pick, and lose to inertia. Capacity is being wasted from day one. This is a quantifiable cost the CSO already feels.</li>
+        <li><strong>Industrial equipment vertical is core RI ICP:</strong> Complex B2B sales cycles, long customer relationships, dealer/distributor channel dynamics — all require a more sophisticated ICP and coverage model than a pure SaaS company. RI's probability-to-win framework applies directly.</li>
+        <li><strong>No identified GTM advisory relationship:</strong> Greenfield for strategic work. No incumbent to displace, no existing relationship to navigate around. The door is open.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="opps">
+    <div class="section-header">4 · Past Opportunity History</div>
+    <div class="section-body">
+      <table class="opp-table">
+        <thead>
+          <tr><th>Opportunity</th><th>Date</th><th>Type</th><th>Status</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Meridian — Net New</td>
+            <td>—</td>
+            <td>First touch</td>
+            <td><span class="opp-status status-new">No prior contact</span></td>
+            <td>No history in CRM. Surfaced through ICP scoring of PE-backed industrial accounts in the Midwest. New CSO hire is the trigger. First outreach should be framed as a discovery conversation, not a re-engagement.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="flags">
+    <div class="section-header">5 · Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="green">A-Tier ICP score (79/100) — PE-backed + post-acquisition + new CSO is one of the highest-probability trifectas in the RI scoring model. Priority outreach.</li>
+        <li class="green">Post-acquisition territory integration is an immediate, quantifiable problem. The CSO knows it exists. RI doesn't need to convince them of the pain — only that RI is the right partner to solve it.</li>
+        <li>PE sponsor identity not confirmed in available data. Confirm sponsor name and operating partner relationship before outreach — a warm PE intro is significantly more valuable than a cold approach to the CSO.</li>
+        <li>Two Salesforce instances post-acquisition — CRM consolidation may be underway or planned. Confirm whether this is an active project. If IT is doing a CRM consolidation, GTM redesign should happen first — not after. This is a sequencing argument that positions RI upstream.</li>
+        <li>Revenue figure is estimated ($180–220M) — not confirmed from public filings. Manufacturing companies at this scale are often private. Confirm actual revenue band in first call for accurate value creation narrative.</li>
+        <li class="red">No confirmed contact at the CSO level. CSO name not available in public data. Research LinkedIn for "[CSO name] Meridian Manufacturing Columbus" and confirm before outreach. Do not cold-call the main number.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="dms">
+    <div class="section-header">6 · Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+
+        <div class="dm-card">
+          <div class="dm-avatar">CS</div>
+          <div>
+            <div class="dm-name">[CSO Name — confirm via LinkedIn]</div>
+            <div class="dm-title">Chief Sales Officer · Columbus, OH · In role ~3 months</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-buyer">Primary Target</span>
+              <span class="dm-tag tag-economic">Economic Buyer</span>
+            </div>
+            <div class="dm-note">New CSO from a larger industrial company. In the first 90 days, their priority is diagnosing the post-acquisition GTM state and building a plan for the PE sponsor. RI's Design &amp; Diagnose phase is exactly what they need right now. Do not lead with product — lead with: "We help new CSOs at PE-backed companies get a fast, defensible read on the GTM system in the first 90 days."</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">PE</div>
+          <div>
+            <div class="dm-name">[PE Operating Partner — confirm sponsor]</div>
+            <div class="dm-title">Operating Partner · [PE Firm] · Portfolio Oversight</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-economic">Sponsor</span>
+              <span class="dm-tag tag-influencer">Board Influence</span>
+            </div>
+            <div class="dm-note">If the PE firm is in RI's network (Francisco Partners, etc.), a warm introduction through the operating partner is the highest-leverage first move — dramatically increases conversion probability vs. cold CSO outreach. Identify the operating partner assigned to Meridian before planning outreach sequence.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">VP</div>
+          <div>
+            <div class="dm-name">[VP Sales / Regional Directors]</div>
+            <div class="dm-title">Sales Leadership · Field Regions · Columbus OH</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-champion">Champion Candidates</span>
+            </div>
+            <div class="dm-note">Regional sales directors will feel the post-acquisition territory pain most acutely — rep overlap, account conflict, unclear coverage. If the CSO approach doesn't land immediately, routing through a regional VP who is experiencing the problem daily can create a bottom-up champion. Identify the most senior regional director in LinkedIn Sales Navigator.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="plays">
+    <div class="section-header">7 · Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">1</div>
+          <div class="play-title">PE Operating Partner Warm Intro — Highest Probability Path</div>
+        </div>
+        <div class="play-body">
+          <p>Before any direct outreach to Meridian, identify the PE operating partner assigned to this portco and check whether RI has a relationship with that firm. A warm introduction from a PE sponsor to a portco CSO converts at 3–5x the rate of cold outreach. The operating partner's implicit endorsement is more valuable than any pitch deck.</p>
+          <p style="margin-top:8px;">Message to operating partner: "We're working with several of your portfolio companies on GTM system design — particularly post-acquisition integration challenges. We noticed Meridian's recent acquisition and new CSO hire and thought it might be a good moment to introduce RI. Would you be comfortable making an introduction?"</p>
+          <div class="play-action">Entry point: <span>RI PE network → operating partner intro → CSO first call</span></div>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">2</div>
+          <div class="play-title">New CSO 90-Day Diagnostic — Direct Outreach</div>
+        </div>
+        <div class="play-body">
+          <p>If the PE intro route is unavailable, approach the CSO directly with the diagnostic framing. New CSOs at PE-backed companies are actively looking for structured ways to assess the GTM system in the first 90 days. RI's Design &amp; Diagnose phase is exactly that — framed not as a service engagement but as a rapid, defensible GTM assessment.</p>
+          <p style="margin-top:8px;">Offer: "We run a 4-week GTM diagnostic specifically for post-acquisition environments — ICP alignment, territory coverage, and capacity model. Output is a board-ready assessment you can use with the PE sponsor. Would that be a useful conversation as you're building your 90-day plan?"</p>
+          <div class="play-action">Entry point: <span>LinkedIn message to CSO → discovery call → AI Readiness Assessment as qualifier</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section" id="talktrack">
+    <div class="section-header">8 · Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        "[Name] — I'll be brief. We work with CSOs at PE-backed manufacturing companies who are navigating post-acquisition GTM integration — specifically the territory, ICP, and coverage design problems that come when two sales teams get combined. I noticed Meridian's recent acquisition and your new role, and I wanted to reach out because the first 90 days is when the coverage model gets set — and whether it gets set right or wrong typically determines how the next 18 months play out. Would it be worth a 20-minute call to compare notes on what you're seeing?"
+      </div>
+      <div class="talk-track-alt">Alternate — if PE intro is available: "I was introduced to you by [Operating Partner Name] at [PE Firm]. We've been working with a few of their other portfolio companies on GTM system design. [OP Name] thought it might be useful to connect given Meridian's recent acquisition and the sales integration work ahead. Would that be a useful conversation?"</div>
+    </div>
+  </div>
+
+  <div class="section" id="questions">
+    <div class="section-header">9 · Open Questions for First Call</div>
+    <div class="section-body">
+      <ol class="oq-list">
+        <li>How are the two sales teams currently structured post-acquisition — are territories already redesigned or are reps still working their legacy account lists?</li>
+        <li>What does the PE sponsor expect in terms of GTM milestones for the next 12 months? Understanding the board mandate helps RI frame the value creation narrative correctly.</li>
+        <li>Is there an active CRM consolidation project underway? If so, GTM system design should happen before the CRM is rebuilt — not after. This is a sequencing conversation RI can help navigate.</li>
+        <li>What does the combined customer base look like — are the two companies selling to the same buyers, different segments, or overlapping geography with different product lines?</li>
+        <li>Is there an existing definition of ICP for the combined entity, or are the two legacy ICPs still running in parallel?</li>
+        <li>What's the timeline for the next board update on GTM performance? That date creates a natural deadline for a diagnostic output.</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<div class="brief-footer">
+  <span class="ri-tag">Revenue Insight</span>
+  <span>Confidential — for internal use only · Data sources: LinkedIn · Company website · PE portfolio data · Clay Enrichment</span>
+</div>
+
+<div class="rep-assistant-fab">
+  <button class="rep-assistant-btn" onclick="toggleChat()">
+    <span class="dot"></span>
+    💬 Rep Assistant
+  </button>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <span class="dot"></span>
+      <div>
+        <div class="chat-title">Rep Assistant · Meridian Mfg</div>
+        <div class="chat-subtitle">Powered by Revenue Insight AI</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-context-bar">● A-Tier 79/100 · PE-Backed · Post-Acquisition · New CSO · 45 Field Reps · Greenfield</div>
+  <div class="chat-quick-actions">
+    <div class="chat-quick-label">Quick actions — tap to generate</div>
+    <div class="chat-quick-btns">
+      <button class="chat-quick-btn" onclick="sendQuick('Draft a LinkedIn message to the new CSO at Meridian Manufacturing')">LinkedIn DM to CSO</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write a 3-email cold outreach sequence for the CSO')">✉ 3-Email Sequence</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Build a call agenda for the first discovery call with the CSO')">Call Agenda</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write a message to the PE operating partner requesting an introduction')">PE Intro Request</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write a post-call follow-up email after the discovery call')">Post-Call Follow-Up</button>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg assistant">Full Meridian Manufacturing brief loaded — A-Tier 79/100, PE-backed, post-acquisition integration, new CSO 3 months in, 45 field reps, greenfield GTM opportunity. Ask me anything or tap a quick action above.</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask anything about this account..." onkeydown="if(event.key==='Enter') sendMessage()"/>
+    <button class="chat-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+  <div class="powered-by">Powered by Claude · Revenue Insight Internal Use Only · Context: Meridian Manufacturing AIB</div>
+</div>
+
+<script>
+var chatHistory = [];
+var systemContext = "You are the Rep Assistant for Revenue Insight, embedded in an Account Intelligence Brief for Meridian Manufacturing Group. Account details: A-Tier ICP score 79/100. PE-backed industrial equipment manufacturer. Columbus OH. 1,200 employees post-acquisition. ~45 field reps. New CSO hired 3 months ago from a larger industrial company. Recent acquisition of a regional competitor — two sales teams being integrated, two Salesforce instances. No prior RI contact. No GTM advisory vendor identified — greenfield. PE sponsor identity not yet confirmed. Key plays: PE operating partner warm intro (highest priority), and New CSO 90-day diagnostic direct outreach. Talk track opener provided. You help generate outreach messages, LinkedIn DMs, call agendas, objection handling, and follow-up emails. Be specific, use the manufacturing/PE context in every response. Keep responses concise and actionable.";
+
+function toggleChat() { document.getElementById('chatPanel').classList.toggle('open'); }
+function sendQuick(text) { document.getElementById('chatInput').value = text; sendMessage(); }
+
+async function sendMessage() {
+  var input = document.getElementById('chatInput');
+  var msgs = document.getElementById('chatMessages');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  chatHistory.push({ role: 'user', content: text });
+  var userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.textContent = text;
+  msgs.appendChild(userMsg);
+  var streamDiv = document.createElement('div');
+  streamDiv.className = 'msg assistant thinking';
+  streamDiv.textContent = 'Thinking...';
+  msgs.appendChild(streamDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: systemContext, messages: chatHistory })
+    });
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '', fullText = '';
+    streamDiv.className = 'msg assistant';
+    streamDiv.textContent = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, { stream: true });
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          var evt = JSON.parse(line.slice(6));
+          if (evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta') {
+            fullText += evt.delta.text;
+            streamDiv.textContent = fullText;
+            msgs.scrollTop = msgs.scrollHeight;
+          }
+        } catch(e) {}
+      }
+    }
+    chatHistory.push({ role: 'assistant', content: fullText });
+  } catch(e) {
+    streamDiv.className = 'msg assistant';
+    streamDiv.textContent = 'Error connecting. Please try again.';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+var sections = ['signals','snapshot','scorecard','fit','opps','flags','dms','plays','talktrack','questions'];
+var navBtns = document.querySelectorAll('.nav-btn');
+function onScroll() {
+  var navH = document.getElementById('section-nav').offsetHeight;
+  var scrollY = window.pageYOffset + navH + 24;
+  var current = sections[0];
+  sections.forEach(function(id) { var el = document.getElementById(id); if (el && el.offsetTop <= scrollY) current = id; });
+  navBtns.forEach(function(btn) { btn.classList.toggle('active', btn.getAttribute('href') === '#' + current); });
+}
+document.querySelectorAll('.nav-btn[href^="#"]').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
+    var y = target.getBoundingClientRect().top + window.pageYOffset - document.getElementById('section-nav').offsetHeight - 12;
+    window.scrollTo({top: y, behavior: 'smooth'});
+  });
+});
+window.addEventListener('scroll', onScroll, {passive: true});
+onScroll();
+</script>
+</body>
+</html>

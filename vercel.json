@@ -8,7 +8,10 @@
     { "source": "/seneca-foods", "destination": "/seneca-foods-corporation.html" },
     { "source": "/icp-explorer", "destination": "/twc_icp_explorer.html" },
     { "source": "/tatra-shipping", "destination": "/tatra-shipping.html" },
-    { "source": "/checkr", "destination": "/checkr.html" }
+    { "source": "/checkr", "destination": "/checkr.html" },
+    { "source": "/atlas-freight", "destination": "/aib-logistics-atlas.html" },
+    { "source": "/meridian-manufacturing", "destination": "/aib-manufacturing-meridian.html" },
+    { "source": "/acme-software", "destination": "/aib-software-acme.html" }
   ],
   "functions": {
     "api/chat.js": { "maxDuration": 60 }

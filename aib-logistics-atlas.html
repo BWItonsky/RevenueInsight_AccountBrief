@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Intelligence Brief — Atlas Freight Solutions | Revenue Insight</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #F4F6F8; color: #2D3E50; font-size: 14px; line-height: 1.5; }
+:root {
+  --navy: #0D2137; --teal: #1A5E6A; --green: #7AB648;
+  --body: #2D3E50; --mid: #4A5E70; --light: #F0F4F7;
+  --border: #D8E2EA; --white: #FFFFFF;
+  --red-flag: #C0392B; --amber: #E67E22;
+}
+.portal-header { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
+.portal-header .brand { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.portal-header .brand span { color: var(--green); }
+.portal-header .portal-label { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+.section-nav { background: var(--navy); border-bottom: 3px solid var(--green); padding: 10px 32px 12px; position: sticky; top: 0; z-index: 100; }
+.nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 7px; }
+.nav-inner { display: flex; flex-wrap: wrap; gap: 6px; }
+.nav-btn { display: inline-block; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; text-decoration: none; padding: 5px 13px; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+.nav-btn:hover { background: rgba(122,182,72,0.2); border-color: rgba(122,182,72,0.5); color: var(--white); }
+.nav-btn.active { background: var(--green); border-color: var(--green); color: var(--white); }
+.page-wrap { max-width: 960px; margin: 0 auto; padding: 24px 24px 48px; }
+.brief-header { background: var(--white); border-radius: 8px; border-left: 5px solid var(--teal); padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.brief-header .account-name { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.brief-header .account-sub { font-size: 13px; color: var(--mid); margin-top: 4px; }
+.tier-group { display: flex; gap: 8px; flex-shrink: 0; }
+.tier-badge { background: var(--navy); color: var(--white); font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 4px; white-space: nowrap; letter-spacing: 0.5px; text-align: center; }
+.tier-badge .score { display: block; font-size: 18px; font-weight: 700; color: var(--green); line-height: 1; }
+.tier-badge .label { display: block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.whats-new { background: #FFF8E6; border: 1px solid #F5C842; border-left: 4px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+.whats-new .wn-header { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+.whats-new ul { list-style: none; padding: 0; }
+.whats-new ul li { font-size: 13px; color: #5D4200; padding: 3px 0 3px 16px; position: relative; }
+.whats-new ul li::before { content: "▶"; position: absolute; left: 0; font-size: 8px; color: var(--amber); top: 5px; }
+.whats-new ul li strong { color: #3D2C00; font-weight: 700; }
+.section { background: var(--white); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
+.section-header { background: var(--teal); color: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 8px 16px; }
+.section-body { padding: 16px 18px; }
+.snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.snap-item .snap-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 3px; }
+.snap-item .snap-value { font-size: 14px; font-weight: 700; color: var(--navy); }
+.snap-item .snap-value.highlight { color: var(--teal); }
+.multi-score-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.score-block { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+.score-block-header { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 10px; }
+.score-block-header .tier-a { color: #1A6B1A; }
+.score-block-header .tier-b { color: #185FA5; }
+.scorecard { display: flex; flex-direction: column; gap: 7px; }
+.score-row { display: grid; grid-template-columns: 140px 1fr 55px; align-items: center; gap: 8px; }
+.score-dim { font-size: 11px; color: var(--body); }
+.score-bar-wrap { height: 8px; background: var(--light); border-radius: 4px; overflow: hidden; }
+.score-bar { height: 100%; border-radius: 4px; background: var(--teal); }
+.score-bar.partial { background: #A8D08D; }
+.score-bar.low { background: var(--border); }
+.score-pts { font-size: 11px; font-weight: 700; color: var(--navy); text-align: right; }
+.score-total-row { display: grid; grid-template-columns: 140px 1fr 55px; align-items: center; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 2px solid var(--navy); }
+.score-total-label { font-size: 11px; font-weight: 700; color: var(--navy); }
+.score-total-pts { font-size: 14px; font-weight: 700; color: var(--navy); text-align: right; }
+.score-note { font-size: 11px; color: var(--mid); font-style: italic; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.fit-list { list-style: none; padding: 0; }
+.fit-list li { padding: 6px 0 6px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+.fit-list li:last-child { border-bottom: none; }
+.fit-list li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+.fit-list li strong { color: var(--navy); }
+.expansion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.expansion-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+.expansion-card.primary { border-left: 3px solid var(--green); }
+.expansion-card.secondary { border-left: 3px solid var(--teal); }
+.expansion-card.current { border-left: 3px solid var(--border); background: var(--light); }
+.expansion-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
+.expansion-name { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.expansion-desc { font-size: 12px; color: var(--body); line-height: 1.5; }
+.expansion-arr { font-size: 12px; color: var(--teal); font-weight: 700; margin-top: 6px; }
+.arr-summary { background: var(--navy); border-radius: 5px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+.arr-summary-label { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 600; }
+.arr-summary-amount { font-size: 18px; font-weight: 700; color: var(--green); }
+.flag-list { list-style: none; padding: 0; }
+.flag-list li { padding: 5px 0 5px 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); }
+.flag-list li:last-child { border-bottom: none; }
+.flag-list li::before { content: "⚑"; position: absolute; left: 0; color: var(--amber); font-size: 12px; top: 6px; }
+.flag-list li.green::before { color: var(--green); }
+.flag-list li.red::before { color: var(--red-flag); }
+.dm-grid { display: flex; flex-direction: column; gap: 12px; }
+.dm-card { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
+.dm-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--teal); color: var(--white); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dm-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+.dm-title { font-size: 12px; color: var(--mid); margin-top: 1px; }
+.dm-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.dm-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+.tag-buyer { background: #EBF5EB; color: #1A6B1A; }
+.tag-influencer { background: #EBF1FB; color: #1A3D8B; }
+.tag-champion { background: #F3EBFB; color: #5B1A8B; }
+.tag-economic { background: #FBF3EB; color: #8B4A1A; }
+.dm-note { font-size: 12px; color: var(--mid); margin-top: 6px; font-style: italic; }
+.play-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+.play-card:last-child { margin-bottom: 0; }
+.play-card-header { background: var(--navy); color: var(--white); padding: 8px 14px; display: flex; align-items: center; gap: 10px; }
+.play-num { background: var(--green); color: var(--white); font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.play-title { font-size: 13px; font-weight: 700; }
+.play-type { font-size: 10px; color: var(--green); letter-spacing: 0.5px; text-transform: uppercase; margin-left: auto; }
+.play-body { padding: 12px 14px; }
+.play-body p { font-size: 13px; line-height: 1.55; color: var(--body); }
+.play-action { margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; }
+.talk-track-box { background: var(--light); border-left: 4px solid var(--green); border-radius: 0 6px 6px 0; padding: 14px 16px; font-size: 14px; font-style: italic; color: var(--navy); line-height: 1.6; margin-bottom: 12px; }
+.talk-track-alt { font-size: 12px; color: var(--mid); margin-top: 8px; font-style: normal; }
+.oq-list { list-style: none; padding: 0; counter-reset: oq; }
+.oq-list li { padding: 6px 0 6px 24px; position: relative; font-size: 13px; border-bottom: 1px solid var(--light); counter-increment: oq; }
+.oq-list li:last-child { border-bottom: none; }
+.oq-list li::before { content: counter(oq); position: absolute; left: 0; width: 16px; height: 16px; background: var(--teal); color: var(--white); font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; top: 8px; }
+.brief-footer { background: var(--navy); color: rgba(255,255,255,0.5); font-size: 11px; padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+.brief-footer .ri-tag { color: var(--green); font-weight: 700; }
+.rep-assistant-fab { position: fixed; bottom: 28px; right: 28px; z-index: 200; }
+.rep-assistant-btn { background: var(--navy); color: var(--white); border: none; border-radius: 50px; padding: 12px 20px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(13,33,55,0.35); }
+.rep-assistant-btn .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-panel { position: fixed; bottom: 90px; right: 28px; width: 360px; background: var(--white); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(13,33,55,0.2); z-index: 200; display: none; flex-direction: column; overflow: hidden; max-height: 480px; }
+.chat-panel.open { display: flex; }
+.chat-header { background: var(--navy); color: var(--white); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.chat-header-left { display: flex; align-items: center; gap: 10px; }
+.chat-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.chat-title { font-size: 13px; font-weight: 700; }
+.chat-subtitle { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 1px; }
+.chat-close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 18px; cursor: pointer; }
+.chat-context-bar { background: #EBF5EB; border-bottom: 1px solid #C0DCBA; padding: 6px 12px; font-size: 10px; color: #1A6B1A; font-weight: 700; }
+.chat-quick-actions { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.chat-quick-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--mid); margin-bottom: 6px; }
+.chat-quick-btns { display: flex; flex-wrap: wrap; gap: 5px; }
+.chat-quick-btn { font-size: 11px; background: var(--light); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; cursor: pointer; color: var(--navy); font-weight: 600; white-space: nowrap; }
+.chat-quick-btn:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 88%; font-size: 12px; line-height: 1.5; }
+.msg.assistant { background: var(--light); border-radius: 0 8px 8px 8px; padding: 8px 10px; align-self: flex-start; white-space: pre-wrap; }
+.msg.user { background: var(--teal); border-radius: 8px 0 8px 8px; padding: 8px 10px; color: var(--white); align-self: flex-end; }
+.msg.thinking { color: var(--mid); font-style: italic; font-size: 11px; }
+.chat-input-row { padding: 10px 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+.chat-input { flex: 1; border: 1px solid var(--border); border-radius: 20px; padding: 7px 12px; font-size: 12px; outline: none; font-family: inherit; }
+.chat-input:focus { border-color: var(--teal); }
+.chat-send { background: var(--teal); border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.chat-send svg { width: 14px; height: 14px; fill: var(--white); }
+.powered-by { font-size: 10px; color: var(--mid); text-align: center; padding: 4px 12px 8px; }
+@media print { body { background: white; } .section-nav, .rep-assistant-fab, .chat-panel { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="portal-header">
+  <div class="brand">Revenue <span>Insight</span> · Account Intelligence Portal</div>
+  <div class="portal-label">Expansion Motion · Logistics &amp; Supply Chain</div>
+</div>
+
+<nav class="section-nav" id="section-nav">
+  <div class="nav-label">Jump to section</div>
+  <div class="nav-inner">
+    <a href="#signals" class="nav-btn">⚡ What's New</a>
+    <a href="#snapshot" class="nav-btn">1 · Snapshot</a>
+    <a href="#scorecard" class="nav-btn">2 · ICP Score</a>
+    <a href="#fit" class="nav-btn">3 · Why They Fit</a>
+    <a href="#expansion" class="nav-btn">4 · Expansion Opps</a>
+    <a href="#flags" class="nav-btn">5 · Data Flags</a>
+    <a href="#dms" class="nav-btn">6 · Decision Makers</a>
+    <a href="#plays" class="nav-btn">7 · Sales Plays</a>
+    <a href="#talktrack" class="nav-btn">8 · Talk Track</a>
+    <a href="#questions" class="nav-btn">9 · Open Questions</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- Note: This brief is structured for an EXPANSION motion — existing customer, upsell/cross-sell focus -->
+  <div class="brief-header">
+    <div>
+      <div class="account-name">Atlas Freight Solutions</div>
+      <div class="account-sub">Chicago, IL · 3PL / Freight Brokerage / Supply Chain Consulting · ~85 employees · Current Customer</div>
+      <div class="account-sub" style="margin-top:4px;">Brief generated: [Date] | Revenue Insight · Account Expansion Pipeline</div>
+    </div>
+    <div class="tier-group">
+      <div class="tier-badge">
+        <span class="score">A</span>
+        <span class="label">Expansion / 82</span>
+      </div>
+      <div class="tier-badge">
+        <span class="score">B</span>
+        <span class="label">Upsell / 71</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="whats-new" id="signals">
+    <div class="wn-header">⚡ What's New · Expansion Signals Since Last QBR</div>
+    <ul>
+      <li><strong>Headcount grew from 62 to 85 in 9 months:</strong> 37% growth signals a company scaling faster than their systems. Processes that worked at 60 people break at 85. This is the expansion trigger most commonly cited in customer success calls — "we've outgrown our current workflow."</li>
+      <li><strong>LinkedIn shows 3 new VP-level hires in Operations and Sales:</strong> New leadership evaluates tools in their first 90 days. At least one of these VPs may not have visibility into the full RI engagement — an introduction call protects the relationship and opens the expansion conversation.</li>
+      <li><strong>Expanded into two new service lines (supply chain consulting + dedicated fleet):</strong> New service lines require new ICP definitions, new territory coverage, and new sales playbooks. The existing RI engagement was scoped to freight brokerage only. Expansion services are currently unaddressed.</li>
+      <li><strong>RFP issued for CRM upgrade (Salesforce to HubSpot evaluation):</strong> CRM migration is a forcing function for GTM redesign. If Atlas changes their CRM without redesigning the underlying territory and ICP model, they'll replicate the current problems in a new system. RI should be in this conversation before the CRM decision is made.</li>
+      <li><strong>Current RI engagement (Phase 1 complete) — Phase 2 not yet scoped:</strong> Design &amp; Diagnose delivered. AI Proof of Concept not yet initiated. This is the natural expansion conversation — the diagnostic surfaced the issues, the POC builds the solution. Time to scope Phase 2.</li>
+    </ul>
+  </div>
+
+  <div class="section" id="snapshot">
+    <div class="section-header">1 · Account Snapshot</div>
+    <div class="section-body">
+      <div class="snapshot-grid">
+        <div class="snap-item"><div class="snap-label">Organization</div><div class="snap-value">Atlas Freight Solutions</div></div>
+        <div class="snap-item"><div class="snap-label">HQ Location</div><div class="snap-value">Chicago, IL</div></div>
+        <div class="snap-item"><div class="snap-label">Founded</div><div class="snap-value">2014</div></div>
+        <div class="snap-item"><div class="snap-label">Industry</div><div class="snap-value">3PL · Freight Brokerage · Supply Chain</div></div>
+        <div class="snap-item"><div class="snap-label">Employees</div><div class="snap-value highlight">85 (up from 62, 9 months ago)</div></div>
+        <div class="snap-item"><div class="snap-label">Ownership</div><div class="snap-value">Private · Founder-Owned</div></div>
+        <div class="snap-item"><div class="snap-label">Est. Revenue</div><div class="snap-value">$28–35M</div></div>
+        <div class="snap-item"><div class="snap-label">Sales Team Size</div><div class="snap-value">~18 reps (growing)</div></div>
+        <div class="snap-item"><div class="snap-label">Current RI Engagement</div><div class="snap-value highlight">Phase 1 Complete · Phase 2 Not Scoped</div></div>
+        <div class="snap-item"><div class="snap-label">Current RI ARR</div><div class="snap-value">$[X] — Phase 1 only</div></div>
+        <div class="snap-item"><div class="snap-label">Expansion ARR Potential</div><div class="snap-value highlight">$[X+] — Phase 2 + new service lines</div></div>
+        <div class="snap-item"><div class="snap-label">Account Health</div><div class="snap-value">Strong — Phase 1 delivered on time, sponsor satisfied</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="scorecard">
+    <div class="section-header">2 · Expansion ICP Score — Why Priority Expansion Account</div>
+    <div class="section-body">
+      <div class="multi-score-wrapper">
+        <div class="score-block">
+          <div class="score-block-header"><span class="tier-a">● A-Tier (82) — Phase 2 Expansion</span></div>
+          <div class="scorecard">
+            <div class="score-row">
+              <div class="score-dim">Phase 1 Delivery Quality</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+              <div class="score-pts">25/25</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">Sponsor Engagement</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:88%"></div></div>
+              <div class="score-pts">22/25</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">Growth Signals (headcount)</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+              <div class="score-pts">20/20</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">New Use Cases Identified</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:75%"></div></div>
+              <div class="score-pts">15/20</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">Budget Signal (CRM RFP)</div>
+              <div class="score-bar-wrap"><div class="score-bar partial" style="width:50%"></div></div>
+              <div class="score-pts">0/10 <span style="font-size:10px;color:var(--amber);display:block">budget unconfirmed</span></div>
+            </div>
+            <div class="score-total-row">
+              <div class="score-total-label">Expansion Score</div>
+              <div></div>
+              <div class="score-total-pts">82</div>
+            </div>
+          </div>
+        </div>
+        <div class="score-block">
+          <div class="score-block-header"><span class="tier-b">● B-Tier (71) — New Service Line Upsell</span></div>
+          <div class="scorecard">
+            <div class="score-row">
+              <div class="score-dim">New Service Line Launched</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:100%"></div></div>
+              <div class="score-pts">25/25</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">ICP Gap for New Service</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:88%"></div></div>
+              <div class="score-pts">22/25</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">Sales Team Readiness</div>
+              <div class="score-bar-wrap"><div class="score-bar partial" style="width:60%"></div></div>
+              <div class="score-pts">12/20</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">Existing RI Relationship</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:60%"></div></div>
+              <div class="score-pts">12/20</div>
+            </div>
+            <div class="score-row">
+              <div class="score-dim">Budget Allocated for New Line</div>
+              <div class="score-bar-wrap"><div class="score-bar low" style="width:0%"></div></div>
+              <div class="score-pts">0/10 <span style="font-size:10px;color:var(--amber);display:block">not confirmed</span></div>
+            </div>
+            <div class="score-total-row">
+              <div class="score-total-label">Upsell Score</div>
+              <div></div>
+              <div class="score-total-pts">71</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="score-note">Phase 2 expansion (AI Proof of Concept) is the priority play — highest score, warmest relationship, clearest use case defined in Phase 1 output. New service line upsell is a parallel conversation once Phase 2 is scoped.</div>
+    </div>
+  </div>
+
+  <div class="section" id="fit">
+    <div class="section-header">3 · Why Atlas Is a Priority Expansion Account</div>
+    <div class="section-body">
+      <ul class="fit-list">
+        <li><strong>Phase 1 delivered successfully — sponsor relationship is warm:</strong> This is not a cold expansion conversation. The relationship equity from Phase 1 delivery makes Phase 2 a continuation, not a resell. The sponsor has already seen RI produce value.</li>
+        <li><strong>37% headcount growth in 9 months — system strain is real:</strong> Companies scaling this fast outgrow their GTM infrastructure. The ICP, territory, and coverage model defined in Phase 1 needs to be rebuilt for a company that's 37% larger with two new service lines.</li>
+        <li><strong>New service lines = new ICP problem:</strong> Supply chain consulting and dedicated fleet require a different buyer profile, different ICP definition, and different outbound motion than freight brokerage. This is a Phase 1 problem in a new vertical — and RI already has the institutional knowledge of Atlas's business to solve it faster.</li>
+        <li><strong>CRM RFP is a forcing function:</strong> If Atlas decides on a new CRM before redesigning their GTM model, they'll replicate the current problems in a new system. RI's position in this decision — "design the system before you build the infrastructure" — is architecturally correct and differentiating.</li>
+        <li><strong>New VP hires haven't been introduced to RI:</strong> Leadership changes in key roles (Operations, Sales) mean there are people making decisions about GTM tools who don't have context on the RI engagement. An introduction call protects the relationship and may open new budget conversations.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="expansion">
+    <div class="section-header">4 · Expansion Opportunity Map</div>
+    <div class="section-body">
+      <div class="expansion-grid">
+        <div class="expansion-card current">
+          <div class="expansion-label">Currently Owned</div>
+          <div class="expansion-name">Phase 1 — Design &amp; Diagnose</div>
+          <div class="expansion-desc">ICP definition, territory design, and coverage model for the freight brokerage business. Delivered on time. Output: use case-led ICP, probability-to-win model, territory architecture.</div>
+          <div class="expansion-arr">Current ARR: $[Phase 1 fee]</div>
+        </div>
+        <div class="expansion-card primary">
+          <div class="expansion-label">Primary Expansion — Highest Priority</div>
+          <div class="expansion-name">Phase 2 — AI Proof of Concept</div>
+          <div class="expansion-desc">Build the AI-powered revenue workflow on top of the Phase 1 system design. Account Intelligence Briefs for all A-tier prospects. Signal-based outbound for freight brokerage ICP. Pipeline and forecast workflow automation.</div>
+          <div class="expansion-arr">Est. incremental ARR: $[Phase 2 fee]</div>
+        </div>
+        <div class="expansion-card secondary">
+          <div class="expansion-label">Secondary Expansion</div>
+          <div class="expansion-name">New Service Line ICP — Supply Chain Consulting</div>
+          <div class="expansion-desc">Phase 1 equivalent for the supply chain consulting service line. Different buyer (COO vs. VP Logistics), different use case, different ICP. RI has the institutional knowledge to run this faster than the original Phase 1.</div>
+          <div class="expansion-arr">Est. incremental ARR: $[Repeat Phase 1 fee]</div>
+        </div>
+        <div class="expansion-card secondary">
+          <div class="expansion-label">Watch — Future Opportunity</div>
+          <div class="expansion-name">Phase 3 — Scale &amp; Transfer (Full Platform)</div>
+          <div class="expansion-desc">Once Phase 2 is proven, scale the AI-powered workflow across both service lines. Train the Atlas team to operate the system. Plant the seed for Phase 3 in the Phase 2 scoping conversation — it sets the long-term relationship frame.</div>
+          <div class="expansion-arr">Est. incremental ARR: $[Phase 3 fee]</div>
+        </div>
+      </div>
+      <div class="arr-summary">
+        <div class="arr-summary-label">Full expansion ARR potential (Phase 2 + new service line):</div>
+        <div class="arr-summary-amount">$[Phase 1 fee × 2.5–3.5×]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="flags">
+    <div class="section-header">5 · Internal Data Flags</div>
+    <div class="section-body">
+      <ul class="flag-list">
+        <li class="green">Phase 1 sponsor relationship is strong — use it. Expansion conversations should start with "based on what we found in Phase 1" not a cold re-pitch.</li>
+        <li class="green">CRM RFP is a live, time-sensitive trigger. RI's position ("design the system before you pick the infrastructure") needs to be in this conversation before a vendor is selected. Don't wait.</li>
+        <li>New VP-level hires in Operations and Sales have not been formally introduced to RI. Risk: they evaluate new tools without context on existing RI engagement. Mitigate with an introduction call in the next 30 days.</li>
+        <li>Phase 2 budget not confirmed. Phase 1 sponsor likely has authority but the CRM RFP may be consuming discretionary budget. Confirm budget availability before submitting a Phase 2 proposal.</li>
+        <li>New service lines (supply chain consulting, dedicated fleet) have no formal ICP. Reps are selling these on instinct and relationship — without a defined buyer profile or territory model. This is both a risk (coverage gaps) and an opportunity (RI can solve it).</li>
+        <li class="red">No exec-level sponsor above the current engagement contact. Founder-owned company — if the founder is not currently engaged in the RI relationship, Phase 2 scoping should involve them. Large expansion investments at founder-owned companies require founder buy-in.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="dms">
+    <div class="section-header">6 · Key Decision Makers</div>
+    <div class="section-body">
+      <div class="dm-grid">
+
+        <div class="dm-card">
+          <div class="dm-avatar">SP</div>
+          <div>
+            <div class="dm-name">[Phase 1 Sponsor Name]</div>
+            <div class="dm-title">VP of Sales / CRO · Chicago, IL · Primary RI Relationship</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-champion">Warm Champion</span>
+              <span class="dm-tag tag-economic">Budget Influencer</span>
+            </div>
+            <div class="dm-note">Existing RI relationship. Received Phase 1 output and has visibility into the system design. The natural starting point for the Phase 2 conversation — "Phase 1 gave us the architecture; Phase 2 builds it." Frame expansion as the logical next step, not a new sale.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">FO</div>
+          <div>
+            <div class="dm-name">[Founder / CEO Name]</div>
+            <div class="dm-title">Founder &amp; CEO · Chicago, IL</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-economic">Economic Buyer</span>
+              <span class="dm-tag tag-buyer">Final Decision</span>
+            </div>
+            <div class="dm-note">Founder-owned company — significant expansion investments require founder visibility. If the Phase 1 engagement was approved below the founder level, Phase 2 needs a founder touchpoint before scoping. Ask the Phase 1 sponsor: "Who else should be in the Phase 2 conversation?" to surface whether founder engagement is needed.</div>
+          </div>
+        </div>
+
+        <div class="dm-card">
+          <div class="dm-avatar">NV</div>
+          <div>
+            <div class="dm-name">[New VP Operations — hired Q1]</div>
+            <div class="dm-title">VP of Operations · Chicago, IL · In role ~3 months</div>
+            <div class="dm-tags">
+              <span class="dm-tag tag-influencer">New Stakeholder</span>
+            </div>
+            <div class="dm-note">Has not been formally introduced to RI. Owns the CRM RFP process and will have a view on operational technology. RI's position on the CRM decision ("design the GTM system before selecting infrastructure") is a conversation this VP needs to have. Introduce via the existing sponsor before the CRM decision is made.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="plays">
+    <div class="section-header">7 · Recommended Sales Plays</div>
+    <div class="section-body">
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">1</div>
+          <div class="play-title">Phase 2 Scoping — Build on Phase 1 Momentum</div>
+          <div class="play-type">Expansion</div>
+        </div>
+        <div class="play-body">
+          <p>The warmest expansion conversation in the portfolio. Phase 1 delivered, sponsor is satisfied, and the system design identified the exact use cases Phase 2 should address. The conversation is: "We built the blueprint in Phase 1. Phase 2 builds the factory." Don't re-pitch RI — pick up where Phase 1 left off.</p>
+          <p style="margin-top:8px;">Specific hook: "In Phase 1, we identified [X use case] as the highest-priority place to deploy AI-powered workflows. Phase 2 builds those Account Intelligence Briefs, activates the signal-based outbound, and gives your reps the system they need to work the ICP territory we designed. I'd like to scope that in the next 30 days before your team is fully deployed into the new territory model without the AI layer."</p>
+          <div class="play-action">Entry point: <span>Phase 1 sponsor → Phase 2 scoping call → proposal in 2 weeks</span></div>
+        </div>
+      </div>
+
+      <div class="play-card">
+        <div class="play-card-header">
+          <div class="play-num">2</div>
+          <div class="play-title">CRM Positioning Play — Sequence GTM Design First</div>
+          <div class="play-type">Protect &amp; Expand</div>
+        </div>
+        <div class="play-body">
+          <p>Atlas has issued an RFP for a CRM upgrade. This is an immediate risk (a new CRM selected without a GTM model will replicate current problems) and an immediate opportunity (RI's system design should precede the infrastructure decision).</p>
+          <p style="margin-top:8px;">Message to the VP Operations: "Before you finalize the CRM decision, I want to make sure the GTM model that will run on that system is designed first. The Phase 1 work we did defined the ICP and territory — Phase 2 builds the workflows that need to be mapped into whatever CRM you choose. Let me show you why the sequence matters and how RI's output informs the CRM configuration."</p>
+          <div class="play-action">Entry point: <span>Introduction to new VP Operations → CRM sequencing conversation → Phase 2 justification</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section" id="talktrack">
+    <div class="section-header">8 · Suggested Talk Track Opener</div>
+    <div class="section-body">
+      <div class="talk-track-box">
+        "[Phase 1 Sponsor] — a few things have come across my desk that I wanted to bring to you directly. You've added 20+ people in the last 9 months, you're running two new service lines that weren't in scope for Phase 1, and you've got a CRM RFP live that I want to make sure connects to the GTM architecture we built. I think we're at the exact moment where Phase 2 makes the most sense — before the new reps get deployed into the territory without the AI layer, and before the CRM decision gets made without the system design informing it. Can we get 30 minutes this week to scope what Phase 2 looks like?"
+      </div>
+      <div class="talk-track-alt">Alternate opener for new VP Operations introduction: "Hi [Name] — I'm [Rep Name] from Revenue Insight. We've been working with Atlas on the GTM system design — Phase 1 is complete and I understand you're now leading the CRM evaluation. I wanted to introduce myself and share why the sequence of GTM design before CRM selection matters — it typically saves companies a full rebuild cycle. Would 20 minutes be useful before your CRM decision is finalized?"</div>
+    </div>
+  </div>
+
+  <div class="section" id="questions">
+    <div class="section-header">9 · Open Questions for Expansion Call</div>
+    <div class="section-body">
+      <ol class="oq-list">
+        <li>What is the Phase 1 sponsor's read on Phase 2 readiness — do they see the next step as a natural continuation or is there a budget / timing constraint to navigate?</li>
+        <li>Who is leading the CRM RFP and what is the selection timeline? RI needs to be in this conversation before a vendor is chosen, not after.</li>
+        <li>Have the new VP-level hires been briefed on the Phase 1 output and the planned Phase 2 scope? If not, an internal champion conversation needs to happen first.</li>
+        <li>Are the new service lines (supply chain consulting, dedicated fleet) generating pipeline yet, or are they still in the go-to-market design phase? The answer determines whether the new service line ICP is urgent or a Q3/Q4 conversation.</li>
+        <li>Has the Phase 1 output been shared with the founder? For a Phase 2 investment at this scale, founder visibility is typically required at a founder-owned company.</li>
+        <li>What metrics is the Phase 1 sponsor using internally to measure the value of the RI engagement? Understanding how they're reporting ROI internally informs how to frame the Phase 2 business case.</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<div class="brief-footer">
+  <span class="ri-tag">Revenue Insight</span>
+  <span>Confidential — for internal use only · Expansion motion brief · Data sources: RI engagement history · LinkedIn · Company website</span>
+</div>
+
+<div class="rep-assistant-fab">
+  <button class="rep-assistant-btn" onclick="toggleChat()">
+    <span class="dot"></span>
+    💬 Rep Assistant
+  </button>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <span class="dot"></span>
+      <div>
+        <div class="chat-title">Rep Assistant · Atlas Freight</div>
+        <div class="chat-subtitle">Powered by Revenue Insight AI</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-context-bar">● Expansion A-Tier 82 · Phase 1 Complete · Phase 2 Not Scoped · CRM RFP Live · 37% Headcount Growth</div>
+  <div class="chat-quick-actions">
+    <div class="chat-quick-label">Quick actions — tap to generate</div>
+    <div class="chat-quick-btns">
+      <button class="chat-quick-btn" onclick="sendQuick('Draft a Phase 2 scoping email to the Phase 1 sponsor')">Phase 2 Scope Email</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write an introduction email to the new VP Operations about the CRM sequencing')">New VP Intro</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Build a Phase 2 business case one-pager for the founder')">Founder Business Case</button>
+      <button class="chat-quick-btn" onclick="sendQuick('Write a call agenda for the Phase 2 scoping conversation')">Call Agenda</button>
+      <button class="chat-quick-btn" onclick="sendQuick('How should I handle the objection: we need to wait until after the CRM decision')">Handle Objections</button>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg assistant">Full Atlas Freight expansion brief loaded — Phase 1 complete, Phase 2 not scoped, CRM RFP live, 37% headcount growth, new VP hires. Expansion score A-Tier 82. Ask me anything or tap a quick action above.</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask anything about this account..." onkeydown="if(event.key==='Enter') sendMessage()"/>
+    <button class="chat-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+  <div class="powered-by">Powered by Claude · Revenue Insight Internal Use Only · Context: Atlas Freight Expansion AIB</div>
+</div>
+
+<script>
+var chatHistory = [];
+var systemContext = "You are the Rep Assistant for Revenue Insight, embedded in an Account Intelligence Brief for Atlas Freight Solutions — an existing RI customer being managed for expansion. Account details: 3PL/freight brokerage company, Chicago IL, 85 employees (up from 62 in 9 months), founder-owned. Phase 1 (Design & Diagnose) complete and delivered successfully. Phase 2 (AI Proof of Concept) not yet scoped. CRM RFP live — evaluating Salesforce to HubSpot migration. Two new service lines launched: supply chain consulting and dedicated fleet. New VP Operations hired 3 months ago — not yet introduced to RI. Founder not currently engaged in RI relationship. Phase 1 sponsor is the warm champion. Expansion score A-Tier 82. Key plays: Phase 2 scoping off Phase 1 momentum, and CRM positioning play (GTM design before infrastructure). You help generate expansion emails, stakeholder intro messages, business cases, objection handling, and call agendas for an account management/expansion motion. Be specific, use the logistics and expansion context in every response. Keep responses concise and actionable.";
+
+function toggleChat() { document.getElementById('chatPanel').classList.toggle('open'); }
+function sendQuick(text) { document.getElementById('chatInput').value = text; sendMessage(); }
+
+async function sendMessage() {
+  var input = document.getElementById('chatInput');
+  var msgs = document.getElementById('chatMessages');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  chatHistory.push({ role: 'user', content: text });
+  var userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.textContent = text;
+  msgs.appendChild(userMsg);
+  var streamDiv = document.createElement('div');
+  streamDiv.className = 'msg assistant thinking';
+  streamDiv.textContent = 'Thinking...';
+  msgs.appendChild(streamDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+  try {
+    var resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: systemContext, messages: chatHistory })
+    });
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '', fullText = '';
+    streamDiv.className = 'msg assistant';
+    streamDiv.textContent = '';
+    while (true) {
+      var chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, { stream: true });
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (var line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          var evt = JSON.parse(line.slice(6));
+          if (evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta') {
+            fullText += evt.delta.text;
+            streamDiv.textContent = fullText;
+            msgs.scrollTop = msgs.scrollHeight;
+          }
+        } catch(e) {}
+      }
+    }
+    chatHistory.push({ role: 'assistant', content: fullText });
+  } catch(e) {
+    streamDiv.className = 'msg assistant';
+    streamDiv.textContent = 'Error connecting. Please try again.';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+var sections = ['signals','snapshot','scorecard','fit','expansion','flags','dms','plays','talktrack','questions'];
+var navBtns = document.querySelectorAll('.nav-btn');
+function onScroll() {
+  var navH = document.getElementById('section-nav').offsetHeight;
+  var scrollY = window.pageYOffset + navH + 24;
+  var current = sections[0];
+  sections.forEach(function(id) { var el = document.getElementById(id); if (el && el.offsetTop <= scrollY) current = id; });
+  navBtns.forEach(function(btn) { btn.classList.toggle('active', btn.getAttribute('href') === '#' + current); });
+}
+document.querySelectorAll('.nav-btn[href^="#"]').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
+    var y = target.getBoundingClientRect().top + window.pageYOffset - document.getElementById('section-nav').offsetHeight - 12;
+    window.scrollTo({top: y, behavior: 'smooth'});
+  });
+});
+window.addEventListener('scroll', onScroll, {passive: true});
+onScroll();
+</script>
+</body>
+</html>
