@@ -206,6 +206,10 @@ function buildSystemPrompt(filtered) {
       briefUrl: a.url,
       primaryContact: c0 ? {name: c0.name, title: c0.title, tags: c0.tags||[]} : {name: a.contact, title: a.title},
       allContacts: (a.contacts||[]).map(c=>({name:c.name,title:c.title,tags:c.tags||[]})),
+      brands: (a.brands||[]).slice(0,10),
+      agencyRelationships: (a.agency_relationships||[]).slice(0,12),
+      switchboardRevenue: a.switchboard_revenue || {},
+      weatherfxOverlay: a.weatherfx_overlay || {},
       salesPlays: (a.sales_plays||[]).map(p=>({title:p.title,type:p.type,summary:p.summary})),
       talkTrack: a.talk_track_opener||'',
       openQuestions: a.open_questions||[],
@@ -218,9 +222,13 @@ CURRENT FILTERED DATASET (${filtered.length} accounts):
 ${data}
 
 INSTRUCTIONS:
-- Answer questions about accounts, reps, verticals, spend, Bombora signals, contacts, and sales angles
+- Answer questions about accounts, reps, verticals, spend, Bombora signals, contacts, brands, agency relationships, WeatherFX trigger overlays, Switchboard revenue, and sales angles
 - For "who do I call" questions: give name, title, tags from allContacts
 - For "sales plays" or "how do I approach" questions: cite salesPlays titles and summaries
+- For "brands" questions: cite the brands list and media_spend when available
+- For "agency" questions: use agencyRelationships, not only the primary agency
+- For "weather" or "trigger" questions: use weatherfxOverlay and explain that insight/time-curve is pending confirmation
+- For "Switchboard" or "revenue" questions: use switchboardRevenue
 - For "what do I say" or "talk track" questions: use the talkTrack field
 - For "discovery questions" or "open questions": use the openQuestions field
 - Be concise and specific — cite account names, rep names, and dollar figures
@@ -305,12 +313,22 @@ function renderCharts() {
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtMoney(v) {
+  const n = Number(v || 0);
+  if (!Number.isFinite(n)) return '$0';
+  if (Math.abs(n) >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+  if (Math.abs(n) >= 1000) return '$' + (n / 1000).toFixed(1) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+}
 
 function renderTable() {
   document.getElementById('tCount').textContent = `${filtered.length} accounts`;
   const rows = filtered.slice(0,100).map((a,i) => {
     const contacts = (a.contacts||[]).slice(0,3);
     const plays = (a.sales_plays||[]).slice(0,3);
+    const brands = (a.brands||[]).slice(0,5);
+    const agencies = (a.agency_relationships||[]).slice(0,8);
+    const sw = a.switchboard_revenue || {};
 
     const contactsHtml = contacts.length ? contacts.map(c=>`
       <div class="contact-item">
@@ -325,6 +343,18 @@ function renderTable() {
         <span class="play-type">${esc(p.type)}</span>
         <div class="play-summary">${esc(p.summary)}</div>
       </div>`).join('') : '<span style="font-size:10px;color:#9ca3af">No plays on file</span>';
+
+    const brandsHtml = brands.length ? brands.map(b=>`
+      <div class="play-item">
+        <span class="play-title">${esc(b.name)}</span>
+        <div class="play-summary">${esc(b.media_spend || '')}${b.industries ? ' · ' + esc(b.industries) : ''}</div>
+      </div>`).join('') : '<span style="font-size:10px;color:#9ca3af">No matched brands</span>';
+
+    const agenciesHtml = agencies.length ? agencies.map(x=>`<span class="contact-tag">${esc(x)}</span>`).join('') : '<span style="font-size:10px;color:#9ca3af">No extra agencies</span>';
+    const switchboardHtml = `
+      <div class="play-summary">Deal Demand: <strong>${fmtMoney(sw.deal_enabled_demand)}</strong></div>
+      <div class="play-summary">Open: <strong>${fmtMoney(sw.open)}</strong></div>
+      <div class="play-summary">PMP: <strong>${fmtMoney(sw.pmp)}</strong></div>`;
 
     return `
     <tr class="row-main" onclick="toggleDetail(${i})">
@@ -347,6 +377,22 @@ function renderTable() {
           <div class="detail-section" style="flex:2;min-width:300px">
             <h4>🎯 Sales Plays</h4>
             ${playsHtml}
+          </div>
+          <div class="detail-section" style="min-width:240px">
+            <h4>🏷️ Brands</h4>
+            ${brandsHtml}
+          </div>
+          <div class="detail-section" style="min-width:240px">
+            <h4>🏢 Agency Relationships</h4>
+            ${agenciesHtml}
+          </div>
+          <div class="detail-section" style="min-width:200px">
+            <h4>💵 Switchboard</h4>
+            ${switchboardHtml}
+          </div>
+          <div class="detail-section" style="min-width:240px">
+            <h4>☀️ WeatherFX</h4>
+            <div class="play-summary">Trigger overlays added. Insight/time-curve pending TWC confirmation.</div>
           </div>
         </div>
       </td>
