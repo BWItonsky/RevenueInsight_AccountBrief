@@ -143,7 +143,8 @@ a.brief-link:hover { color: var(--green); text-decoration: underline; }
   <div class="left">
     <div class="filters">
       <div class="fg"><label>Account Owner</label><select id="fRep" onchange="render()"><option value="">All Reps</option></select></div>
-      <div class="fg"><label>Vertical</label><select id="fVert" onchange="render()"><option value="">All Verticals</option></select></div>
+      <div class="fg"><label>Account Name</label><select id="fAcct" onchange="render()"><option value="">All Accounts</option></select></div>
+        <div class="fg"><label>Vertical</label><select id="fVert" onchange="render()"><option value="">All Verticals</option></select></div>
       <div class="fg"><label>Prospect?</label><select id="fProsp" onchange="render()"><option value="">All</option><option value="Yes">Prospects</option><option value="No">Non-Prospects</option></select></div>
       <div class="fg"><label>Bombora</label><select id="fBomb" onchange="render()"><option value="">All</option><option value="yes">Has Signal</option><option value="no">No Signal</option></select></div>
       <button class="btn-r" onclick="reset()">↺ Reset</button>
@@ -249,11 +250,15 @@ function init() {
   const vertSel = document.getElementById('fVert');
   reps.forEach(r => { const o=document.createElement('option'); o.value=r; o.textContent=r; repSel.appendChild(o); });
   verts.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; vertSel.appendChild(o); });
+  const accts = [...new Set(ACCOUNTS.map(a=>a.n))].sort((a,b)=>a.localeCompare(b));
+  const acctSel = document.getElementById('fAcct');
+  accts.forEach(n => { const o=document.createElement('option'); o.value=n; o.textContent=n; acctSel.appendChild(o); });
   render();
 }
 
 function reset() {
   document.getElementById('fRep').value='';
+  document.getElementById('fAcct').value='';
   document.getElementById('fVert').value='';
   document.getElementById('fProsp').value='';
   document.getElementById('fBomb').value='';
@@ -262,17 +267,20 @@ function reset() {
 
 function render() {
   const rep = document.getElementById('fRep').value;
+  const acct = document.getElementById('fAcct').value;
   const vert = document.getElementById('fVert').value;
   const prosp = document.getElementById('fProsp').value;
   const bomb = document.getElementById('fBomb').value;
   filtered = ACCOUNTS.filter(a => {
     if (rep && a.o !== rep) return false;
+    if (acct && a.n !== acct) return false;
     if (vert && a.v !== vert) return false;
     if (prosp && a.p !== prosp) return false;
     if (bomb === 'yes' && a.bomb !== 'yes') return false;
     if (bomb === 'no' && a.bomb !== 'no') return false;
     return true;
   });
+  filtered.sort((a,b)=>a.n.localeCompare(b.n));
   renderKPIs();
   renderCharts();
   renderTable();
@@ -323,7 +331,7 @@ function fmtMoney(v) {
 
 function renderTable() {
   document.getElementById('tCount').textContent = `${filtered.length} accounts`;
-  const rows = filtered.slice(0,100).map((a,i) => {
+  const rows = filtered.map((a,i) => {
     const contacts = (a.contacts||[]).slice(0,3);
     const plays = (a.sales_plays||[]).slice(0,3);
     const brands = (a.brands||[]).slice(0,5);
