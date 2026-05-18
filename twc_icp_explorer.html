@@ -329,6 +329,8 @@ function renderTable() {
     const brands = (a.brands||[]).slice(0,5);
     const agencies = (a.agency_relationships||[]).slice(0,8);
     const sw = a.switchboard_revenue || {};
+    const wfx = a.weatherfx_overlay || {};
+    const wfxRegions = (wfx.regions || []).slice(0,3);
 
     const contactsHtml = contacts.length ? contacts.map(c=>`
       <div class="contact-item">
@@ -355,6 +357,18 @@ function renderTable() {
       <div class="play-summary">Deal Demand: <strong>${fmtMoney(sw.deal_enabled_demand)}</strong></div>
       <div class="play-summary">Open: <strong>${fmtMoney(sw.open)}</strong></div>
       <div class="play-summary">PMP: <strong>${fmtMoney(sw.pmp)}</strong></div>`;
+    const weatherfxHtml = wfxRegions.length ? `
+      <div class="play-summary">${esc(wfx.location_strategy || 'Trigger API refreshed; insight/time-curve pending TWC enablement.')}</div>
+      ${wfxRegions.map(r => {
+        const triggers = (r.top_triggers || []).slice(0,4).map(t => esc(t.name || `Trigger ${t.id}`)).join(', ');
+        return `<div class="play-item">
+          <span class="play-title">${esc(r.region || r.location)} · ${esc(r.location)}</span>
+          <div class="play-summary">${Number(r.active_trigger_count || 0)} active triggers · ${Number(r.useful_trigger_count || 0)} useful matches</div>
+          <div class="play-summary">${triggers || 'No priority trigger matches'}</div>
+        </div>`;
+      }).join('')}
+      <div class="play-summary">Insight/time-curve pending TWC enablement.</div>
+    ` : '<span style="font-size:10px;color:#9ca3af">No WeatherFX trigger data</span>';
 
     return `
     <tr class="row-main" onclick="toggleDetail(${i})">
@@ -392,7 +406,7 @@ function renderTable() {
           </div>
           <div class="detail-section" style="min-width:240px">
             <h4>☀️ WeatherFX</h4>
-            <div class="play-summary">Trigger overlays added. Insight/time-curve pending TWC confirmation.</div>
+            ${weatherfxHtml}
           </div>
         </div>
       </td>
